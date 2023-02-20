@@ -6,11 +6,12 @@ const { EmbedBuilder, ApplicationCommandOptionType } = require("discord.js");
  */
 module.exports = {
   name: "queue",
-  description: "displays the current music queue",
+  description: "показивает текущую музыкальную очередь",
   category: "MUSIC",
   botPermissions: ["EmbedLinks"],
   command: {
     enabled: true,
+    aliases: ["q"],
     usage: "[page]",
   },
   slashCommand: {
@@ -18,7 +19,7 @@ module.exports = {
     options: [
       {
         name: "page",
-        description: "page number",
+        description: "номер страницы",
         type: ApplicationCommandOptionType.Integer,
         required: false,
       },
@@ -44,10 +45,10 @@ module.exports = {
  */
 function getQueue({ client, guild }, pgNo) {
   const player = client.musicManager.getPlayer(guild.id);
-  if (!player) return "🚫 There is no music playing in this guild.";
+  if (!player) return "🚫 Сейчас музыка не играет.";
 
   const queue = player.queue;
-  const embed = new EmbedBuilder().setColor(EMBED_COLORS.BOT_EMBED).setAuthor({ name: `Queue for ${guild.name}` });
+  const embed = new EmbedBuilder().setColor(EMBED_COLORS.BOT_EMBED).setAuthor({ name: `Очередь для ${guild.name}` });
 
   // change for the amount of tracks per page
   const multiple = 10;
@@ -58,13 +59,13 @@ function getQueue({ client, guild }, pgNo) {
 
   const tracks = queue.tracks.slice(start, end);
 
-  if (queue.current) embed.addFields({ name: "Current", value: `[${queue.current.title}](${queue.current.uri})` });
-  if (!tracks.length) embed.setDescription(`No tracks in ${page > 1 ? `page ${page}` : "the queue"}.`);
+  if (queue.current) embed.addFields({ name: "Текущий", value: `[${queue.current.title}](${queue.current.uri})` });
+  if (!tracks.length) embed.setDescription(`Нет треков в ${page > 1 ? `странице ${page}` : "очереди"}.`);
   else embed.setDescription(tracks.map((track, i) => `${start + ++i} - [${track.title}](${track.uri})`).join("\n"));
 
   const maxPages = Math.ceil(queue.tracks.length / multiple);
 
-  embed.setFooter({ text: `Page ${page > maxPages ? maxPages : page} of ${maxPages}` });
+  embed.setFooter({ text: `Страница ${page > maxPages ? maxPages : page} из ${maxPages}` });
 
   return { embeds: [embed] };
 }

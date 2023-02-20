@@ -5,7 +5,7 @@ const { ApplicationCommandOptionType, ChannelType } = require("discord.js");
  */
 module.exports = {
   name: "counter",
-  description: "setup counter channel in the guild",
+  description: "установить канал-счетчик на сервер",
   category: "ADMIN",
   userPermissions: ["ManageGuild"],
   botPermissions: ["ManageChannels"],
@@ -20,7 +20,7 @@ module.exports = {
     options: [
       {
         name: "type",
-        description: "type of counter channel",
+        description: "тип канала-счетчика",
         type: ApplicationCommandOptionType.String,
         required: true,
         choices: [
@@ -40,7 +40,7 @@ module.exports = {
       },
       {
         name: "name",
-        description: "name of the counter channel",
+        description: "имя канала-счетчика",
         type: ApplicationCommandOptionType.String,
         required: true,
       },
@@ -50,9 +50,9 @@ module.exports = {
   async messageRun(message, args, data) {
     const type = args[0].toUpperCase();
     if (!type || !["USERS", "MEMBERS", "BOTS"].includes(type)) {
-      return message.safeReply("Incorrect arguments are passed! Counter types: `users/members/bots`");
+      return message.safeReply("Неправильные аргументы! выберите: `users/members/bots`");
     }
-    if (args.length < 2) return message.safeReply("Incorrect Usage! You did not provide name");
+    if (args.length < 2) return message.safeReply("Неправильное использование! Вы не выбрали имя");
     args.shift();
     let channelName = args.join(" ");
 
@@ -113,5 +113,5 @@ async function setupCounter(guild, type, name, settings) {
   settings.data.bots = stats[1];
   await settings.save();
 
-  return "Configuration saved! Counter channel created";
+  return "Конфигурация сохранена! канала-счетчика создан";
 }

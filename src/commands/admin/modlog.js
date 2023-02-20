@@ -5,7 +5,7 @@ const { ApplicationCommandOptionType, ChannelType } = require("discord.js");
  */
 module.exports = {
   name: "modlog",
-  description: "enable or disable moderation logs",
+  description: "включить или отключить журналы модерации",
   category: "ADMIN",
   userPermissions: ["ManageGuild"],
   command: {
@@ -19,7 +19,7 @@ module.exports = {
     options: [
       {
         name: "channel",
-        description: "channels to send mod logs",
+        description: "канал для отправки мод лога",
         required: false,
         type: ApplicationCommandOptionType.Channel,
         channelTypes: [ChannelType.GuildText],
@@ -33,7 +33,7 @@ module.exports = {
 
     if (input === "none" || input === "off" || input === "disable") targetChannel = null;
     else {
-      if (message.mentions.channels.size === 0) return message.safeReply("Incorrect command usage");
+      if (message.mentions.channels.size === 0) return message.safeReply("Неверное использование команды");
       targetChannel = message.mentions.channels.first();
     }
 
@@ -49,10 +49,10 @@ module.exports = {
 
 async function setChannel(targetChannel, settings) {
   if (targetChannel && !targetChannel.canSendEmbeds()) {
-    return "Ugh! I cannot send logs to that channel? I need the `Write Messages` and `Embed Links` permissions in that channel";
+    return "Тьфу! Я не могу отправлять журналы на этот канал? Мне нужны разрешения `Запись сообщений` и `Встраивание ссылок` в этом канале.";
   }
 
   settings.modlog_channel = targetChannel?.id;
   await settings.save();
-  return `Configuration saved! Modlog channel ${targetChannel ? "updated" : "removed"}`;
+  return `конфигурация сохранена! Канал мод лога ${targetChannel ? "обновлен" : "удален"}`;
 }

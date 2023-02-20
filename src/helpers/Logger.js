@@ -16,7 +16,7 @@ const pinoLogger = pino.default(
         target: "pino-pretty",
         options: {
           colorize: true,
-          translateTime: "yyyy-mm-dd HH:mm:ss",
+          translateTime: "SYS:yyyy-mm-dd HH:MM:ss",
           ignore: "pid,hostname",
           singleLine: false,
           hideObject: true,
@@ -38,15 +38,15 @@ function sendWebhook(content, err) {
   if (!content && !err) return;
   const errString = err?.stack || err;
 
-  const embed = new EmbedBuilder().setColor(config.EMBED_COLORS.ERROR).setAuthor({ name: err?.name || "Error" });
+  const embed = new EmbedBuilder().setColor(config.EMBED_COLORS.ERROR).setAuthor({ name: err?.name || "Ошибка" });
 
   if (errString)
     embed.setDescription(
       "```js\n" + (errString.length > 4096 ? `${errString.substr(0, 4000)}...` : errString) + "\n```"
     );
 
-  embed.addFields({ name: "Description", value: content || err?.message || "NA" });
-  webhookLogger.send({ username: "Logs", embeds: [embed] }).catch((ex) => {});
+  embed.addFields({ name: "Описание:", value: content || err?.message || "NA" });
+  webhookLogger.send({ username: "Логи", embeds: [embed] }).catch((ex) => {});
 }
 
 module.exports = class Logger {

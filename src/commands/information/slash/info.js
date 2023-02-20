@@ -11,7 +11,7 @@ const { ApplicationCommandOptionType } = require("discord.js");
  */
 module.exports = {
   name: "info",
-  description: "show various information",
+  description: "показывает разную информацию",
   category: "INFORMATION",
   botPermissions: ["EmbedLinks"],
   command: {
@@ -22,12 +22,12 @@ module.exports = {
     options: [
       {
         name: "user",
-        description: "get user information",
+        description: "показать информацию о пользователе",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "name",
-            description: "name of the user",
+            description: "имя пользователя",
             type: ApplicationCommandOptionType.User,
             required: false,
           },
@@ -35,12 +35,12 @@ module.exports = {
       },
       {
         name: "channel",
-        description: "get channel information",
+        description: "получить информацию о канале",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "name",
-            description: "name of the channel",
+            description: "имя канала",
             type: ApplicationCommandOptionType.Channel,
             required: false,
           },
@@ -48,22 +48,22 @@ module.exports = {
       },
       {
         name: "guild",
-        description: "get guild information",
+        description: "получить информацию о сервере",
         type: ApplicationCommandOptionType.Subcommand,
       },
       {
         name: "bot",
-        description: "get bot information",
+        description: "получить информацию о боте",
         type: ApplicationCommandOptionType.Subcommand,
       },
       {
         name: "avatar",
-        description: "displays avatar information",
+        description: "получить информацию о аватаре",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "name",
-            description: "name of the user",
+            description: "имя пользователя",
             type: ApplicationCommandOptionType.User,
             required: false,
           },
@@ -71,12 +71,12 @@ module.exports = {
       },
       {
         name: "emoji",
-        description: "displays emoji information",
+        description: "получить информацию о эмодзи",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "name",
-            description: "name of the emoji",
+            description: "имя эмодзи",
             type: ApplicationCommandOptionType.String,
             required: true,
           },
@@ -87,7 +87,7 @@ module.exports = {
 
   async interactionRun(interaction) {
     const sub = interaction.options.getSubcommand();
-    if (!sub) return interaction.followUp("Not a valid subcommand");
+    if (!sub) return interaction.followUp("неправильная сабкоманда");
     let response;
 
     // user
@@ -127,7 +127,7 @@ module.exports = {
 
     // return
     else {
-      response = "Incorrect subcommand";
+      response = "неправильная сабкоманда";
     }
 
     await interaction.followUp(response);

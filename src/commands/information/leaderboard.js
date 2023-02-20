@@ -9,70 +9,70 @@ const { getReputationLb } = require("@schemas/User");
  */
 module.exports = {
   name: "leaderboard",
-  description: "display the XP leaderboard",
+  description: "показать топ пользователей по опыту",
   category: "INFORMATION",
   botPermissions: ["EmbedLinks"],
   command: {
-    enabled: true,
-    aliases: ["lb"],
-    minArgsCount: 1,
-    usage: "<xp|invite|rep>",
-  },
-  slashCommand: {
-    enabled: true,
-    options: [
-      {
-        name: "type",
-        description: "type of leaderboard to display",
-        required: true,
-        type: ApplicationCommandOptionType.String,
-        choices: [
-          {
-            name: "xp",
-            value: "xp",
-          },
-          {
-            name: "invite",
-            value: "invite",
-          },
-          {
-            name: "rep",
-            value: "rep",
-          },
-        ],
-      },
-    ],
-  },
+      enabled: true,
+      aliases: ["lb"],
+      minArgsCount: 1,
+      usage: "<xp|invite|rep>",
+    },
+    slashCommand: {
+      enabled: true,
+      options: [
+        {
+          name: "type",
+          description: "type of leaderboard to display",
+          required: true,
+          type: ApplicationCommandOptionType.String,
+          choices: [
+            {
+              name: "xp",
+              value: "xp",
+            },
+            {
+              name: "invite",
+              value: "invite",
+            },
+            {
+              name: "rep",
+              value: "rep",
+            },
+          ],
+        },
+      ],
+    },
 
-  async messageRun(message, args, data) {
-    const type = args[0].toLowerCase();
-    let response;
-
-    if (type === "xp") response = await getXpLeaderboard(message, message.author, data.settings);
-    else if (type === "invite") response = await getInviteLeaderboard(message, message.author, data.settings);
-    else if (type === "rep") response = await getRepLeaderboard(message.author);
-    else response = "Invalid Leaderboard type. Choose either `xp` or `invite`";
-    await message.safeReply(response);
-  },
-
-  async interactionRun(interaction, data) {
-    const type = interaction.options.getString("type");
-    let response;
-
-    if (type === "xp") response = await getXpLeaderboard(interaction, interaction.user, data.settings);
-    else if (type === "invite") response = await getInviteLeaderboard(interaction, interaction.user, data.settings);
-    else if (type === "rep") response = await getRepLeaderboard(interaction.user);
-    else response = "Invalid Leaderboard type. Choose either `xp` or `invite`";
-
-    await interaction.followUp(response);
-  },
-};
+    async messageRun(message, args, data) {
+      const type = args[0].toLowerCase();
+      let response;
+  
+      if (type === "xp") response = await getXpLeaderboard(message, message.author, data.settings);
+      else if (type === "invite") response = await getInviteLeaderboard(message, message.author, data.settings);
+      else if (type === "rep") response = await getRepLeaderboard(message.author);
+      else response = "Invalid Leaderboard type. Choose either `xp` or `invite`";
+      await message.safeReply(response);
+    },
+  
+    async interactionRun(interaction, data) {
+      const type = interaction.options.getString("type");
+      let response;
+  
+      if (type === "xp") response = await getXpLeaderboard(interaction, interaction.user, data.settings);
+      else if (type === "invite") response = await getInviteLeaderboard(interaction, interaction.user, data.settings);
+      else if (type === "rep") response = await getRepLeaderboard(interaction.user);
+      else response = "Invalid Leaderboard type. Choose either `xp` or `invite`";
+  
+      await interaction.followUp(response);
+    },
+  };
 
 async function getXpLeaderboard({ guild }, author, settings) {
-  if (!settings.stats.enabled) return "Ranking is disabled on this server";
+  if (!settings.stats.enabled) return "Ранги выключены на сервере";
 
   const lb = await getXpLb(guild.id, 10);
-  if (lb.length === 0) return "No users in the leaderboard";
+  if (lb.length === 0) return "Нет учасников в Таблице Лидеров";
 
   let collector = "";
   for (let i = 0; i < lb.length; i++) {
@@ -85,10 +85,10 @@ async function getXpLeaderboard({ guild }, author, settings) {
   }
 
   const embed = new EmbedBuilder()
-    .setAuthor({ name: "XP Leaderboard" })
+    .setAuthor({ name: "Таблица Лидеров" })
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setDescription(collector)
-    .setFooter({ text: `Requested by ${author.tag}` });
+    .setFooter({ text: `Запрощено пользователем ${author.tag}` });
 
   return { embeds: [embed] };
 }

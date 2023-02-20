@@ -6,7 +6,7 @@ const { ApplicationCommandOptionType } = require("discord.js");
  */
 module.exports = {
   name: "softban",
-  description: "softban the specified member. Kicks and deletes messages",
+  description: "мягко забанить указанного участника. кикает и удаляет сообщения",
   category: "MODERATION",
   botPermissions: ["BanMembers"],
   userPermissions: ["KickMembers"],
@@ -20,13 +20,13 @@ module.exports = {
     options: [
       {
         name: "user",
-        description: "the target member",
+        description: "участник",
         type: ApplicationCommandOptionType.User,
         required: true,
       },
       {
         name: "reason",
-        description: "reason for softban",
+        description: "причина для мягкого бана",
         type: ApplicationCommandOptionType.String,
         required: false,
       },
@@ -35,7 +35,7 @@ module.exports = {
 
   async messageRun(message, args) {
     const target = await message.guild.resolveMember(args[0], true);
-    if (!target) return message.safeReply(`No user found matching ${args[0]}`);
+    if (!target) return message.safeReply(`Нет подходяшего пользователя под: ${args[0]}`);
     const reason = message.content.split(args[0])[1].trim();
     const response = await softban(message.member, target, reason);
     await message.safeReply(response);
@@ -53,8 +53,8 @@ module.exports = {
 
 async function softban(issuer, target, reason) {
   const response = await softbanTarget(issuer, target, reason);
-  if (typeof response === "boolean") return `${target.user.tag} is soft-banned!`;
-  if (response === "BOT_PERM") return `I do not have permission to softban ${target.user.tag}`;
-  else if (response === "MEMBER_PERM") return `You do not have permission to softban ${target.user.tag}`;
-  else return `Failed to softban ${target.user.tag}`;
+  if (typeof response === "boolean") return `${target.user.tag} мягко забанен!`;
+  if (response === "BOT_PERM") return `У меня нет прав для мягкого бана ${target.user.tag}`;
+  else if (response === "MEMBER_PERM") return `У тебя нет прав для мягкого бана ${target.user.tag}`;
+  else return `Ошибка мягкого бана ${target.user.tag}`;
 }

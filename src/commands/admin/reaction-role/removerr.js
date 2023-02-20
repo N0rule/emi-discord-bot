@@ -9,7 +9,7 @@ const channelPerms = ["EmbedLinks", "ReadMessageHistory", "AddReactions", "UseEx
  */
 module.exports = {
   name: "removerr",
-  description: "remove configured reaction for the specified message",
+  description: "удалить настроенную реакцию на указанное сообщение",
   category: "ADMIN",
   userPermissions: ["ManageGuild"],
   command: {

@@ -8,7 +8,7 @@ const { diffHours, getRemainingTime } = require("@helpers/Utils");
  */
 module.exports = {
   name: "daily",
-  description: "receive a daily bonus",
+  description: "получить ежедневный бонус",
   category: "ECONOMY",
   botPermissions: ["EmbedLinks"],
   command: {
@@ -38,7 +38,7 @@ async function daily(user) {
     const difference = diffHours(new Date(), lastUpdated);
     if (difference < 24) {
       const nextUsage = lastUpdated.setHours(lastUpdated.getHours() + 24);
-      return `You can again run this command in \`${getRemainingTime(nextUsage)}\``;
+      return `Вы можете снова использовать эту команду через \`${getRemainingTime(nextUsage)}\``;
     }
     streak = userDb.daily.streak || streak;
     if (difference < 48) streak += 1;
@@ -54,8 +54,8 @@ async function daily(user) {
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setAuthor({ name: user.username, iconURL: user.displayAvatarURL() })
     .setDescription(
-      `You got ${ECONOMY.DAILY_COINS}${ECONOMY.CURRENCY} as your daily reward\n` +
-        `**Updated Balance:** ${userDb.coins}${ECONOMY.CURRENCY}`
+      `Вы получили ${ECONOMY.DAILY_COINS}${ECONOMY.CURRENCY} как ежедневную награду\n` +
+        `**Обновленный баланс:** ${userDb.coins}${ECONOMY.CURRENCY}`
     );
 
   return { embeds: [embed] };

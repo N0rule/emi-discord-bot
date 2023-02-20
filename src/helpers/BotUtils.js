@@ -64,16 +64,16 @@ module.exports = class BotUtils {
     return [
       {
         callback: ({ client, guildId }) => client.musicManager.getPlayer(guildId),
-        message: "🚫 No music is being played!",
+        message: "🚫 Музыка сейчас не играет!",
       },
       {
         callback: ({ member }) => member.voice?.channelId,
-        message: "🚫 You need to join my voice channel.",
+        message: "🚫 Сперва,тебе нужно присоединиться в мой голосовой канал.",
       },
       {
         callback: ({ member, client, guildId }) =>
           member.voice?.channelId === client.musicManager.getPlayer(guildId)?.channelId,
-        message: "🚫 You're not in the same voice channel.",
+        message: "🚫 Ты не в том же голосовом канале.",
       },
     ];
   }

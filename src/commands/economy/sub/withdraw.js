@@ -3,10 +3,10 @@ const { getUser } = require("@schemas/User");
 const { EMBED_COLORS, ECONOMY } = require("@root/config");
 
 module.exports = async (user, coins) => {
-  if (isNaN(coins) || coins <= 0) return "Please enter a valid amount of coins to deposit";
+  if (isNaN(coins) || coins <= 0) return "Пожалуйста, введите действительное количество монет для депозита";
   const userDb = await getUser(user);
 
-  if (coins > userDb.bank) return `You only have ${userDb.bank}${ECONOMY.CURRENCY} coins in your bank`;
+  if (coins > userDb.bank) return `У вас всего ${userDb.bank}${ECONOMY.CURRENCY} монет в вашем Банке`;
 
   userDb.bank -= coins;
   userDb.coins += coins;
@@ -14,21 +14,21 @@ module.exports = async (user, coins) => {
 
   const embed = new EmbedBuilder()
     .setColor(EMBED_COLORS.BOT_EMBED)
-    .setAuthor({ name: "New Balance" })
+    .setAuthor({ name: "Новый Баланс" })
     .setThumbnail(user.displayAvatarURL())
     .addFields(
       {
-        name: "Wallet",
+        name: "Кошелек",
         value: `${userDb.coins}${ECONOMY.CURRENCY}`,
         inline: true,
       },
       {
-        name: "Bank",
+        name: "Банк",
         value: `${userDb.bank}${ECONOMY.CURRENCY}`,
         inline: true,
       },
       {
-        name: "Net Worth",
+        name: "Общая Сумма",
         value: `${userDb.coins + userDb.bank}${ECONOMY.CURRENCY}`,
         inline: true,
       }

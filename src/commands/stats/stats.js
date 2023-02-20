@@ -8,7 +8,7 @@ const { stripIndents } = require("common-tags");
  */
 module.exports = {
   name: "stats",
-  description: "displays members stats in this server",
+  description: "показывает статистику пользователя",
   cooldown: 5,
   category: "STATS",
   command: {
@@ -20,7 +20,7 @@ module.exports = {
     options: [
       {
         name: "user",
-        description: "target user",
+        description: "пользователь",
         type: ApplicationCommandOptionType.User,
         required: false,
       },
@@ -45,7 +45,7 @@ module.exports = {
  * @param {object} settings
  */
 async function stats(member, settings) {
-  if (!settings.stats.enabled) return "Stats Tracking is disabled on this server";
+  if (!settings.stats.enabled) return "Отслеживание статистики на этом сервере отключено";
   const memberStats = await getMemberStats(member.guild.id, member.id);
 
   const embed = new EmbedBuilder()
@@ -53,7 +53,7 @@ async function stats(member, settings) {
     .setColor(EMBED_COLORS.BOT_EMBED)
     .addFields(
       {
-        name: "User Tag",
+        name: "Тег Пользователя",
         value: member.user.tag,
         inline: true,
       },
@@ -63,30 +63,30 @@ async function stats(member, settings) {
         inline: true,
       },
       {
-        name: "⌚ Member since",
+        name: "⌚ Член сервера с",
         value: member.joinedAt.toLocaleString(),
         inline: false,
       },
       {
-        name: "💬 Messages sent",
+        name: "💬 Отправлено сообщений",
         value: stripIndents`
-      ❯ Messages Sent: ${memberStats.messages}
-      ❯ Prefix Commands: ${memberStats.commands.prefix}
-      ❯ Slash Commands: ${memberStats.commands.slash}
-      ❯ XP Earned: ${memberStats.xp}
-      ❯ Current Level: ${memberStats.level}
+      ❯ Сообщений: ${memberStats.messages}
+      ❯ Префикс команд: ${memberStats.commands.prefix}
+      ❯ Слеш(/) команд: ${memberStats.commands.slash}
+      ❯ Опт Получено: ${memberStats.xp}
+      ❯ Текущий Уровень: ${memberStats.level}
     `,
         inline: false,
       },
       {
-        name: "🎙️ Voice Stats",
+        name: "🎙️ Голосовая Статистика",
         value: stripIndents`
-      ❯ Total Connections: ${memberStats.voice.connections}
-      ❯ Time Spent: ${Math.floor(memberStats.voice.time / 60)} min
+      ❯ Количество Подключений: ${memberStats.voice.connections}
+      ❯ Времени Проведено: ${Math.floor(memberStats.voice.time / 60)} мин
     `,
       }
     )
-    .setFooter({ text: "Stats Generated" })
+    .setFooter({ text: "Статистика Сгенерирована" })
     .setTimestamp();
 
   return { embeds: [embed] };

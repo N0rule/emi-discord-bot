@@ -5,7 +5,7 @@ const { ApplicationCommandOptionType } = require("discord.js");
  */
 module.exports = {
   name: "statstracking",
-  description: "enable or disable tracking stats in the server",
+  description: "вкл/выкл отслеживания статистики на сервере",
   category: "STATS",
   userPermissions: ["ManageGuild"],
   command: {
@@ -20,7 +20,7 @@ module.exports = {
     options: [
       {
         name: "status",
-        description: "enabled or disabled",
+        description: "вкл/выкл",
         required: true,
         type: ApplicationCommandOptionType.String,
         choices: [
@@ -39,7 +39,7 @@ module.exports = {
 
   async messageRun(message, args, data) {
     const input = args[0].toLowerCase();
-    if (!["on", "off"].includes(input)) return message.safeReply("Invalid status. Value must be `on/off`");
+    if (!["on", "off"].includes(input)) return message.safeReply("Неправильный ввод. должно быть ON/OFF`");
     const response = await setStatus(input, data.settings);
     return message.safeReply(response);
   },
@@ -56,5 +56,5 @@ async function setStatus(input, settings) {
   settings.stats.enabled = status;
   await settings.save();
 
-  return `Configuration saved! Stats Tracking is now ${status ? "enabled" : "disabled"}`;
+  return `Конфигурация Сохранена! Отслеживанине статистики сейчас ${status ? "вкл" : "выкл"}`;
 }

@@ -8,7 +8,7 @@ const { stripIndent } = require("common-tags");
  */
 module.exports = {
   name: "pokedex",
-  description: "shows pokemon information",
+  description: "показивает информацию о покемоне",
   category: "UTILITY",
   botPermissions: ["EmbedLinks"],
   cooldown: 5,
@@ -22,7 +22,7 @@ module.exports = {
     options: [
       {
         name: "pokemon",
-        description: "pokemon name to get information for",
+        description: "имя покемона",
         type: ApplicationCommandOptionType.String,
         required: true,
       },
@@ -44,33 +44,33 @@ module.exports = {
 
 async function pokedex(pokemon) {
   const response = await getJson(`https://pokeapi.glitch.me/v1/pokemon/${pokemon}`);
-  if (response.status === 404) return "```The given pokemon is not found```";
+  if (response.status === 404) return "```покемон не найден```";
   if (!response.success) return MESSAGES.API_ERROR;
 
   const json = response.data[0];
 
   const embed = new EmbedBuilder()
-    .setTitle(`Pokédex - ${json.name}`)
+    .setTitle(`Покедекс - ${json.name}`)
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setThumbnail(json.sprite)
     .setDescription(
       stripIndent`
             ♢ **ID**: ${json.number}
-            ♢ **Name**: ${json.name}
-            ♢ **Species**: ${json.species}
-            ♢ **Type(s)**: ${json.types}
-            ♢ **Abilities(normal)**: ${json.abilities.normal}
-            ♢ **Abilities(hidden)**: ${json.abilities.hidden}
-            ♢ **Egg group(s)**: ${json.eggGroups}
-            ♢ **Gender**: ${json.gender}
-            ♢ **Height**: ${json.height} foot tall
-            ♢ **Weight**: ${json.weight}
-            ♢ **Current Evolution Stage**: ${json.family.evolutionStage}
-            ♢ **Evolution Line**: ${json.family.evolutionLine}
-            ♢ **Is Starter?**: ${json.starter}
-            ♢ **Is Legendary?**: ${json.legendary}
-            ♢ **Is Mythical?**: ${json.mythical}
-            ♢ **Is Generation?**: ${json.gen}
+            ♢ **Имя**: ${json.name}
+            ♢ **Разновидность**: ${json.species}
+            ♢ **Тип(ы)**: ${json.types}
+            ♢ **Способоности(нормальные)**: ${json.abilities.normal}
+            ♢ **Abilities(спрятанные)**: ${json.abilities.hidden}
+            ♢ **Група яйца(иц)**: ${json.eggGroups}
+            ♢ **Пол**: ${json.gender}
+            ♢ **Рост**: ${json.height} foot tall
+            ♢ **Вес**: ${json.weight}
+            ♢ **Текущая Стадия Еволюции**: ${json.family.evolutionStage}
+            ♢ **Линия Еволюции**: ${json.family.evolutionLine}
+            ♢ **Стартер?**: ${json.starter}
+            ♢ **Легендарный?**: ${json.legendary}
+            ♢ **Мифический?**: ${json.mythical}
+            ♢ **Какая Генерация?**: ${json.gen}
             `
     )
     .setFooter({ text: json.description });

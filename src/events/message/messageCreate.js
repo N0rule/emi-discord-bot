@@ -1,22 +1,33 @@
 const { commandHandler, automodHandler, statsHandler } = require("@src/handlers");
-const { PREFIX_COMMANDS } = require("@root/config");
+const { EMBED_COLORS,PREFIX_COMMANDS } = require("@root/config");
 const { getSettings } = require("@schemas/Guild");
-
+const {EmbedBuilder} = require("discord.js");
+const { text } = require("stream/consumers");
 /**
  * @param {import('@src/structures').BotClient} client
  * @param {import('discord.js').Message} message
+ * 
  */
-module.exports = async (client, message) => {
+
+module.exports = async (client, message, guild) => {
   if (!message.guild || message.author.bot) return;
   const settings = await getSettings(message.guild);
+//FIXME:ПОЛНЫЙ ПИЗДЕЦ НАДО ФИКСИТЬ ЭТО НО Я НЕ ЕБУ КАК -3 ЧАСА ЖИЗНИ
+  let desc = `Приветики я **Еми**!\n`;
+  desc += `Личный Бот Синдиката🥰\n`;
+  desc += `Мой Префикс \`${settings.prefix}\`\n`;
+  desc += `Для помощи используй команду **/help**\n`;
 
+  const embed = new EmbedBuilder()
+  .setColor(EMBED_COLORS.BOT_EMBED)
+  .setThumbnail(client.user.displayAvatarURL())
+  .setDescription(desc);
   // command handler
   let isCommand = false;
   if (PREFIX_COMMANDS.ENABLED) {
     // check for bot mentions
     if (message.content.includes(`${client.user.id}`)) {
-      message.channel.safeSend(`> My prefix is \`${settings.prefix}\``);
-    }
+      message.channel.safeSend({embeds: [embed]})}
 
     if (message.content && message.content.startsWith(settings.prefix)) {
       const invoke = message.content.replace(`${settings.prefix}`, "").split(/\s+/)[0];

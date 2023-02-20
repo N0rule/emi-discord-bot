@@ -11,7 +11,7 @@ const choices = ["hug", "kiss", "cuddle", "feed", "pat", "poke", "slap", "smug",
  */
 module.exports = {
   name: "react",
-  description: "anime reactions",
+  description: "аниме реакции",
   enabled: true,
   category: "ANIME",
   cooldown: 5,
@@ -25,7 +25,7 @@ module.exports = {
     options: [
       {
         name: "category",
-        description: "reaction type",
+        description: "тип реакции",
         type: ApplicationCommandOptionType.String,
         required: true,
         choices: choices.map((ch) => ({ name: ch, value: ch })),
@@ -36,7 +36,7 @@ module.exports = {
   async messageRun(message, args) {
     const category = args[0].toLowerCase();
     if (!choices.includes(category)) {
-      return message.safeReply(`Invalid choice: \`${category}\`.\nAvailable reactions: ${choices.join(", ")}`);
+      return message.safeReply(`Неправильный выбор: \`${category}\`.\nДоступные реакции: ${choices.join(", ")}`);
     }
 
     const embed = await genReaction(category, message.author);
@@ -69,11 +69,11 @@ const genReaction = async (category, user) => {
     return new EmbedBuilder()
       .setImage(imageUrl)
       .setColor("Random")
-      .setFooter({ text: `Requested By ${user.tag}` });
+      .setFooter({ text: `Запрошено пользователем ${user.tag}` });
   } catch (ex) {
     return new EmbedBuilder()
       .setColor(EMBED_COLORS.ERROR)
-      .setDescription("Failed to fetch meme. Try again!")
-      .setFooter({ text: `Requested By ${user.tag}` });
+      .setDescription("Ошибка получения мема. Попробуй еще раз!")
+      .setFooter({ text: `Запрошено пользователем ${user.tag}` });
   }
 };

@@ -5,7 +5,7 @@ const { musicValidations } = require("@helpers/BotUtils");
  */
 module.exports = {
   name: "pause",
-  description: "pause the music player",
+  description: "остановка музыки",
   category: "MUSIC",
   validations: musicValidations,
   command: {
@@ -31,8 +31,8 @@ module.exports = {
  */
 function pause({ client, guildId }) {
   const player = client.musicManager.getPlayer(guildId);
-  if (player.paused) return "The player is already paused.";
+  if (player.paused) return "Музыка уже остановлена.";
 
   player.pause(true);
-  return "⏸️ Paused the music player.";
+  return "⏸️ Музыка остановлена.";
 }
