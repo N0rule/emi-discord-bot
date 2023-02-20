@@ -5,7 +5,7 @@ const channelInfo = require("../shared/channel");
  */
 module.exports = {
   name: "channelinfo",
-  description: "shows information about a channel",
+  description: "показивает информации о канале",
   category: "INFORMATION",
   botPermissions: ["EmbedLinks"],
   command: {
@@ -25,8 +25,8 @@ module.exports = {
     else if (args.length > 0) {
       const search = args.join(" ");
       const tcByName = message.guild.findMatchingChannels(search);
-      if (tcByName.length === 0) return message.safeReply(`No channels found matching \`${search}\`!`);
-      if (tcByName.length > 1) return message.safeReply(`Multiple channels found matching \`${search}\`!`);
+      if (tcByName.length === 0) return message.safeReply(`Не найдено подходящих каналов \`${search}\`!`);
+      if (tcByName.length > 1) return message.safeReply(`Несколько каналов было найдено \`${search}\`!`);
       [targetChannel] = tcByName;
     } else {
       targetChannel = message.channel;

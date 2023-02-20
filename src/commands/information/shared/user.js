@@ -13,14 +13,14 @@ module.exports = (member) => {
 
   const embed = new EmbedBuilder()
     .setAuthor({
-      name: `User information for ${member.displayName}`,
+      name: `Информация о пользователе ${member.displayName}`,
       iconURL: member.user.displayAvatarURL(),
     })
     .setThumbnail(member.user.displayAvatarURL())
     .setColor(color)
     .addFields(
       {
-        name: "Username",
+        name: "Иня Пользователя",
         value: member.user.username,
         inline: true,
       },
@@ -30,23 +30,23 @@ module.exports = (member) => {
         inline: true,
       },
       {
-        name: "Guild Joined",
+        name: "Присоединился",
         value: member.joinedAt.toUTCString(),
       },
       {
-        name: "Discord Registered",
+        name: "Дата Регистрации",
         value: member.user.createdAt.toUTCString(),
       },
       {
-        name: `Roles [${member.roles.cache.size}]`,
+        name: `Роли [${member.roles.cache.size}]`,
         value: rolesString,
       },
       {
-        name: "Avatar-URL",
+        name: "Аватар-Ссылка",
         value: member.user.displayAvatarURL({ extension: "png" }),
       }
     )
-    .setFooter({ text: `Requested by ${member.user.tag}` })
+    .setFooter({ text: `Запрошено пользователем ${member.user.tag}` })
     .setTimestamp(Date.now());
 
   return { embeds: [embed] };

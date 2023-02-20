@@ -9,7 +9,7 @@ const withdraw = require("./sub/withdraw");
  */
 module.exports = {
   name: "bank",
-  description: "access to bank operations",
+  description: "доступ к банковским операциям",
   category: "ECONOMY",
   botPermissions: ["EmbedLinks"],
   command: {
@@ -18,19 +18,19 @@ module.exports = {
     subcommands: [
       {
         trigger: "balance",
-        description: "check your balance",
+        description: "проверить свой баланс",
       },
       {
         trigger: "deposit <coins>",
-        description: "deposit coins to your bank account",
+        description: "внести монеты на свой банковский счет",
       },
       {
         trigger: "withdraw <coins>",
-        description: "withdraw coins from your bank account",
+        description: "снять монеты со своего банковского счета",
       },
       {
         trigger: "transfer <user> <coins>",
-        description: "transfer coins to another user",
+        description: "перевести монеты другому пользователю",
       },
     ],
   },
@@ -39,12 +39,12 @@ module.exports = {
     options: [
       {
         name: "balance",
-        description: "check your coin balance",
+        description: "проверить баланс монет",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "user",
-            description: "name of the user",
+            description: "имя пользователя",
             type: ApplicationCommandOptionType.User,
             required: false,
           },
@@ -52,12 +52,12 @@ module.exports = {
       },
       {
         name: "deposit",
-        description: "deposit coins to your bank account",
+        description: "внести монеты на свой банковский счет",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "coins",
-            description: "number of coins to deposit",
+            description: "количество монет для депозита",
             type: ApplicationCommandOptionType.Integer,
             required: true,
           },
@@ -65,12 +65,12 @@ module.exports = {
       },
       {
         name: "withdraw",
-        description: "withdraw coins from your bank account",
+        description: "снять монеты со своего банковского счета",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "coins",
-            description: "number of coins to withdraw",
+            description: "количество монет для вывода",
             type: ApplicationCommandOptionType.Integer,
             required: true,
           },
@@ -78,18 +78,18 @@ module.exports = {
       },
       {
         name: "transfer",
-        description: "transfer coins to other user",
+        description: "перевести монеты другому пользователю",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "user",
-            description: "the user to whom coins must be transferred",
+            description: "пользователь, которому должны быть переведены монеты",
             type: ApplicationCommandOptionType.User,
             required: true,
           },
           {
             name: "coins",
-            description: "the amount of coins to transfer",
+            description: "количество монет для перевода",
             type: ApplicationCommandOptionType.Integer,
             required: true,
           },
@@ -110,30 +110,30 @@ module.exports = {
     //
     else if (sub === "deposit") {
       const coins = args.length && parseInt(args[1]);
-      if (isNaN(coins)) return message.safeReply("Provide a valid number of coins you wish to deposit");
+      if (isNaN(coins)) return message.safeReply("Укажите действительное количество монет, которые вы хотите внести");
       response = await deposit(message.author, coins);
     }
 
     //
     else if (sub === "withdraw") {
       const coins = args.length && parseInt(args[1]);
-      if (isNaN(coins)) return message.safeReply("Provide a valid number of coins you wish to withdraw");
+      if (isNaN(coins)) return message.safeReply("Укажите действительное количество монет, которые вы хотите вывести");
       response = await withdraw(message.author, coins);
     }
 
     //
     else if (sub === "transfer") {
-      if (args.length < 3) return message.safeReply("Provide a valid user and coins to transfer");
+      if (args.length < 3) return message.safeReply("Укажите действительного пользователя и монеты для перевода");
       const target = await message.guild.resolveMember(args[1], true);
-      if (!target) return message.safeReply("Provide a valid user to transfer coins to");
+      if (!target) return message.safeReply("Укажите действительного пользователя для перевода монет");
       const coins = parseInt(args[2]);
-      if (isNaN(coins)) return message.safeReply("Provide a valid number of coins you wish to transfer");
+      if (isNaN(coins)) return message.safeReply("Укажите действительное количество монет, которые вы хотите перевести");
       response = await transfer(message.author, target.user, coins);
     }
 
     //
     else {
-      return message.safeReply("Invalid command usage");
+      return message.safeReply("Недопустимое использование команды");
     }
 
     await message.safeReply(response);

@@ -5,7 +5,7 @@ const SnakeGame = require("snakecord");
  */
 module.exports = {
   name: "snake",
-  description: "play snake game on discord",
+  description: "поиграть в змейку",
   cooldown: 300,
   category: "FUN",
   botPermissions: ["SendMessages", "EmbedLinks", "AddReactions", "ReadMessageHistory", "ManageMessages"],
@@ -17,22 +17,22 @@ module.exports = {
   },
 
   async messageRun(message, args) {
-    await message.safeReply("**Starting Snake Game**");
+    await message.safeReply("**Запуск игры «Змейка»**");
     await startSnakeGame(message);
   },
 
   async interactionRun(interaction) {
-    await interaction.followUp("**Starting Snake Game**");
+    await interaction.followUp("**Запуск игры «Змейка»**");
     await startSnakeGame(interaction);
   },
 };
 
 async function startSnakeGame(data) {
   const snakeGame = new SnakeGame({
-    title: "Snake Game",
+    title: "Змейка",
     color: "BLUE",
     timestamp: true,
-    gameOverTitle: "Game Over",
+    gameOverTitle: "Конец Игры",
   });
 
   await snakeGame.newGame(data);

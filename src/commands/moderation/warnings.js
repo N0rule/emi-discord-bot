@@ -7,7 +7,7 @@ const { getMember } = require("@schemas/Member");
  */
 module.exports = {
   name: "warnings",
-  description: "list or clear user warnings",
+  description: "список или удаление предупреждений участника",
   category: "MODERATION",
   userPermissions: ["KickMembers"],
   command: {
@@ -16,11 +16,11 @@ module.exports = {
     subcommands: [
       {
         trigger: "list [member]",
-        description: "list all warnings for a user",
+        description: "список всех предупреждений для участника",
       },
       {
         trigger: "clear <member>",
-        description: "clear all warnings for a user",
+        description: "очистить все предупреждения для участника",
       },
     ],
   },
@@ -29,12 +29,12 @@ module.exports = {
     options: [
       {
         name: "list",
-        description: "list all warnings for a user",
+        description: "список всех предупреждений для участника",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "user",
-            description: "the target member",
+            description: "участник",
             type: ApplicationCommandOptionType.User,
             required: true,
           },
@@ -42,12 +42,12 @@ module.exports = {
       },
       {
         name: "clear",
-        description: "clear all warnings for a user",
+        description: "очистить все предупреждения для участника",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "user",
-            description: "the target member",
+            description: "участник",
             type: ApplicationCommandOptionType.User,
             required: true,
           },
@@ -62,20 +62,20 @@ module.exports = {
 
     if (sub === "list") {
       const target = (await message.guild.resolveMember(args[1], true)) || message.member;
-      if (!target) return message.safeReply(`No user found matching ${args[1]}`);
+      if (!target) return message.safeReply(`Нет подходяшего пользователя под: ${args[1]}`);
       response = await listWarnings(target, message);
     }
 
     //
     else if (sub === "clear") {
       const target = await message.guild.resolveMember(args[1], true);
-      if (!target) return message.safeReply(`No user found matching ${args[1]}`);
+      if (!target) return message.safeReply(`Нет подходяшего пользователя под: ${args[1]}`);
       response = await clearWarnings(target, message);
     }
 
     // else
     else {
-      response = `Invalid subcommand ${sub}`;
+      response = `Недопустимая субкоманда ${sub}`;
     }
 
     await message.safeReply(response);
@@ -100,7 +100,7 @@ module.exports = {
 
     // else
     else {
-      response = `Invalid subcommand ${sub}`;
+      response = `Недопустимая субкоманда ${sub}`;
     }
 
     await interaction.followUp(response);
@@ -108,15 +108,15 @@ module.exports = {
 };
 
 async function listWarnings(target, { guildId }) {
-  if (!target) return "No user provided";
-  if (target.user.bot) return "Bots don't have warnings";
+  if (!target) return "Пользователь не указан";
+  if (target.user.bot) return "У ботов нет предупреждений";
 
   const warnings = await getWarningLogs(guildId, target.id);
-  if (!warnings.length) return `${target.user.username} has no warnings`;
+  if (!warnings.length) return `${target.user.username} не имеет предупреждений`;
 
-  const acc = warnings.map((warning, i) => `${i + 1}. ${warning.reason} [By ${warning.admin.username}]`).join("\n");
+  const acc = warnings.map((warning, i) => `${i + 1}. ${warning.reason} [Выдал ${warning.admin.username}]`).join("\n");
   const embed = new EmbedBuilder({
-    author: { name: `${target.user.username}'s warnings` },
+    author: { name: `Предупреждения ${target.user.username}` },
     description: acc,
   });
 
@@ -124,13 +124,13 @@ async function listWarnings(target, { guildId }) {
 }
 
 async function clearWarnings(target, { guildId }) {
-  if (!target) return "No user provided";
-  if (target.user.bot) return "Bots don't have warnings";
+  if (!target) return "Пользователь не указан";
+  if (target.user.bot) return "У ботов нет предупреждений";
 
   const memberDb = await getMember(guildId, target.id);
   memberDb.warnings = 0;
   await memberDb.save();
 
   await clearWarningLogs(guildId, target.id);
-  return `${target.user.username}'s warnings have been cleared`;
+  return `Предупреждения ${target.user.username} были очищены!`;
 }

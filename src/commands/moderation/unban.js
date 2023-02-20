@@ -11,7 +11,7 @@ const {
  */
 module.exports = {
   name: "unban",
-  description: "unbans the specified member",
+  description: "разбанить указанного участника",
   category: "MODERATION",
   botPermissions: ["BanMembers"],
   userPermissions: ["BanMembers"],
@@ -26,13 +26,13 @@ module.exports = {
     options: [
       {
         name: "name",
-        description: "match the name of the member",
+        description: "имя участника",
         type: ApplicationCommandOptionType.String,
         required: true,
       },
       {
         name: "reason",
-        description: "reason for ban",
+        description: "причина для разбана",
         type: ApplicationCommandOptionType.String,
         required: false,
       },
@@ -81,7 +81,7 @@ async function getMatchingBans(guild, match) {
     }
   }
 
-  if (matched.length === 0) return `No user found matching ${match}`;
+  if (matched.length === 0) return `Нет подходяшего пользователя под: ${match}`;
 
   const options = [];
   for (const user of matched) {
@@ -89,10 +89,10 @@ async function getMatchingBans(guild, match) {
   }
 
   const menuRow = new ActionRowBuilder().addComponents(
-    new StringSelectMenuBuilder().setCustomId("unban-menu").setPlaceholder("Choose a user to unban").addOptions(options)
+    new StringSelectMenuBuilder().setCustomId("unban-menu").setPlaceholder("Выберите пользователя, которого нужно разбанить").addOptions(options)
   );
 
-  return { content: "Please select a user you wish to unban", components: [menuRow] };
+  return { content: "Пожалуйста, выберите пользователя, которого вы хотите разбанить", components: [menuRow] };
 }
 
 /**
@@ -114,12 +114,12 @@ async function waitForBan(issuer, reason, sent) {
     const user = await issuer.client.users.fetch(userId, { cache: true });
 
     const status = await unBanTarget(issuer, user, reason);
-    if (typeof status === "boolean") return sent.edit({ content: `${user.username} is un-banned!`, components: [] });
-    else return sent.edit({ content: `Failed to unban ${user.username}`, components: [] });
+    if (typeof status === "boolean") return sent.edit({ content: `${user.username} разбанен!`, components: [] });
+    else return sent.edit({ content: `Ошибка разбана ${user.username}`, components: [] });
   });
 
   // collect user and unban
   collector.on("end", async (collected) => {
-    if (collected.size === 0) return sent.edit("Oops! Timed out. Try again later.");
+    if (collected.size === 0) return sent.edit("Ой! Время вышло. Попробуйте позже.");
   });
 }

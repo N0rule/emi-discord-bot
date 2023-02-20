@@ -12,7 +12,7 @@ const leaderboardTypes = ["xp", "invite", "rep"];
 
 module.exports = {
   name: "leaderboard",
-  description: "display the XP, invite and rep leaderboard",
+  description: "показать топ пользователей по опыту",
   category: "INFORMATION",
   botPermissions: ["EmbedLinks"],
   command: {
@@ -91,10 +91,10 @@ async function getXpLeaderboard({ guild }, author, settings) {
     return cache.get(cacheKey);
   }
 
-  if (!settings.stats.enabled) return "The leaderboard is disabled on this server";
+  if (!settings.stats.enabled) return "Ранги выключены на сервере";
 
   const lb = await getXpLb(guild.id, 10);
-  if (lb.length === 0) return "There are no users in the leaderboard";
+  if (lb.length === 0) return "Нет учасников в Таблице Лидеров";
 
   let collector = "";
   for (let i = 0; i < lb.length; i++) {
@@ -107,10 +107,10 @@ async function getXpLeaderboard({ guild }, author, settings) {
   }
 
   const embed = new EmbedBuilder()
-    .setAuthor({ name: "XP Leaderboard" })
+    .setAuthor({ name: "Таблица Лидеров" })
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setDescription(collector)
-    .setFooter({ text: `Requested by ${author.tag}` });
+    .setFooter({ text: `Запрощено пользователем ${author.tag}` });
 
   // Store the result in the cache for future requests
   cache.set(cacheKey, { embeds: [embed] });

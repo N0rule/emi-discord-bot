@@ -5,7 +5,7 @@ const { ApplicationCommandOptionType } = require("discord.js");
  */
 module.exports = {
   name: "setprefix",
-  description: "sets a new prefix for this server",
+  description: "ставит новый префикс для этого сервера",
   category: "ADMIN",
   userPermissions: ["ManageGuild"],
   command: {
@@ -19,7 +19,7 @@ module.exports = {
     options: [
       {
         name: "newprefix",
-        description: "the new prefix to set",
+        description: "какой именно префикс установить",
         type: ApplicationCommandOptionType.String,
         required: true,
       },
@@ -39,9 +39,9 @@ module.exports = {
 };
 
 async function setNewPrefix(newPrefix, settings) {
-  if (newPrefix.length > 2) return "Prefix length cannot exceed `2` characters";
+  if (newPrefix.length > 2) return "Длина префикса не может быть больше `2` знаков";
   settings.prefix = newPrefix;
   await settings.save();
 
-  return `New prefix is set to \`${newPrefix}\``;
+  return `Новый префикс установлен на \`${newPrefix}\``;
 }

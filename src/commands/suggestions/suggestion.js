@@ -139,7 +139,7 @@ module.exports = {
           },
           {
             name: "reason",
-            description: "the reason for the approval",
+            description: "the причина для the approval",
             type: ApplicationCommandOptionType.String,
             required: false,
           },
@@ -165,7 +165,7 @@ module.exports = {
           },
           {
             name: "reason",
-            description: "the reason for the rejection",
+            description: "the причина для the rejection",
             type: ApplicationCommandOptionType.String,
             required: false,
           },
@@ -216,7 +216,7 @@ module.exports = {
     else if (sub == "channel") {
       const input = args[1];
       let matched = message.guild.findMatchingChannels(input);
-      if (matched.length == 0) response = `No matching channels found for ${input}`;
+      if (matched.length == 0) response = `Подходящие каналы не найдены для ${input}`;
       else if (matched.length > 1) response = `Multiple channels found for ${input}. Please be more specific.`;
       else response = await setChannel(data.settings, matched[0]);
     }
@@ -225,7 +225,7 @@ module.exports = {
     else if (sub == "appch") {
       const input = args[1];
       let matched = message.guild.findMatchingChannels(input);
-      if (matched.length == 0) response = `No matching channels found for ${input}`;
+      if (matched.length == 0) response = `Подходящие каналы не найдены для ${input}`;
       else if (matched.length > 1) response = `Multiple channels found for ${input}. Please be more specific.`;
       else response = await setApprovedChannel(data.settings, matched[0]);
     }
@@ -234,7 +234,7 @@ module.exports = {
     else if (sub == "rejch") {
       const input = args[1];
       let matched = message.guild.findMatchingChannels(input);
-      if (matched.length == 0) response = `No matching channels found for ${input}`;
+      if (matched.length == 0) response = `Подходящие каналы не найдены для ${input}`;
       else if (matched.length > 1) response = `Multiple channels found for ${input}. Please be more specific.`;
       else response = await setRejectedChannel(data.settings, matched[0]);
     }
@@ -243,7 +243,7 @@ module.exports = {
     else if (sub == "approve") {
       const input = args[1];
       let matched = message.guild.findMatchingChannels(input);
-      if (matched.length == 0) response = `No matching channels found for ${input}`;
+      if (matched.length == 0) response = `Подходящие каналы не найдены для ${input}`;
       else if (matched.length > 1) response = `Multiple channels found for ${input}. Please be more specific.`;
       else {
         const messageId = args[2];
@@ -256,7 +256,7 @@ module.exports = {
     else if (sub == "reject") {
       const input = args[1];
       let matched = message.guild.findMatchingChannels(input);
-      if (matched.length == 0) response = `No matching channels found for ${input}`;
+      if (matched.length == 0) response = `Подходящие каналы не найдены для ${input}`;
       else if (matched.length > 1) response = `Multiple channels found for ${input}. Please be more specific.`;
       else {
         const messageId = args[2];

@@ -6,7 +6,7 @@ const { ApplicationCommandOptionType } = require("discord.js");
  */
 module.exports = {
   name: "kick",
-  description: "kicks the specified member",
+  description: "кикнуть указанного участника",
   category: "MODERATION",
   botPermissions: ["KickMembers"],
   userPermissions: ["KickMembers"],
@@ -20,13 +20,13 @@ module.exports = {
     options: [
       {
         name: "user",
-        description: "the target member",
+        description: "участник",
         type: ApplicationCommandOptionType.User,
         required: true,
       },
       {
         name: "reason",
-        description: "reason for kick",
+        description: "причина для кика",
         type: ApplicationCommandOptionType.String,
         required: false,
       },
@@ -35,7 +35,7 @@ module.exports = {
 
   async messageRun(message, args) {
     const target = await message.guild.resolveMember(args[0], true);
-    if (!target) return message.safeReply(`No user found matching ${args[0]}`);
+    if (!target) return message.safeReply(`Нет подходяшего пользователя под: ${args[0]}`);
     const reason = message.content.split(args[0])[1].trim();
     const response = await kick(message.member, target, reason);
     await message.safeReply(response);
@@ -53,8 +53,8 @@ module.exports = {
 
 async function kick(issuer, target, reason) {
   const response = await kickTarget(issuer, target, reason);
-  if (typeof response === "boolean") return `${target.user.username} is kicked!`;
-  if (response === "BOT_PERM") return `I do not have permission to kick ${target.user.username}`;
-  else if (response === "MEMBER_PERM") return `You do not have permission to kick ${target.user.username}`;
-  else return `Failed to kick ${target.user.username}`;
+  if (typeof response === "boolean") return `${target.user.username} кикнут!`;
+  if (response === "BOT_PERM") return `У меня нет прав для кика ${target.user.username}`;
+  else if (response === "MEMBER_PERM") return `У тебя нет прав для кика ${target.user.username}`;
+  else return `Ошибка кика ${target.user.username}`;
 }

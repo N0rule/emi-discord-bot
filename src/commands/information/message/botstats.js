@@ -5,7 +5,7 @@ const botstats = require("../shared/botstats");
  */
 module.exports = {
   name: "botstats",
-  description: "shows bot information",
+  description: "показивает информацию о боте",
   category: "INFORMATION",
   botPermissions: ["EmbedLinks"],
   cooldown: 5,

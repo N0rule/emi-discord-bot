@@ -7,7 +7,7 @@ const { stripIndent } = require("common-tags");
  */
 module.exports = {
   name: "automod",
-  description: "various automod configuration",
+  description: "различные конфигурации автомодов",
   category: "AUTOMOD",
   userPermissions: ["ManageGuild"],
   command: {
@@ -16,31 +16,31 @@ module.exports = {
     subcommands: [
       {
         trigger: "status",
-        description: "check automod configuration for this guild",
+        description: "проверьть конфигурацию автомода для этого сервера",
       },
       {
         trigger: "strikes <number>",
-        description: "maximum number of strikes a member can receive before taking an action",
+        description: "максимальное количество предупреждений, прежде чем получить действие",
       },
       {
         trigger: "action <TIMEOUT|KICK|BAN>",
-        description: "set action to be performed after receiving maximum strikes",
+        description: "установить действие",
       },
       {
         trigger: "debug <on|off>",
-        description: "turns on automod for messages sent by admins and moderators",
+        description: "включает автомод для сообщений, отправленных администраторами и модераторами",
       },
       {
         trigger: "whitelist",
-        description: "list of channels that are whitelisted",
+        description: "список каналов, занесенных в белый список",
       },
       {
         trigger: "whitelistadd <channel>",
-        description: "add a channel to the whitelist",
+        description: "добавить канал в белый список",
       },
       {
         trigger: "whitelistremove <channel>",
-        description: "remove a channel from the whitelist",
+        description: "удалить канал из белого списка",
       },
     ],
   },
@@ -50,17 +50,17 @@ module.exports = {
     options: [
       {
         name: "status",
-        description: "check automod configuration",
+        description: "проверить конфигурацию автомода",
         type: ApplicationCommandOptionType.Subcommand,
       },
       {
         name: "strikes",
-        description: "set maximum number of strikes before taking an action",
+        description: "максимальное количество предупреждений, прежде чем получить действие",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "amount",
-            description: "number of strikes (default 5)",
+            description: "количество предупреждений (по умолчанию 5)",
             required: true,
             type: ApplicationCommandOptionType.Integer,
           },
@@ -68,12 +68,12 @@ module.exports = {
       },
       {
         name: "action",
-        description: "set action to be performed after receiving maximum strikes",
+        description: "установить действие",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "action",
-            description: "action to perform",
+            description: "действие для выполнения",
             type: ApplicationCommandOptionType.String,
             required: true,
             choices: [
@@ -95,12 +95,12 @@ module.exports = {
       },
       {
         name: "debug",
-        description: "enable/disable automod for messages sent by admins & moderators",
+        description: "вкл/выкл автомод для сообщений, отправленных администраторами и модераторами",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "status",
-            description: "configuration status",
+            description: "статус конфигурации",
             required: true,
             type: ApplicationCommandOptionType.String,
             choices: [
@@ -118,17 +118,17 @@ module.exports = {
       },
       {
         name: "whitelist",
-        description: "view whitelisted channels",
+        description: "просмотреть каналы из белого списка",
         type: ApplicationCommandOptionType.Subcommand,
       },
       {
         name: "whitelistadd",
-        description: "add a channel to the whitelist",
+        description: "добавить канал в белый список",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "channel",
-            description: "channel to add",
+            description: "канал для добавления",
             required: true,
             type: ApplicationCommandOptionType.Channel,
             channelTypes: [ChannelType.GuildText],
@@ -137,12 +137,12 @@ module.exports = {
       },
       {
         name: "whitelistremove",
-        description: "remove a channel from the whitelist",
+        description: "удалить канал из белого списка",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "channel",
-            description: "channel to remove",
+            description: "канал для удаления",
             required: true,
             type: ApplicationCommandOptionType.Channel,
             channelTypes: [ChannelType.GuildText],
@@ -162,17 +162,17 @@ module.exports = {
     } else if (input === "strikes") {
       const strikes = args[1];
       if (isNaN(strikes) || Number.parseInt(strikes) < 1) {
-        return message.safeReply("Strikes must be a valid number greater than 0");
+        return message.safeReply("Количество предупреждений должно быть больше 0.");
       }
       response = await setStrikes(settings, strikes);
     } else if (input === "action") {
       const action = args[1].toUpperCase();
       if (!action || !["TIMEOUT", "KICK", "BAN"].includes(action))
-        return message.safeReply("Not a valid action. Action can be `Timeout`/`Kick`/`Ban`");
+        return message.safeReply("Не допустимое действие. Допустимые действия `Timeout`/`Kick`/`Ban`");
       response = await setAction(settings, message.guild, action);
     } else if (input === "debug") {
       const status = args[1].toLowerCase();
-      if (!["on", "off"].includes(status)) return message.safeReply("Invalid status. Value must be `on/off`");
+      if (!["on", "off"].includes(status)) return message.safeReply("Неверный статус. Значение должно быть `вкл/выкл`");
       response = await setDebug(settings, status);
     }
 
@@ -184,19 +184,19 @@ module.exports = {
     // whitelist add
     else if (input === "whitelistadd") {
       const match = message.guild.findMatchingChannels(args[1]);
-      if (!match.length) return message.safeReply(`No channel found matching ${args[1]}`);
+      if (!match.length) return message.safeReply(`не найдено канала подходящего ${args[1]}`);
       response = await whiteListAdd(settings, match[0].id);
     }
 
     // whitelist remove
     else if (input === "whitelistremove") {
       const match = message.guild.findMatchingChannels(args[1]);
-      if (!match.length) return message.safeReply(`No channel found matching ${args[1]}`);
+      if (!match.length) return message.safeReply(`не найдено канала подходящего ${args[1]}`);
       response = await whiteListRemove(settings, match[0].id);
     }
 
     //
-    else response = "Invalid command usage!";
+    else response = "Неверное использование команды!";
     await message.safeReply(response);
   },
 
@@ -234,37 +234,37 @@ async function getStatus(settings, guild) {
 
   // String Builder
   let desc = stripIndent`
-    ❯ **Max Lines**: ${automod.max_lines || "NA"}
-    ❯ **Anti-Massmention**: ${automod.anti_massmention > 0 ? "✓" : "✕"}
-    ❯ **Anti-Attachment**: ${automod.anti_attachment ? "✓" : "✕"}
-    ❯ **Anti-Links**: ${automod.anti_links ? "✓" : "✕"}
-    ❯ **Anti-Invites**: ${automod.anti_invites ? "✓" : "✕"}
-    ❯ **Anti-Spam**: ${automod.anti_spam ? "✓" : "✕"}
-    ❯ **Anti-Ghostping**: ${automod.anti_ghostping ? "✓" : "✕"}
+    ❯ **Макс Линий**: ${automod.max_lines || "NA"}
+    ❯ **Анти-МассУпоминания**: ${automod.anti_massmention > 0 ? "✓" : "✕"}
+    ❯ **Анти-Вложения**: ${automod.anti_attachment ? "✓" : "✕"}
+    ❯ **Анти-Ссылки**: ${automod.anti_links ? "✓" : "✕"}
+    ❯ **Анти-Инвайт**: ${automod.anti_invites ? "✓" : "✕"}
+    ❯ **Анти-Спам**: ${automod.anti_spam ? "✓" : "✕"}
+    ❯ **Анти-Гостпинг**: ${automod.anti_ghostping ? "✓" : "✕"}
   `;
 
   const embed = new EmbedBuilder()
-    .setAuthor({ name: "Automod Configuration", iconURL: guild.iconURL() })
+    .setAuthor({ name: "Конфигурация автомода", iconURL: guild.iconURL() })
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setDescription(desc)
     .addFields(
       {
-        name: "Log Channel",
+        name: "Канал Логов",
         value: logChannel,
         inline: true,
       },
       {
-        name: "Max Strikes",
+        name: "Макс Предов",
         value: automod.strikes.toString(),
         inline: true,
       },
       {
-        name: "Action",
+        name: "Действие",
         value: automod.action,
         inline: true,
       },
       {
-        name: "Debug",
+        name: "Дебаг",
         value: automod.debug ? "✓" : "✕",
         inline: true,
       }
@@ -276,43 +276,43 @@ async function getStatus(settings, guild) {
 async function setStrikes(settings, strikes) {
   settings.automod.strikes = strikes;
   await settings.save();
-  return `Configuration saved! Maximum strikes is set to ${strikes}`;
+  return `Конфигурация сохранена! Максимальное количество предупреждений установлено на ${strikes}`;
 }
 
 async function setAction(settings, guild, action) {
   if (action === "TIMEOUT") {
     if (!guild.members.me.permissions.has("ModerateMembers")) {
-      return "I do not permission to timeout members";
+      return "У меня нет прав для тайм-аута участников";
     }
   }
 
   if (action === "KICK") {
     if (!guild.members.me.permissions.has("KickMembers")) {
-      return "I do not have permission to kick members";
+      return "У меня нет прав для кика участников";
     }
   }
 
   if (action === "BAN") {
     if (!guild.members.me.permissions.has("BanMembers")) {
-      return "I do not have permission to ban members";
+      return "У меня нет прав для бана участников";
     }
   }
 
   settings.automod.action = action;
   await settings.save();
-  return `Configuration saved! Automod action is set to ${action}`;
+  return `Конфигурация сохранена! Действие автомода установлено на ${action}`;
 }
 
 async function setDebug(settings, input) {
   const status = input.toLowerCase() === "on" ? true : false;
   settings.automod.debug = status;
   await settings.save();
-  return `Configuration saved! Automod debug is now ${status ? "enabled" : "disabled"}`;
+  return `Конфигурация сохранена! Дебаг автомода теперь ${status ? "включен" : "выключен"}`;
 }
 
 function getWhitelist(guild, settings) {
   const whitelist = settings.automod.wh_channels;
-  if (!whitelist || !whitelist.length) return "No channels are whitelisted";
+  if (!whitelist || !whitelist.length) return "Нет каналов в белом списке";
 
   const channels = [];
   for (const channelId of whitelist) {
@@ -321,19 +321,19 @@ function getWhitelist(guild, settings) {
     if (channel) channels.push(channel.toString());
   }
 
-  return `Whitelisted channels: ${channels.join(", ")}`;
+  return `Каналы из белого списка: ${channels.join(", ")}`;
 }
 
 async function whiteListAdd(settings, channelId) {
-  if (settings.automod.wh_channels.includes(channelId)) return "Channel is already whitelisted";
+  if (settings.automod.wh_channels.includes(channelId)) return "Канал уже в белом списке";
   settings.automod.wh_channels.push(channelId);
   await settings.save();
-  return `Channel whitelisted!`;
+  return `Канал в белом списке!`;
 }
 
 async function whiteListRemove(settings, channelId) {
-  if (!settings.automod.wh_channels.includes(channelId)) return "Channel is not whitelisted";
+  if (!settings.automod.wh_channels.includes(channelId)) return "Канал не внесен в белый список";
   settings.automod.wh_channels.splice(settings.automod.wh_channels.indexOf(channelId), 1);
   await settings.save();
-  return `Channel removed from whitelist!`;
+  return `Канал удален из белого списка!`;
 }

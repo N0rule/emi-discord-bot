@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require("discord.js");
 const { Cluster } = require("lavaclient");
+const { EMBED_COLORS} = require("@root/config");
 const prettyMs = require("pretty-ms");
 const { load, SpotifyItemType } = require("@lavaclient/spotify");
 require("@lavaclient/queue/register");
@@ -45,10 +46,10 @@ module.exports = (client) => {
     const fields = [];
 
     const embed = new EmbedBuilder()
-      .setAuthor({ name: "Now Playing" })
+      .setAuthor({ name: "Сейчас Играет" })
       .setColor(client.config.EMBED_COLORS.BOT_EMBED)
       .setDescription(`[${song.title}](${song.uri})`)
-      .setFooter({ text: `Requested By: ${song.requester}` });
+      .setFooter({ text: `Запрошено Пользователем: ${song.requester}` });
 
     if (song.sourceName === "youtube") {
       const identifier = song.identifier;
@@ -57,14 +58,14 @@ module.exports = (client) => {
     }
 
     fields.push({
-      name: "Song Duration",
+      name: "Длительность Песни",
       value: "`" + prettyMs(song.length, { colonNotation: true }) + "`",
       inline: true,
     });
 
     if (queue.tracks.length > 0) {
       fields.push({
-        name: "Position in Queue",
+        name: "Позиция в очереди",
         value: (queue.tracks.length + 1).toString(),
         inline: true,
       });
@@ -75,7 +76,12 @@ module.exports = (client) => {
   });
 
   lavaclient.on("nodeQueueFinish", async (_node, queue) => {
-    queue.data.channel.safeSend("Queue has ended.");
+    const channel = client.channels.cache.get(queue.player.channelId);
+    const embed = new EmbedBuilder()
+    .setColor(EMBED_COLORS.BOT_EMBED)
+    .setDescription("👋 Очередь закончилась");
+    queue.data.channel.safeSend({ embeds: [embed] });
+   //channel.safeSend("Очередь закончилась.");
     await client.musicManager.destroyPlayer(queue.player.guildId).then(queue.player.disconnect());
   });
 

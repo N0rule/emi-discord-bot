@@ -35,20 +35,20 @@ module.exports = {
 
     // Owner commands
     if (cmd.category === "OWNER" && !OWNER_IDS.includes(message.author.id)) {
-      return message.safeReply("This command is only accessible to bot owners");
+      return message.safeReply("Эта команда доступна только владельцу Бота");
     }
 
     // check user permissions
     if (cmd.userPermissions && cmd.userPermissions?.length > 0) {
       if (!message.channel.permissionsFor(message.member).has(cmd.userPermissions)) {
-        return message.safeReply(`You need ${parsePermissions(cmd.userPermissions)} for this command`);
+        return message.safeReply(`Вам нужно ${parsePermissions(cmd.userPermissions)} для этой команды`);
       }
     }
 
     // check bot permissions
     if (cmd.botPermissions && cmd.botPermissions.length > 0) {
       if (!message.channel.permissionsFor(message.guild.members.me).has(cmd.botPermissions)) {
-        return message.safeReply(`I need ${parsePermissions(cmd.botPermissions)} for this command`);
+        return message.safeReply(`Мне нужно ${parsePermissions(cmd.botPermissions)} для этой команды`);
       }
     }
 
@@ -62,7 +62,7 @@ module.exports = {
     if (cmd.cooldown > 0) {
       const remaining = getRemainingCooldown(message.author.id, cmd);
       if (remaining > 0) {
-        return message.safeReply(`You are on cooldown. You can again use the command in \`${timeformat(remaining)}\``);
+        return message.safeReply(`Вы на перезарядке. Вы можете использовать команду через \`${timeformat(remaining)}\``);
       }
     }
 
@@ -70,7 +70,7 @@ module.exports = {
       await cmd.messageRun(message, args, data);
     } catch (ex) {
       message.client.logger.error("messageRun", ex);
-      message.safeReply("An error occurred while running this command");
+      message.safeReply("Произошла ошибка во время применения команды");
     } finally {
       if (cmd.cooldown > 0) applyCooldown(message.author.id, cmd);
     }
@@ -81,7 +81,7 @@ module.exports = {
    */
   handleSlashCommand: async function (interaction) {
     const cmd = interaction.client.slashCommands.get(interaction.commandName);
-    if (!cmd) return interaction.reply({ content: "An error has occurred", ephemeral: true }).catch(() => {});
+    if (!cmd) return interaction.reply({ content: "Произошла Ошибка", ephemeral: true }).catch(() => {});
 
     // callback validations
     if (cmd.validations) {
@@ -98,7 +98,7 @@ module.exports = {
     // Owner commands
     if (cmd.category === "OWNER" && !OWNER_IDS.includes(interaction.user.id)) {
       return interaction.reply({
-        content: `This command is only accessible to bot owners`,
+        content: `Эта команда доступна только владельцу Бота`,
         ephemeral: true,
       });
     }
@@ -107,7 +107,7 @@ module.exports = {
     if (interaction.member && cmd.userPermissions?.length > 0) {
       if (!interaction.member.permissions.has(cmd.userPermissions)) {
         return interaction.reply({
-          content: `You need ${parsePermissions(cmd.userPermissions)} for this command`,
+          content: `Вам нужно ${parsePermissions(cmd.userPermissions)} для этой команды`,
           ephemeral: true,
         });
       }
@@ -117,7 +117,7 @@ module.exports = {
     if (cmd.botPermissions && cmd.botPermissions.length > 0) {
       if (!interaction.guild.members.me.permissions.has(cmd.botPermissions)) {
         return interaction.reply({
-          content: `I need ${parsePermissions(cmd.botPermissions)} for this command`,
+          content: `Мне нужно ${parsePermissions(cmd.botPermissions)} для этой команды`,
           ephemeral: true,
         });
       }
@@ -128,7 +128,7 @@ module.exports = {
       const remaining = getRemainingCooldown(interaction.user.id, cmd);
       if (remaining > 0) {
         return interaction.reply({
-          content: `You are on cooldown. You can again use the command in \`${timeformat(remaining)}\``,
+          content: `Вы на перезарядке. Вы можете использовать команду через \`${timeformat(remaining)}\``,
           ephemeral: true,
         });
       }
@@ -139,7 +139,7 @@ module.exports = {
       const settings = await getSettings(interaction.guild);
       await cmd.interactionRun(interaction, { settings });
     } catch (ex) {
-      await interaction.followUp("Oops! An error occurred while running the command");
+      await interaction.followUp("Упс! Возникла Ошибка");
       interaction.client.logger.error("interactionRun", ex);
     } finally {
       if (cmd.cooldown > 0) applyCooldown(interaction.user.id, cmd);
@@ -153,19 +153,19 @@ module.exports = {
    * @param {string} invoke - alias that was used to trigger this command
    * @param {string} [title] - the embed title
    */
-  getCommandUsage(cmd, prefix = PREFIX_COMMANDS.DEFAULT_PREFIX, invoke, title = "Usage") {
+  getCommandUsage(cmd, prefix = PREFIX_COMMANDS.DEFAULT_PREFIX, invoke, title = "Использование:") {
     let desc = "";
     if (cmd.command.subcommands && cmd.command.subcommands.length > 0) {
       cmd.command.subcommands.forEach((sub) => {
         desc += `\`${prefix}${invoke || cmd.name} ${sub.trigger}\`\n❯ ${sub.description}\n\n`;
       });
       if (cmd.cooldown) {
-        desc += `**Cooldown:** ${timeformat(cmd.cooldown)}`;
+        desc += `**Перезарядка:** ${timeformat(cmd.cooldown)}`;
       }
     } else {
       desc += `\`\`\`css\n${prefix}${invoke || cmd.name} ${cmd.command.usage}\`\`\``;
-      if (cmd.description !== "") desc += `\n**Help:** ${cmd.description}`;
-      if (cmd.cooldown) desc += `\n**Cooldown:** ${timeformat(cmd.cooldown)}`;
+      if (cmd.description !== "") desc += `\n**Помощь:** ${cmd.description}`;
+      if (cmd.cooldown) desc += `\n**Перезарядка:** ${timeformat(cmd.cooldown)}`;
     }
 
     const embed = new EmbedBuilder().setColor(EMBED_COLORS.BOT_EMBED).setDescription(desc);
@@ -184,11 +184,11 @@ module.exports = {
         desc += `\`/${cmd.name} ${sub.name}\`\n❯ ${sub.description}\n\n`;
       });
     } else {
-      desc += `\`/${cmd.name}\`\n\n**Help:** ${cmd.description}`;
+      desc += `\`/${cmd.name}\`\n\n**Помощь:** ${cmd.description}`;
     }
 
     if (cmd.cooldown) {
-      desc += `\n**Cooldown:** ${timeformat(cmd.cooldown)}`;
+      desc += `\n**Перезарядка:** ${timeformat(cmd.cooldown)}`;
     }
 
     return new EmbedBuilder().setColor(EMBED_COLORS.BOT_EMBED).setDescription(desc);

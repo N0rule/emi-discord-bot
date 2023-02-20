@@ -71,10 +71,10 @@ module.exports = class Utils {
     const minutes = Math.floor((timeInSeconds % 3600) / 60);
     const seconds = Math.round(timeInSeconds % 60);
     return (
-      (days > 0 ? `${days} days, ` : "") +
-      (hours > 0 ? `${hours} hours, ` : "") +
-      (minutes > 0 ? `${minutes} minutes, ` : "") +
-      (seconds > 0 ? `${seconds} seconds` : "")
+      (days > 0 ? `${days} дней, ` : "") +
+      (hours > 0 ? `${hours} часов, ` : "") +
+      (minutes > 0 ? `${minutes} минут, ` : "") +
+      (seconds > 0 ? `${seconds} секунды` : "")
     );
   }
 
@@ -105,7 +105,7 @@ module.exports = class Utils {
    * @param {import("discord.js").PermissionResolvable[]} perms
    */
   static parsePermissions(perms) {
-    const permissionWord = `permission${perms.length > 1 ? "s" : ""}`;
+    const permissionWord = `право${perms.length > 1 ? "s" : ""}`;
     return "`" + perms.map((perm) => permissions[perm]).join(", ") + "` " + permissionWord;
   }
 

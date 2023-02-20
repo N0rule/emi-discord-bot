@@ -18,7 +18,7 @@ const Schema = new mongoose.Schema(
       type: String,
       required: true,
       enum: [
-        "PURGE",
+        "CLEAR",
         "WARN",
         "TIMEOUT",
         "UNTIMEOUT",

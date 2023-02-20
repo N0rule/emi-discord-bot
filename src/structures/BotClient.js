@@ -104,7 +104,7 @@ module.exports = class BotClient extends Client {
         this.logger.error(`loadEvent - ${file}`, ex);
       }
     });
-
+    console.log(`\n     **Syndicate bot by N0rule**`);
     console.log(
       table(clientEvents, {
         header: {

@@ -17,7 +17,7 @@ const { isValidColor, isHex } = require("@helpers/Utils");
  */
 module.exports = {
   name: "embed",
-  description: "send embed message",
+  description: "отправить embed",
   category: "ADMIN",
   userPermissions: ["ManageMessages"],
   command: {
@@ -32,7 +32,7 @@ module.exports = {
     options: [
       {
         name: "channel",
-        description: "channel to send embed",
+        description: "канал для отправки embeda",
         type: ApplicationCommandOptionType.Channel,
         channelTypes: [ChannelType.GuildText],
         required: true,
@@ -42,21 +42,21 @@ module.exports = {
 
   async messageRun(message, args) {
     const channel = message.mentions.channels.first() || message.guild.channels.cache.get(args[0]);
-    if (!channel) return message.reply("Please provide a valid channel");
-    if (channel.type !== ChannelType.GuildText) return message.reply("Please provide a valid channel");
+    if (!channel) return message.reply("Пожалуйста выбирите подходящий канал");
+    if (channel.type !== ChannelType.GuildText) return message.reply("Пожалуйста выбирите подходящий канал");
     if (!channel.canSendEmbeds()) {
-      return message.reply("I don't have permission to send embeds in that channel");
+      return message.reply("Нет прав на отправку embed в этом канале");
     }
-    message.reply(`Embed setup started in ${channel}`);
+    message.reply(`Embed setup запущен в ${channel}`);
     await embedSetup(channel, message.member);
   },
 
   async interactionRun(interaction) {
     const channel = interaction.options.getChannel("channel");
     if (!channel.canSendEmbeds()) {
-      return interaction.followUp("I don't have permission to send embeds in that channel");
+      return interaction.followUp("Нет прав на отправку embed в этом канале");
     }
-    interaction.followUp(`Embed setup started in ${channel}`);
+    interaction.followUp(`Embed setup запущен в ${channel}`);
     await embedSetup(channel, interaction.member);
   },
 };
@@ -67,10 +67,10 @@ module.exports = {
  */
 async function embedSetup(channel, member) {
   const sentMsg = await channel.send({
-    content: "Click the button below to get started",
+    content: "Нажмите на кнопку снизу что-бы начать",
     components: [
       new ActionRowBuilder().addComponents(
-        new ButtonBuilder().setCustomId("EMBED_ADD").setLabel("Create Embed").setStyle(ButtonStyle.Primary)
+        new ButtonBuilder().setCustomId("EMBED_ADD").setLabel("Создать Embed").setStyle(ButtonStyle.Primary)
       ),
     ],
   });
@@ -83,45 +83,45 @@ async function embedSetup(channel, member) {
     })
     .catch((ex) => {});
 
-  if (!btnInteraction) return sentMsg.edit({ content: "No response received", components: [] });
+  if (!btnInteraction) return sentMsg.edit({ content: "Не получен ответ", components: [] });
 
   await btnInteraction.showModal(
     new ModalBuilder({
       customId: "EMBED_MODAL",
-      title: "Embed Generator",
+      title: "Embed Генератор",
       components: [
         new ActionRowBuilder().addComponents(
           new TextInputBuilder()
             .setCustomId("title")
-            .setLabel("Embed Title")
+            .setLabel("Embed Заголовок")
             .setStyle(TextInputStyle.Short)
             .setRequired(false)
         ),
         new ActionRowBuilder().addComponents(
           new TextInputBuilder()
             .setCustomId("author")
-            .setLabel("Embed Author")
+            .setLabel("Embed Автор")
             .setStyle(TextInputStyle.Short)
             .setRequired(false)
         ),
         new ActionRowBuilder().addComponents(
           new TextInputBuilder()
             .setCustomId("description")
-            .setLabel("Embed Description")
+            .setLabel("Embed Описание")
             .setStyle(TextInputStyle.Paragraph)
             .setRequired(false)
         ),
         new ActionRowBuilder().addComponents(
           new TextInputBuilder()
-            .setCustomId("color")
-            .setLabel("Embed Color")
-            .setStyle(TextInputStyle.Short)
-            .setRequired(false)
-        ),
-        new ActionRowBuilder().addComponents(
-          new TextInputBuilder()
+          .setCustomId("color")
+          .setLabel("Embed Color")
+          .setStyle(TextInputStyle.Short)
+          .setRequired(false)
+      ),
+      new ActionRowBuilder().addComponents(
+        new TextInputBuilder()
             .setCustomId("footer")
-            .setLabel("Embed Footer")
+            .setLabel("Embed Нижний колонтитул")
             .setStyle(TextInputStyle.Short)
             .setRequired(false)
         ),
@@ -137,9 +137,9 @@ async function embedSetup(channel, member) {
     })
     .catch((ex) => {});
 
-  if (!modal) return sentMsg.edit({ content: "No response received, cancelling setup", components: [] });
+  if (!modal) return sentMsg.edit({ content: "Не получен ответ, остановка setup", components: [] });
 
-  modal.reply({ content: "Embed sent", ephemeral: true }).catch((ex) => {});
+  modal.reply({ content: "Embed отправлен", ephemeral: true }).catch((ex) => {});
 
   const title = modal.fields.getTextInputValue("title");
   const author = modal.fields.getTextInputValue("author");
@@ -148,7 +148,7 @@ async function embedSetup(channel, member) {
   const color = modal.fields.getTextInputValue("color");
 
   if (!title && !author && !description && !footer)
-    return sentMsg.edit({ content: "You can't send an empty embed!", components: [] });
+    return sentMsg.edit({ content: "Вы не можете отправить пустой Embed!", components: [] });
 
   const embed = new EmbedBuilder();
   if (title) embed.setTitle(title);
@@ -159,13 +159,13 @@ async function embedSetup(channel, member) {
 
   // add/remove field button
   const buttonRow = new ActionRowBuilder().addComponents(
-    new ButtonBuilder().setCustomId("EMBED_FIELD_ADD").setLabel("Add Field").setStyle(ButtonStyle.Success),
-    new ButtonBuilder().setCustomId("EMBED_FIELD_REM").setLabel("Remove Field").setStyle(ButtonStyle.Danger),
-    new ButtonBuilder().setCustomId("EMBED_FIELD_DONE").setLabel("Done").setStyle(ButtonStyle.Primary)
+    new ButtonBuilder().setCustomId("EMBED_FIELD_ADD").setLabel("Добавить Поле").setStyle(ButtonStyle.Success),
+    new ButtonBuilder().setCustomId("EMBED_FIELD_REM").setLabel("Удалить Поле").setStyle(ButtonStyle.Danger),
+    new ButtonBuilder().setCustomId("EMBED_FIELD_DONE").setLabel("Закончить").setStyle(ButtonStyle.Primary)
   );
 
   await sentMsg.edit({
-    content: "Please add fields using the buttons below. Click done when you are done.",
+    content: "Пожалуйста добавте поля использую кнопки снизу. Нажмите Закончить когда закончите",
     embeds: [embed],
     components: [buttonRow],
   });
@@ -182,19 +182,19 @@ async function embedSetup(channel, member) {
       await interaction.showModal(
         new ModalBuilder({
           customId: "EMBED_ADD_FIELD_MODAL",
-          title: "Add Field",
+          title: "Добавить Поле",
           components: [
             new ActionRowBuilder().addComponents(
               new TextInputBuilder()
                 .setCustomId("name")
-                .setLabel("Field Name")
+                .setLabel("Имя Поля")
                 .setStyle(TextInputStyle.Short)
                 .setRequired(true)
             ),
             new ActionRowBuilder().addComponents(
               new TextInputBuilder()
                 .setCustomId("value")
-                .setLabel("Field Value")
+                .setLabel("Значение Поля")
                 .setStyle(TextInputStyle.Paragraph)
                 .setRequired(true)
             ),
@@ -220,7 +220,7 @@ async function embedSetup(channel, member) {
 
       if (!modal) return sentMsg.edit({ components: [] });
 
-      modal.reply({ content: "Field added", ephemeral: true }).catch((ex) => {});
+      modal.reply({ content: "Поле Добавлено", ephemeral: true }).catch((ex) => {});
 
       const name = modal.fields.getTextInputValue("name");
       const value = modal.fields.getTextInputValue("value");
@@ -241,9 +241,9 @@ async function embedSetup(channel, member) {
       if (fields) {
         fields.pop();
         embed.setFields(fields);
-        interaction.reply({ content: "Field removed", ephemeral: true });
+        interaction.reply({ content: "Поле удалено", ephemeral: true });
       } else {
-        interaction.reply({ content: "There are no fields to remove", ephemeral: true });
+        interaction.reply({ content: "Нет полей для удаления", ephemeral: true });
       }
     }
 

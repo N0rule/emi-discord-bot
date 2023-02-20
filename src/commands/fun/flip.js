@@ -9,7 +9,7 @@ const FLIPPED = "∀qϽᗡƎℲƃHIſʞ˥WNOԀὉᴚS⊥∩ΛMXʎZɐqɔpǝɟbɥ�
  */
 module.exports = {
   name: "flip",
-  description: "flips a coin or message",
+  description: "подбрасывает монетку или текст",
   category: "FUN",
   botPermissions: ["EmbedLinks"],
   command: {
@@ -18,11 +18,11 @@ module.exports = {
     subcommands: [
       {
         trigger: "coin",
-        description: "flips a coin heads or tails",
+        description: "подбрасывает монетку",
       },
       {
         trigger: "text <input>",
-        description: "reverses the given message",
+        description: "переварачивает текст",
       },
     ],
   },
@@ -31,17 +31,17 @@ module.exports = {
     options: [
       {
         name: "coin",
-        description: "flip a coin",
+        description: "подбрасывает монетку",
         type: ApplicationCommandOptionType.Subcommand,
       },
       {
         name: "text",
-        description: "reverses the given message",
+        description: "переварачивает текст",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "input",
-            description: "text to flip",
+            description: "сообщения для переворота",
             type: ApplicationCommandOptionType.String,
             required: true,
           },
@@ -54,7 +54,7 @@ module.exports = {
     const sub = args[0].toLowerCase();
 
     if (sub === "coin") {
-      const items = ["HEAD", "TAIL"];
+      const items = ["Орел", "Решка"];
       const toss = items[Math.floor(Math.random() * items.length)];
 
       message.channel.send({ embeds: [firstEmbed(message.author)] }).then((coin) => {
@@ -71,21 +71,21 @@ module.exports = {
 
     //
     else if (sub === "text") {
-      if (args.length < 2) return message.channel.send("Please enter a text");
+      if (args.length < 2) return message.channel.send("Пожалуйста введите текст");
       const input = args.join(" ");
       const response = await flipText(input);
       await message.safeReply(response);
     }
 
     // else
-    else await message.safeReply("Incorrect command usage");
+    else await message.safeReply("Неправильное использование команды");
   },
 
   async interactionRun(interaction) {
     const sub = interaction.options.getSubcommand("type");
 
     if (sub === "coin") {
-      const items = ["HEAD", "TAIL"];
+      const items = ["Орел", "Решка"];
       const toss = items[Math.floor(Math.random() * items.length)];
       await interaction.followUp({ embeds: [firstEmbed(interaction.user)] });
 
@@ -107,14 +107,14 @@ module.exports = {
 };
 
 const firstEmbed = (user) =>
-  new EmbedBuilder().setColor(EMBED_COLORS.TRANSPARENT).setDescription(`${user.username}, started a coin toss`);
+  new EmbedBuilder().setColor(EMBED_COLORS.TRANSPARENT).setDescription(`${user.username},Подбросил монетку`);
 
-const secondEmbed = () => new EmbedBuilder().setDescription("The coin is in the air");
+const secondEmbed = () => new EmbedBuilder().setDescription("монетка в воздухе");
 
 const resultEmbed = (toss) =>
   new EmbedBuilder()
-    .setDescription(`>> **${toss} Wins** <<`)
-    .setImage(toss === "HEAD" ? "https://i.imgur.com/HavOS7J.png" : "https://i.imgur.com/u1pmQMV.png");
+    .setDescription(`>> **${toss} Побеждает** <<`)
+    .setImage(toss === "Орел" ? "https://i.imgur.com/VWhp7CT.png" : "https://i.imgur.com/XKBVY0s.png");
 
 async function flipText(text) {
   let builder = "";

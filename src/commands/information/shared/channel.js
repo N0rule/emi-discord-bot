@@ -11,49 +11,49 @@ module.exports = (channel) => {
 
   let desc = stripIndent`
       ❯ ID: **${id}**
-      ❯ Name: **${name}**
-      ❯ Type: **${channelTypes(channel.type)}**
-      ❯ Category: **${parent || "NA"}**\n
+      ❯ Имя: **${name}**
+      ❯ Тип: **${channelTypes(channel.type)}**
+      ❯ Категория: **${parent || "НА"}**\n
       `;
 
   if (type === ChannelType.GuildText) {
     const { rateLimitPerUser, nsfw } = channel;
     desc += stripIndent`
-      ❯ Topic: **${channel.topic || "No topic set"}**
-      ❯ Position: **${position}**
-      ❯ Slowmode: **${rateLimitPerUser}**
-      ❯ isNSFW: **${nsfw ? "✓" : "✕"}**\n
+      ❯ Тема: **${channel.topic || "нет темы"}**
+      ❯ Позиция: **${position}**
+      ❯ Медленный режим: **${rateLimitPerUser}**
+      ❯ NSFW?: **${nsfw ? "✓" : "✕"}**\n
       `;
   }
 
   if (type === ChannelType.GuildPublicThread || type === ChannelType.GuildPrivateThread) {
     const { ownerId, archived, locked } = channel;
     desc += stripIndent`
-      ❯ Owner Id: **${ownerId}**
-      ❯ Is Archived: **${archived ? "✓" : "✕"}**
-      ❯ Is Locked: **${locked ? "✓" : "✕"}**\n
+      ❯ Id Владельца: **${ownerId}**
+      ❯ Архивирован?: **${archived ? "✓" : "✕"}**
+      ❯ Закрыт?: **${locked ? "✓" : "✕"}**\n
       `;
   }
 
   if (type === ChannelType.GuildNews || type === ChannelType.GuildNewsThread) {
     const { nsfw } = channel;
     desc += stripIndent`
-      ❯ isNSFW: **${nsfw ? "✓" : "✕"}**\n
+      ❯ NSFW?: **${nsfw ? "✓" : "✕"}**\n
       `;
   }
 
   if (type === ChannelType.GuildVoice || type === ChannelType.GuildStageVoice) {
     const { bitrate, userLimit, full } = channel;
     desc += stripIndent`
-      ❯ Position: **${position}**
-      ❯ Bitrate: **${bitrate}**
-      ❯ User Limit: **${userLimit}**
-      ❯ isFull: **${full ? "✓" : "✕"}**\n
+      ❯ Позиция: **${position}**
+      ❯ БитРейт: **${bitrate}**
+      ❯ Липит пользователей?: **${userLimit}**
+      ❯ Полный?: **${full ? "✓" : "✕"}**\n
       `;
   }
 
   const embed = new EmbedBuilder()
-    .setAuthor({ name: "Channel Details" })
+    .setAuthor({ name: "Детали Канала" })
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setDescription(desc);
 

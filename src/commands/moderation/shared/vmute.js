@@ -3,19 +3,19 @@ const { vMuteTarget } = require("@helpers/ModUtils");
 module.exports = async ({ member }, target, reason) => {
   const response = await vMuteTarget(member, target, reason);
   if (typeof response === "boolean") {
-    return `${target.user.username}'s voice is muted in this server`;
+    return `Голос ${target.user.username} отключен на этом сервере`;
   }
   if (response === "MEMBER_PERM") {
-    return `You do not have permission to voice mute ${target.user.username}`;
+    return `У тебя нет прав для мута ${target.user.username}`;
   }
   if (response === "BOT_PERM") {
-    return `I do not have permission to voice mute ${target.user.username}`;
+    return `У меня нет прав для мута ${target.user.username}`;
   }
   if (response === "NO_VOICE") {
-    return `${target.user.username} is not in any voice channel`;
+    return `${target.user.username} не в голосовом канале`;
   }
   if (response === "ALREADY_MUTED") {
-    return `${target.user.username} is already muted`;
+    return `${target.user.username} уже замьючен`;
   }
-  return `Failed to voice mute ${target.user.username}`;
+  return `Ошибка голосового мута для ${target.user.username}`;
 };

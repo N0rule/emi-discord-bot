@@ -6,7 +6,7 @@ const move = require("../shared/move");
  */
 module.exports = {
   name: "move",
-  description: "move specified member to voice channel",
+  description: "переместить указанного участника в голосовой канал",
   category: "MODERATION",
   userPermissions: ["MoveMembers"],
   botPermissions: ["MoveMembers"],
@@ -18,13 +18,13 @@ module.exports = {
 
   async messageRun(message, args) {
     const target = await message.guild.resolveMember(args[0], true);
-    if (!target) return message.safeReply(`No user found matching ${args[0]}`);
+    if (!target) return message.safeReply(`Нет подходяшего пользователя под: ${args[0]}`);
 
     const channels = message.guild.findMatchingChannels(args[1]);
-    if (!channels.length) return message.safeReply("No matching channels found");
+    if (!channels.length) return message.safeReply("Подходящие каналы не найдены");
     const targetChannel = channels.pop();
     if (!targetChannel.type === ChannelType.GuildVoice && !targetChannel.type === ChannelType.GuildStageVoice) {
-      return message.safeReply("Target channel is not a voice channel");
+      return message.safeReply("Канал не является голосовым каналом");
     }
 
     const reason = args.slice(2).join(" ");

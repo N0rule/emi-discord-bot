@@ -5,7 +5,7 @@ const { timeformat } = require("@helpers/Utils");
  */
 module.exports = {
   name: "uptime",
-  description: "gives you bot uptime",
+  description: "аптайм",
   category: "INFORMATION",
   botPermissions: ["EmbedLinks"],
   command: {
@@ -13,6 +13,6 @@ module.exports = {
   },
 
   async messageRun(message, args) {
-    await message.safeReply(`My Uptime: \`${timeformat(process.uptime())}\``);
+    await message.safeReply(`Мой Аптайм: \`${timeformat(process.uptime())}\``);
   },
 };

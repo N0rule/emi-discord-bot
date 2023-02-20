@@ -6,9 +6,10 @@ const { ApplicationCommandOptionType } = require("discord.js");
  */
 module.exports = {
   name: "volume",
-  description: "set the music player volume",
+  description: "устанавливает громкость музыки",
   category: "MUSIC",
   validations: musicValidations,
+  userPermissions: ["ManageGuild"],
   command: {
     enabled: true,
     usage: "<1-100>",
@@ -18,7 +19,7 @@ module.exports = {
     options: [
       {
         name: "amount",
-        description: "Enter a value to set [0 to 100]",
+        description: "укажите громкость [от 0 до 100]",
         type: ApplicationCommandOptionType.Integer,
         required: false,
       },
@@ -44,9 +45,9 @@ module.exports = {
 async function volume({ client, guildId }, volume) {
   const player = client.musicManager.getPlayer(guildId);
 
-  if (!volume) return `> The player volume is \`${player.volume}\`.`;
-  if (volume < 1 || volume > 100) return "you need to give me a volume between 1 and 100.";
+  if (!volume) return `> Громкость музыки: \`${player.volume}\`.`;
+  if (volume < 1 || volume > 100) return "Вы должны выбрать громкость между 1 и 100.";
 
   await player.setVolume(volume);
-  return `🎶 Music player volume is set to \`${volume}\`.`;
+  return `🎶 Громкость музыки установлена на \`${volume}\`.`;
 }

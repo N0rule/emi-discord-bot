@@ -5,7 +5,7 @@ const { ApplicationCommandOptionType } = require("discord.js");
  */
 module.exports = {
   name: "anti",
-  description: "manage various automod settings for the server",
+  description: "управлять различными настройками автомода для сервера",
   category: "AUTOMOD",
   userPermissions: ["ManageGuild"],
   command: {
@@ -14,15 +14,15 @@ module.exports = {
     subcommands: [
       {
         trigger: "ghostping <on|off>",
-        description: "detect and logs ghost mentions in your server",
+        description: "обнаруживать и логировать гостпинги на вашем сервере",
       },
       {
         trigger: "spam <on|off>",
-        description: "enable or disable antispam detection",
+        description: "включить или отключить обнаружение спама",
       },
       {
         trigger: "massmention <on|off> [threshold]",
-        description: "enable or disable massmention detection [default threshold is 3 mentions]",
+        description: "включить или отключить обнаружение массовых упоминаний [по умолчанию — 3 упоминания]",
       },
     ],
   },
@@ -32,12 +32,12 @@ module.exports = {
     options: [
       {
         name: "ghostping",
-        description: "detects and logs ghost mentions in your server",
+        description: "обнаруживает и логирует гостпинги на вашем сервере",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "status",
-            description: "configuration status",
+            description: "статус конфигурации",
             required: true,
             type: ApplicationCommandOptionType.String,
             choices: [
@@ -55,12 +55,12 @@ module.exports = {
       },
       {
         name: "spam",
-        description: "enable or disable antispam detection",
+        description: "включить или отключить обнаружение спама",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "status",
-            description: "configuration status",
+            description: "статус конфигурации",
             required: true,
             type: ApplicationCommandOptionType.String,
             choices: [
@@ -78,12 +78,12 @@ module.exports = {
       },
       {
         name: "massmention",
-        description: "enable or disable massmention detection",
+        description: "включить или отключить обнаружение массовых упоминаний",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "status",
-            description: "configuration status",
+            description: "статус конфигурации",
             required: true,
             type: ApplicationCommandOptionType.String,
             choices: [
@@ -99,7 +99,7 @@ module.exports = {
           },
           {
             name: "threshold",
-            description: "configuration threshold (default is 3 mentions)",
+            description: "порог конфигурации (по умолчанию 3 упоминания)",
             required: true,
             type: ApplicationCommandOptionType.Integer,
           },
@@ -115,14 +115,14 @@ module.exports = {
     let response;
     if (sub == "ghostping") {
       const status = args[1].toLowerCase();
-      if (!["on", "off"].includes(status)) return message.safeReply("Invalid status. Value must be `on/off`");
+      if (!["on", "off"].includes(status)) return message.safeReply("Неверный статус. Значение должно быть `вкл/выкл`");
       response = await antiGhostPing(settings, status);
     }
 
     //
     else if (sub == "spam") {
       const status = args[1].toLowerCase();
-      if (!["on", "off"].includes(status)) return message.safeReply("Invalid status. Value must be `on/off`");
+      if (!["on", "off"].includes(status)) return message.safeReply("Неверный статус. Значение должно быть `вкл/выкл`");
       response = await antiSpam(settings, status);
     }
 
@@ -130,12 +130,12 @@ module.exports = {
     else if (sub === "massmention") {
       const status = args[1].toLowerCase();
       const threshold = args[2] || 3;
-      if (!["on", "off"].includes(status)) return message.safeReply("Invalid status. Value must be `on/off`");
+      if (!["on", "off"].includes(status)) return message.safeReply("Неверный статус. Значение должно быть `вкл/выкл`");
       response = await antiMassMention(settings, status, threshold);
     }
 
     //
-    else response = "Invalid command usage!";
+    else response = "Неверное использование команды!";
     await message.safeReply(response);
   },
 
@@ -152,7 +152,7 @@ module.exports = {
         interaction.options.getString("status"),
         interaction.options.getInteger("threshold")
       );
-    } else response = "Invalid command usage!";
+    } else response = "Неверное использование команды!";
 
     await interaction.followUp(response);
   },
@@ -162,14 +162,14 @@ async function antiGhostPing(settings, input) {
   const status = input.toUpperCase() === "ON" ? true : false;
   settings.automod.anti_ghostping = status;
   await settings.save();
-  return `Configuration saved! Anti-Ghostping is now ${status ? "enabled" : "disabled"}`;
+  return `Конфигурация сохранена! АНТИ-Гостпинги теперь ${status ? "включен" : "выключен"}`;
 }
 
 async function antiSpam(settings, input) {
   const status = input.toUpperCase() === "ON" ? true : false;
   settings.automod.anti_spam = status;
   await settings.save();
-  return `Antispam detection is now ${status ? "enabled" : "disabled"}`;
+  return `Обнаружение Антиспама теперь ${status ? "включено" : "выключено"}`;
 }
 
 async function antiMassMention(settings, input, threshold) {
@@ -180,5 +180,5 @@ async function antiMassMention(settings, input, threshold) {
     settings.automod.anti_massmention = threshold;
   }
   await settings.save();
-  return `Mass mention detection is now ${status ? "enabled" : "disabled"}`;
+  return `Обнаружение массового упоминания теперь ${status ? "включено" : "выключено"}`;
 }

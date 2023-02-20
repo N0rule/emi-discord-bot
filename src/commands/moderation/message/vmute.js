@@ -2,7 +2,7 @@ const vmute = require("../shared/vmute");
 
 module.exports = {
   name: "vmute",
-  description: "mutes specified member's voice",
+  description: "заглушает голос указанного участника",
   category: "MODERATION",
   userPermissions: ["MuteMembers"],
   botPermissions: ["MuteMembers"],
@@ -17,7 +17,7 @@ module.exports = {
 
   async messageRun(message, args) {
     const target = await message.guild.resolveMember(args[0], true);
-    if (!target) return message.safeReply(`No user found matching ${args[0]}`);
+    if (!target) return message.safeReply(`Нет подходяшего пользователя под: ${args[0]}`);
     const reason = message.content.split(args[0])[1].trim();
     const response = await vmute(message, target, reason);
     await message.safeReply(response);

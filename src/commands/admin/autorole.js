@@ -5,7 +5,7 @@ const { ApplicationCommandOptionType } = require("discord.js");
  */
 module.exports = {
   name: "autorole",
-  description: "setup role to be given when a member joins the server",
+  description: "автороль при заходе на сервер",
   category: "ADMIN",
   userPermissions: ["ManageGuild"],
   command: {
@@ -19,18 +19,18 @@ module.exports = {
     options: [
       {
         name: "add",
-        description: "setup the autorole",
+        description: "установить автороль",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "role",
-            description: "the role to be given",
+            description: "какую роль выдает",
             type: ApplicationCommandOptionType.Role,
             required: false,
           },
           {
             name: "role_id",
-            description: "the role id to be given",
+            description: "айди выдоваемой роли",
             type: ApplicationCommandOptionType.String,
             required: false,
           },
@@ -38,7 +38,7 @@ module.exports = {
       },
       {
         name: "remove",
-        description: "disable the autorole",
+        description: "удалить автороль",
         type: ApplicationCommandOptionType.Subcommand,
       },
     ],
@@ -52,7 +52,7 @@ module.exports = {
       response = await setAutoRole(message, null, data.settings);
     } else {
       const roles = message.guild.findMatchingRoles(input);
-      if (roles.length === 0) response = "No matching roles found matching your query";
+      if (roles.length === 0) response = "Нету таких ролей";
       else response = await setAutoRole(message, roles[0], data.settings);
     }
 
@@ -68,10 +68,10 @@ module.exports = {
       let role = interaction.options.getRole("role");
       if (!role) {
         const role_id = interaction.options.getString("role_id");
-        if (!role_id) return interaction.followUp("Please provide a role or role id");
+        if (!role_id) return interaction.followUp("пожалуйста выбирите роль или роль айди");
 
         const roles = interaction.guild.findMatchingRoles(role_id);
-        if (roles.length === 0) return interaction.followUp("No matching roles found matching your query");
+        if (roles.length === 0) return interaction.followUp("Нету таких ролей");
         role = roles[0];
       }
 
@@ -84,7 +84,7 @@ module.exports = {
     }
 
     // default
-    else response = "Invalid subcommand";
+    else response = "Неправильная субкоманда";
 
     await interaction.followUp(response);
   },
@@ -97,16 +97,16 @@ module.exports = {
  */
 async function setAutoRole({ guild }, role, settings) {
   if (role) {
-    if (role.id === guild.roles.everyone.id) return "You cannot set `@everyone` as the autorole";
-    if (!guild.members.me.permissions.has("ManageRoles")) return "I don't have the `ManageRoles` permission";
+    if (role.id === guild.roles.everyone.id) return "вы не можете поставить `@everyone` как автороль";
+    if (!guild.members.me.permissions.has("ManageRoles")) return "у меня нету `Менятьроли` права";
     if (guild.members.me.roles.highest.position < role.position)
-      return "I don't have the permissions to assign this role";
-    if (role.managed) return "Oops! This role is managed by an integration";
+      return "Нет прав что-бы установить эту роль";
+    if (role.managed) return "Упс! Эта роль управляеться интеграцией";
   }
 
   if (!role) settings.autorole = null;
   else settings.autorole = role.id;
 
   await settings.save();
-  return `Configuration saved! Autorole is ${!role ? "disabled" : "setup"}`;
+  return `Конфигруация сохранена! Автороль ${!role ? "выключена" : "установлена"}`;
 }

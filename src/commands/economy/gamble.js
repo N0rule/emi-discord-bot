@@ -8,7 +8,7 @@ const { getRandomInt } = require("@helpers/Utils");
  */
 module.exports = {
   name: "gamble",
-  description: "try your luck by gambling",
+  description: "испытай свою удачу, поставив деньги на кон",
   category: "ECONOMY",
   botPermissions: ["EmbedLinks"],
   command: {
@@ -22,7 +22,7 @@ module.exports = {
     options: [
       {
         name: "coins",
-        description: "number of coins to bet",
+        description: "количество монет для ставки",
         required: true,
         type: ApplicationCommandOptionType.Integer,
       },
@@ -31,7 +31,7 @@ module.exports = {
 
   async messageRun(message, args) {
     const betAmount = parseInt(args[0]);
-    if (isNaN(betAmount)) return message.safeReply("Bet amount needs to be a valid number input");
+    if (isNaN(betAmount)) return message.safeReply("Сумма ставки должна быть допустимым числом.");
     const response = await gamble(message.author, betAmount);
     await message.safeReply(response);
   },
@@ -76,21 +76,21 @@ function calculateReward(amount, var1, var2, var3) {
 }
 
 async function gamble(user, betAmount) {
-  if (isNaN(betAmount)) return "Bet amount needs to be a valid number input";
-  if (betAmount < 0) return "Bet amount cannot be negative";
-  if (betAmount < 10) return "Bet amount cannot be less than 10";
+  if (isNaN(betAmount)) return "Сумма ставки должна быть допустимым числом.";
+  if (betAmount < 0) return "Сумма ставки не может быть отрицательной";
+  if (betAmount < 10) return "Сумма ставки не может быть меньше 10";
 
   const userDb = await getUser(user);
   if (userDb.coins < betAmount)
-    return `You do not have sufficient coins to gamble!\n**Coin balance:** ${userDb.coins || 0}${ECONOMY.CURRENCY}`;
+    return `У вас недостаточно монет для ставки!\n**Ваш Баланс:** ${userDb.coins || 0}${ECONOMY.CURRENCY}`;
 
   const slot1 = getEmoji();
   const slot2 = getEmoji();
   const slot3 = getEmoji();
 
   const str = `
-    **Gamble Amount:** ${betAmount}${ECONOMY.CURRENCY}
-    **Multiplier:** 2x
+    **Сумма игры:** ${betAmount}${ECONOMY.CURRENCY}
+    **Множитель:** 2x
     ╔══════════╗
     ║ ${getEmoji()} ║ ${getEmoji()} ║ ${getEmoji()} ‎‎‎‎║
     ╠══════════╣
@@ -101,7 +101,7 @@ async function gamble(user, betAmount) {
     `;
 
   const reward = calculateReward(betAmount, slot1, slot2, slot3);
-  const result = (reward > 0 ? `You won: ${reward}` : `You lost: ${betAmount}`) + ECONOMY.CURRENCY;
+  const result = (reward > 0 ? `Ты победил: ${reward}` : `Ты проиграл: ${betAmount}`) + ECONOMY.CURRENCY;
   const balance = reward - betAmount;
 
   userDb.coins += balance;
@@ -112,7 +112,7 @@ async function gamble(user, betAmount) {
     .setColor(EMBED_COLORS.TRANSPARENT)
     .setThumbnail("https://i.pinimg.com/originals/9a/f1/4e/9af14e0ae92487516894faa9ea2c35dd.gif")
     .setDescription(str)
-    .setFooter({ text: `${result}\nUpdated Wallet balance: ${userDb?.coins}${ECONOMY.CURRENCY}` });
+    .setFooter({ text: `${result}\nОбновленный баланс кошелька: ${userDb?.coins}${ECONOMY.CURRENCY}` });
 
   return { embeds: [embed] };
 }

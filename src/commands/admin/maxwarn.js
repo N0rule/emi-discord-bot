@@ -5,7 +5,7 @@ const { ApplicationCommandOptionType } = require("discord.js");
  */
 module.exports = {
   name: "maxwarn",
-  description: "set max warnings configuration",
+  description: "установить максимальное кол-во предов",
   category: "ADMIN",
   userPermissions: ["ManageGuild"],
   command: {
@@ -14,11 +14,11 @@ module.exports = {
     subcommands: [
       {
         trigger: "limit <number>",
-        description: "set max warnings a member can receive before taking an action",
+        description: "установить максимальное количество предупреждений",
       },
       {
         trigger: "action <timeout|kick|ban>",
-        description: "set action to performed after receiving maximum warnings",
+        description: "действие для выполнения",
       },
     ],
   },
@@ -28,12 +28,12 @@ module.exports = {
     options: [
       {
         name: "limit",
-        description: "set max warnings a member can receive before taking an action",
+        description: "установить максимальное количество предупреждений",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "amount",
-            description: "max number of strikes",
+            description: "максимальное количество предов",
             type: ApplicationCommandOptionType.Integer,
             required: true,
           },
@@ -41,12 +41,12 @@ module.exports = {
       },
       {
         name: "action",
-        description: "set action to performed after receiving maximum warnings",
+        description: "установить действие",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "action",
-            description: "action to perform",
+            description: "действие для выполнения",
             type: ApplicationCommandOptionType.String,
             required: true,
             choices: [
@@ -71,19 +71,19 @@ module.exports = {
 
   async messageRun(message, args, data) {
     const input = args[0].toLowerCase();
-    if (!["limit", "action"].includes(input)) return message.safeReply("Invalid command usage");
+    if (!["limit", "action"].includes(input)) return message.safeReply("Неверное использование команды");
 
     let response;
     if (input === "limit") {
       const max = parseInt(args[1]);
-      if (isNaN(max) || max < 1) return message.safeReply("Max Warnings must be a valid number greater than 0");
+      if (isNaN(max) || max < 1) return message.safeReply("Максимальное количество предупреждений должно быть больше 0.");
       response = await setLimit(max, data.settings);
     }
 
     if (input === "action") {
       const action = args[1]?.toUpperCase();
       if (!action || !["TIMEOUT", "KICK", "BAN"].includes(action))
-        return message.safeReply("Not a valid action. Action can be `Timeout`/`Kick`/`Ban`");
+        return message.safeReply("Не допустимое действие. Допустимые действия `Timeout`/`Kick`/`Ban`");
       response = await setAction(message.guild, action, data.settings);
     }
 
@@ -109,29 +109,29 @@ module.exports = {
 async function setLimit(limit, settings) {
   settings.max_warn.limit = limit;
   await settings.save();
-  return `Configuration saved! Maximum warnings is set to ${limit}`;
+  return `Конфигурация сохранена! Максимальное количество предупреждений установлено на ${limit}`;
 }
 
 async function setAction(guild, action, settings) {
   if (action === "TIMEOUT") {
     if (!guild.members.me.permissions.has("ModerateMembers")) {
-      return "I do not permission to timeout members";
+      return "У меня нет прав для тайм-аута участников";
     }
   }
 
   if (action === "KICK") {
     if (!guild.members.me.permissions.has("KickMembers")) {
-      return "I do not have permission to kick members";
+      return "У меня нет прав для кика участников";
     }
   }
 
   if (action === "BAN") {
     if (!guild.members.me.permissions.has("BanMembers")) {
-      return "I do not have permission to ban members";
+      return "У меня нет прав для бана участников";
     }
   }
 
   settings.max_warn.action = action;
   await settings.save();
-  return `Configuration saved! Automod action is set to ${action}`;
+  return `Конфигурация сохранена! Действие автомода настроено на ${action}`;
 }

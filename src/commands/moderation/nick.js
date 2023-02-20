@@ -6,7 +6,7 @@ const { ApplicationCommandOptionType } = require("discord.js");
  */
 module.exports = {
   name: "nick",
-  description: "nickname commands",
+  description: "команды ников",
   category: "MODERATION",
   botPermissions: ["ManageNicknames"],
   userPermissions: ["ManageNicknames"],
@@ -16,11 +16,11 @@ module.exports = {
     subcommands: [
       {
         trigger: "set <@member> <name>",
-        description: "sets the nickname of the specified member",
+        description: "устанавливает никнейм указанного участника",
       },
       {
         trigger: "reset <@member>",
-        description: "reset a members nickname",
+        description: "сбрасывает ник участника",
       },
     ],
   },
@@ -29,18 +29,18 @@ module.exports = {
     options: [
       {
         name: "set",
-        description: "change a members nickname",
+        description: "изменить ник участника",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "user",
-            description: "the member whose nick you want to set",
+            description: "участник, чей ник вы хотите установить",
             type: ApplicationCommandOptionType.User,
             required: true,
           },
           {
             name: "name",
-            description: "the nickname to set",
+            description: "никнейм для установки",
             type: ApplicationCommandOptionType.String,
             required: true,
           },
@@ -48,12 +48,12 @@ module.exports = {
       },
       {
         name: "reset",
-        description: "reset a members nickname",
+        description: "сбросить ник участника",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "user",
-            description: "the members whose nick you want to reset",
+            description: "участник, чей ник вы хотите сбросить",
             type: ApplicationCommandOptionType.User,
             required: true,
           },
@@ -67,9 +67,9 @@ module.exports = {
 
     if (sub === "set") {
       const target = await message.guild.resolveMember(args[1]);
-      if (!target) return message.safeReply("Could not find matching member");
+      if (!target) return message.safeReply("Не удалось найти подходящего пользователя");
       const name = args.slice(2).join(" ");
-      if (!name) return message.safeReply("Please specify a nickname");
+      if (!name) return message.safeReply("Пожалуйста, укажите никнейм");
 
       const response = await nickname(message, target, name);
       return message.safeReply(response);
@@ -78,7 +78,7 @@ module.exports = {
     //
     else if (sub === "reset") {
       const target = await message.guild.resolveMember(args[1]);
-      if (!target) return message.safeReply("Could not find matching member");
+      if (!target) return message.safeReply("Не удалось найти подходящего пользователя");
 
       const response = await nickname(message, target);
       return message.safeReply(response);
@@ -96,16 +96,16 @@ module.exports = {
 
 async function nickname({ member, guild }, target, name) {
   if (!canModerate(member, target)) {
-    return `Oops! You cannot manage nickname of ${target.user.username}`;
+    return `Ой! Вы не можете управлять ником ${target.user.username}`;
   }
   if (!canModerate(guild.members.me, target)) {
-    return `Oops! I cannot manage nickname of ${target.user.username}`;
+    return `Ой! Я не могу управлять ником ${target.user.username}`;
   }
 
   try {
     await target.setNickname(name);
-    return `Successfully ${name ? "changed" : "reset"} nickname of ${target.user.username}`;
+    return `Успешно ${name ? "изменен" : "сброшен"} никнейм ${target.user.username}`;
   } catch (ex) {
-    return `Failed to ${name ? "change" : "reset"} nickname for ${target.displayName}. Did you provide a valid name?`;
+    return `Не удалось ${name ? "изменить" : "сбросить"} никнейм ${target.displayName}. Имя точно правильное?`;
   }
 }

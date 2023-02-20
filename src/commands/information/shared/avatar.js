@@ -13,11 +13,11 @@ module.exports = (user) => {
   const x2048 = user.displayAvatarURL({ extension: "png", size: 2048 });
 
   const embed = new EmbedBuilder()
-    .setTitle(`Avatar of ${user.username}`)
+    .setTitle(`Аватар пользователя ${user.username}`)
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setImage(x256)
     .setDescription(
-      `Links: • [x64](${x64}) ` +
+      `Ccылки: • [x64](${x64}) ` +
         `• [x128](${x128}) ` +
         `• [x256](${x256}) ` +
         `• [x512](${x512}) ` +

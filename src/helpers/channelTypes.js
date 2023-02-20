@@ -6,26 +6,26 @@ const { ChannelType } = require("discord.js");
 module.exports = (type) => {
   switch (type) {
     case ChannelType.GuildText:
-      return "Guild Text";
+      return "Сервер Текст";
     case ChannelType.GuildVoice:
-      return "Guild Voice";
+      return "Сервер Войс";
     case ChannelType.GuildCategory:
-      return "Guild Category";
+      return "Сервер Категория";
     case ChannelType.GuildAnnouncement:
-      return "Guild Announcement";
+      return "Сервер Объявление";
     case ChannelType.AnnouncementThread:
-      return "Guild Announcement Thread";
+      return "Сервер Объявление Тред";
     case ChannelType.PublicThread:
-      return "Guild Public Thread";
+      return "Сервер Публичный Тред";
     case ChannelType.PrivateThread:
-      return "Guild Private Thread";
+      return "Сервер Приватный Тред";
     case ChannelType.GuildStageVoice:
-      return "Guild Stage Voice";
+      return "Сервер Войс Сцена";
     case ChannelType.GuildDirectory:
-      return "Guild Directory";
+      return "Сервер Деректория";
     case ChannelType.GuildForum:
-      return "Guild Forum";
+      return "Сервер Форум";
     default:
-      return "Unknown";
+      return "Неизвестно";
   }
 };

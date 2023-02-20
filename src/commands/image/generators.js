@@ -37,7 +37,7 @@ const availableGenerators = [
 module.exports = {
   name: "generator",
   description: "generates a meme for the provided image",
-  cooldown: 1,
+  cooldown: 5,
   category: "IMAGE",
   botPermissions: ["EmbedLinks", "AttachFiles"],
   command: {
