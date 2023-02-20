@@ -9,7 +9,7 @@ const DUMMY_TOKEN = "MY_TOKEN_IS_SECRET";
  */
 module.exports = {
   name: "eval",
-  description: "evaluates something",
+  description: "оценивает что-то",
   category: "OWNER",
   botPermissions: ["EmbedLinks"],
   command: {
@@ -18,11 +18,11 @@ module.exports = {
     minArgsCount: 1,
   },
   slashCommand: {
-    enabled: false,
+    enabled: true,
     options: [
       {
         name: "expression",
-        description: "content to evaluate",
+        description: "контент для оценки",
         type: ApplicationCommandOptionType.String,
         required: true,
       },
@@ -32,7 +32,7 @@ module.exports = {
   async messageRun(message, args) {
     const input = args.join(" ");
 
-    if (!input) return message.safeReply("Please provide code to eval");
+    if (!input) return message.safeReply("Пожалуйста, предоставьте код для eval");
 
     let response;
     try {

@@ -5,7 +5,7 @@ const { musicValidations } = require("@helpers/BotUtils");
  */
 module.exports = {
   name: "resume",
-  description: "resumes the music player",
+  description: "продолжает музыку",
   category: "MUSIC",
   validations: musicValidations,
   command: {
@@ -31,7 +31,7 @@ module.exports = {
  */
 function resumePlayer({ client, guildId }) {
   const player = client.musicManager.getPlayer(guildId);
-  if (!player.paused) return "The player is already resumed";
+  if (!player.paused) return "Музыка уже продолжена";
   player.resume();
-  return "▶️ Resumed the music player";
+  return "▶️ Продолжено прослушивание музыки";
 }

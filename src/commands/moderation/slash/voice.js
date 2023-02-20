@@ -11,7 +11,7 @@ const { ApplicationCommandOptionType, ChannelType } = require("discord.js");
  */
 module.exports = {
   name: "voice",
-  description: "voice moderation commands",
+  description: "голосовые команды модерации",
   category: "MODERATION",
   userPermissions: ["MuteMembers", "MoveMembers", "DeafenMembers"],
   botPermissions: ["MuteMembers", "MoveMembers", "DeafenMembers"],
@@ -23,18 +23,18 @@ module.exports = {
     options: [
       {
         name: "mute",
-        description: "mute a member's voice",
+        description: "отключить голос участника",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "user",
-            description: "the target member",
+            description: "участник",
             type: ApplicationCommandOptionType.User,
             required: true,
           },
           {
             name: "reason",
-            description: "reason for mute",
+            description: "причина для мута",
             type: ApplicationCommandOptionType.String,
             required: false,
           },
@@ -42,18 +42,18 @@ module.exports = {
       },
       {
         name: "unmute",
-        description: "unmute a muted member's voice",
+        description: "включить голос участника",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "user",
-            description: "the target member",
+            description: "участник",
             type: ApplicationCommandOptionType.User,
             required: true,
           },
           {
             name: "reason",
-            description: "reason for unmute",
+            description: "причина для анмута",
             type: ApplicationCommandOptionType.String,
             required: false,
           },
@@ -61,18 +61,18 @@ module.exports = {
       },
       {
         name: "deafen",
-        description: "deafen a member in voice channel",
+        description: "откл.звук участника в голосовом канале",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "user",
-            description: "the target member",
+            description: "участник",
             type: ApplicationCommandOptionType.User,
             required: true,
           },
           {
             name: "reason",
-            description: "reason for deafen",
+            description: "причина для откл.звук",
             type: ApplicationCommandOptionType.String,
             required: false,
           },
@@ -80,18 +80,18 @@ module.exports = {
       },
       {
         name: "undeafen",
-        description: "undeafen a member in voice channel",
+        description: "вкл.звук участника в голосовом канале",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "user",
-            description: "the target member",
+            description: "участник",
             type: ApplicationCommandOptionType.User,
             required: true,
           },
           {
             name: "reason",
-            description: "reason for undeafen",
+            description: "причина для вкл.звук",
             type: ApplicationCommandOptionType.String,
             required: false,
           },
@@ -99,18 +99,18 @@ module.exports = {
       },
       {
         name: "kick",
-        description: "kick a member from voice channel",
+        description: "кикнуть участника из голосового канала",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "user",
-            description: "the target member",
+            description: "участник",
             type: ApplicationCommandOptionType.User,
             required: true,
           },
           {
             name: "reason",
-            description: "reason for mute",
+            description: "причина для кика",
             type: ApplicationCommandOptionType.String,
             required: false,
           },
@@ -118,25 +118,25 @@ module.exports = {
       },
       {
         name: "move",
-        description: "move a member from one voice channel to another",
+        description: "переместить участника с одного голосового канала на другой",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "user",
-            description: "the target member",
+            description: "участник",
             type: ApplicationCommandOptionType.User,
             required: true,
           },
           {
             name: "channel",
-            description: "the channel to move member to",
+            description: "канал, на который нужно переместить участника",
             type: ApplicationCommandOptionType.Channel,
             channelTypes: [ChannelType.GuildVoice, ChannelType.GuildStageVoice],
             required: true,
           },
           {
             name: "reason",
-            description: "reason for mute",
+            description: "причина перемещения",
             type: ApplicationCommandOptionType.String,
             required: false,
           },

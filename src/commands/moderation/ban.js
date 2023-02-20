@@ -6,7 +6,7 @@ const { ApplicationCommandOptionType } = require("discord.js");
  */
 module.exports = {
   name: "ban",
-  description: "bans the specified member",
+  description: "забанить указанного участника",
   category: "MODERATION",
   botPermissions: ["BanMembers"],
   userPermissions: ["BanMembers"],
@@ -20,13 +20,13 @@ module.exports = {
     options: [
       {
         name: "user",
-        description: "the target member",
+        description: "участник",
         type: ApplicationCommandOptionType.User,
         required: true,
       },
       {
         name: "reason",
-        description: "reason for ban",
+        description: "причина для бана",
         type: ApplicationCommandOptionType.String,
         required: false,
       },
@@ -36,7 +36,7 @@ module.exports = {
   async messageRun(message, args) {
     const match = await message.client.resolveUsers(args[0], true);
     const target = match[0];
-    if (!target) return message.safeReply(`No user found matching ${args[0]}`);
+    if (!target) return message.safeReply(`Нет подходяшего пользователя под: ${args[0]}`);
     const reason = message.content.split(args[0])[1].trim();
     const response = await ban(message.member, target, reason);
     await message.safeReply(response);
@@ -58,8 +58,8 @@ module.exports = {
  */
 async function ban(issuer, target, reason) {
   const response = await banTarget(issuer, target, reason);
-  if (typeof response === "boolean") return `${target.tag} is banned!`;
-  if (response === "BOT_PERM") return `I do not have permission to ban ${target.tag}`;
-  else if (response === "MEMBER_PERM") return `You do not have permission to ban ${target.tag}`;
-  else return `Failed to ban ${target.tag}`;
+  if (typeof response === "boolean") return `${target.tag} Забанен!`;
+  if (response === "BOT_PERM") return `У меня нет прав для бана ${target.tag}`;
+  else if (response === "MEMBER_PERM") return `У тебя нет прав для баба ${target.tag}`;
+  else return `Ошибка бана ${target.tag}`;
 }

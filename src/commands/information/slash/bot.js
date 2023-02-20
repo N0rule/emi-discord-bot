@@ -23,19 +23,19 @@ module.exports = {
   slashCommand: {
     enabled: true,
     options: [
-      {
+      /*{
         name: "invite",
         description: "get bot's invite",
         type: ApplicationCommandOptionType.Subcommand,
-      },
+      },*/
       {
         name: "stats",
-        description: "get bot's statistics",
+        description: "получить статистику бота",
         type: ApplicationCommandOptionType.Subcommand,
       },
       {
         name: "uptime",
-        description: "get bot's uptime",
+        description: "получить аптайм бота",
         type: ApplicationCommandOptionType.Subcommand,
       },
     ],
@@ -45,7 +45,7 @@ module.exports = {
     const sub = interaction.options.getSubcommand();
     if (!sub) return interaction.followUp("Not a valid subcommand");
 
-    // Invite
+    /* Invite
     if (sub === "invite") {
       const response = botInvite(interaction.client);
       try {
@@ -54,17 +54,17 @@ module.exports = {
       } catch (ex) {
         return interaction.followUp("I cannot send you my information! Is your DM open?");
       }
-    }
+    }*/
 
     // Stats
-    else if (sub === "stats") {
+    /*else*/ if (sub === "stats") {
       const response = botstats(interaction.client);
       return interaction.followUp(response);
     }
 
     // Uptime
     else if (sub === "uptime") {
-      await interaction.followUp(`My Uptime: \`${timeformat(process.uptime())}\``);
+      await interaction.followUp(`Аптайм: \`${timeformat(process.uptime())}\``);
     }
   },
 };

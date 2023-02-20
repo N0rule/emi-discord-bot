@@ -36,18 +36,18 @@ const logModeration = async (issuer, target, reason, type, data = {}) => {
   if (settings.modlog_channel) logChannel = guild.channels.cache.get(settings.modlog_channel);
 
   const embed = new EmbedBuilder().setFooter({
-    text: `By ${issuer.displayName} • ${issuer.id}`,
+    text: `Модератор ${issuer.displayName} • ${issuer.id}`,
     iconURL: issuer.displayAvatarURL(),
   });
 
   const fields = [];
   switch (type.toUpperCase()) {
-    case "PURGE":
-      embed.setAuthor({ name: `Moderation - ${type}` });
+    case "CLEAR":
+      embed.setAuthor({ name: `Модерация - ${type}` });
       fields.push(
-        { name: "Purge Type", value: data.purgeType, inline: true },
-        { name: "Messages", value: data.deletedCount.toString(), inline: true },
-        { name: "Channel", value: `#${data.channel.name} [${data.channel.id}]`, inline: false }
+        { name: "Тип clear", value: data.clearType, inline: true },
+        { name: "Сообщения", value: data.deletedCount.toString(), inline: true },
+        { name: "Канал", value: `#${data.channel.name} [${data.channel.id}]`, inline: false }
       );
       break;
 
@@ -100,26 +100,26 @@ const logModeration = async (issuer, target, reason, type, data = {}) => {
       break;
   }
 
-  if (type.toUpperCase() !== "PURGE") {
-    embed.setAuthor({ name: `Moderation - ${type}` }).setThumbnail(target.displayAvatarURL());
+  if (type.toUpperCase() !== "CLEAR") {
+    embed.setAuthor({ name: `Модерация - ${type}` }).setThumbnail(target.displayAvatarURL());
 
     if (target instanceof GuildMember) {
-      fields.push({ name: "Member", value: `${target.displayName} [${target.id}]`, inline: false });
+      fields.push({ name: "Участник", value: `${target.displayName} [${target.id}]`, inline: false });
     } else {
-      fields.push({ name: "User", value: `${target.tag} [${target.id}]`, inline: false });
+      fields.push({ name: "Пользователь", value: `${target.tag} [${target.id}]`, inline: false });
     }
 
-    fields.push({ name: "Reason", value: reason || "No reason provided", inline: false });
+    fields.push({ name: "Причина", value: reason || "Причина не указана", inline: false });
 
     if (type.toUpperCase() === "TIMEOUT") {
       fields.push({
-        name: "Expires",
+        name: "Заканчивается",
         value: `<t:${Math.round(target.communicationDisabledUntilTimestamp / 1000)}:R>`,
         inline: true,
       });
     }
     if (type.toUpperCase() === "MOVE") {
-      fields.push({ name: "Moved to", value: data.channel.name, inline: true });
+      fields.push({ name: "Перемещен в", value: data.channel.name, inline: true });
     }
   }
 
@@ -166,7 +166,7 @@ module.exports = class ModUtils {
    * @param {number} amount
    * @param {any} argument
    */
-  static async purgeMessages(issuer, channel, type, amount, argument) {
+  static async clearMessages(issuer, channel, type, amount, argument) {
     if (!channel.permissionsFor(issuer).has(["ManageMessages", "ReadMessageHistory"])) {
       return "MEMBER_PERM";
     }
@@ -217,15 +217,15 @@ module.exports = class ModUtils {
       }
 
       const deletedMessages = await channel.bulkDelete(toDelete, true);
-      await logModeration(issuer, "", "", "Purge", {
-        purgeType: type,
+      await logModeration(issuer, "", "", "clear", {
+        clearType: type,
         channel: channel,
         deletedCount: deletedMessages.size,
       });
 
       return deletedMessages.size;
     } catch (ex) {
-      error("purgeMessages", ex);
+      error("clearMessages", ex);
       return "ERROR";
     }
   }

@@ -29,52 +29,52 @@ module.exports = (client) => {
   const overallUsage = `${Math.floor(((os.totalmem() - os.freemem()) / os.totalmem()) * 100)}%`;
 
   let desc = "";
-  desc += `❒ Total guilds: ${guilds}\n`;
-  desc += `❒ Total users: ${users}\n`;
-  desc += `❒ Total channels: ${channels}\n`;
-  desc += `❒ Websocket Ping: ${client.ws.ping} ms\n`;
+  desc += `❒ Количество серверов: ${guilds}\n`;
+  desc += `❒ Количество пользователей: ${users}\n`;
+  desc += `❒ Количество Каналов: ${channels}\n`;
+  desc += `❒ Пинг ВебСокета: ${client.ws.ping} мс\n`;
   desc += "\n";
 
   const embed = new EmbedBuilder()
-    .setTitle("Bot Information")
+    .setTitle("Информация Бота")
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setThumbnail(client.user.displayAvatarURL())
     .setDescription(desc)
     .addFields(
       {
-        name: "CPU",
+        name: "Проц",
         value: stripIndent`
-        ❯ **OS:** ${platform} [${architecture}]
-        ❯ **Cores:** ${cores}
-        ❯ **Usage:** ${cpuUsage}
+        ❯ **ОС:** ${platform} [${architecture}]
+        ❯ **Ядер:** ${cores}
+        ❯ **Использование:** ${cpuUsage}
         `,
         inline: true,
       },
       {
-        name: "Bot's RAM",
+        name: "ОП Бота",
         value: stripIndent`
-        ❯ **Used:** ${botUsed}
-        ❯ **Available:** ${botAvailable}
-        ❯ **Usage:** ${botUsage}
+        ❯ **Использовано:** ${botUsed}
+        ❯ **Доступно:** ${botAvailable}
+        ❯ **Использование:** ${botUsage}
         `,
         inline: true,
       },
       {
-        name: "Overall RAM",
+        name: "Общая ОП",
         value: stripIndent`
-        ❯ **Used:** ${overallUsed}
-        ❯ **Available:** ${overallAvailable}
-        ❯ **Usage:** ${overallUsage}
+        ❯ **Использовано:** ${overallUsed}
+        ❯ **Доступно:** ${overallAvailable}
+        ❯ **Использование:** ${overallUsage}
         `,
         inline: true,
       },
       {
-        name: "Node Js version",
+        name: "Node Js Версия",
         value: process.versions.node,
         inline: false,
       },
       {
-        name: "Uptime",
+        name: "Аптайм",
         value: "```" + timeformat(process.uptime()) + "```",
         inline: false,
       }
@@ -98,3 +98,4 @@ module.exports = (client) => {
 
   return { embeds: [embed], components: [buttonsRow] };
 };
+

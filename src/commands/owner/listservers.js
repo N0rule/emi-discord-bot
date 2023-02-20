@@ -8,7 +8,7 @@ const MAX_PER_PAGE = 10; // max number of embed fields per page
  */
 module.exports = {
   name: "listservers",
-  description: "lists all/matching servers",
+  description: "перечисляет все/подходящие серверы c ботом",
   category: "OWNER",
   botPermissions: ["EmbedLinks"],
   command: {
@@ -42,7 +42,7 @@ module.exports = {
     const maxPerPage = MAX_PER_PAGE;
     const totalPages = Math.ceil(total / maxPerPage);
 
-    if (totalPages === 0) return message.safeReply("No servers found");
+    if (totalPages === 0) return message.safeReply("Серверы не найдены");
     let currentPage = 1;
 
     // Buttons Row
@@ -64,8 +64,8 @@ module.exports = {
 
       const embed = new EmbedBuilder()
         .setColor(client.config.EMBED_COLORS.BOT_EMBED)
-        .setAuthor({ name: "List of servers" })
-        .setFooter({ text: `${match ? "Matched" : "Total"} Servers: ${total} • Page ${currentPage} of ${totalPages}` });
+        .setAuthor({ name: "Список Серверов" })
+        .setFooter({ text: `${match ? "Соответствующих" : "Общее Кол-во"} Серверов: ${total} • Страница ${currentPage} из ${totalPages}` });
 
       const fields = [];
       for (let i = start; i < end; i++) {

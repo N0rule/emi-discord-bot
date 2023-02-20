@@ -3,7 +3,7 @@
  */
 module.exports = {
   name: "leaveserver",
-  description: "leave a server.",
+  description: "покинуть сервер боту",
   category: "OWNER",
   botPermissions: ["EmbedLinks"],
   command: {
@@ -20,18 +20,17 @@ module.exports = {
     const guild = message.client.guilds.cache.get(input);
     if (!guild) {
       return message.safeReply(
-        `No server found. Please provide a valid server id.
-        You may use ${data.prefix}findserver/${data.prefix}listservers to find the server id`
+        `Сервер не найден. Укажите действительный ID сервера.\nВы можете использовать ${data.prefix}findserver/${data.prefix}listservers чтобы найти ID сервера`
       );
     }
 
     const name = guild.name;
     try {
       await guild.leave();
-      return message.safeReply(`Successfully Left \`${name}\``);
+      return message.safeReply(`Успешно вышел с  \`${name}\``);
     } catch (err) {
       message.client.logger.error("GuildLeave", err);
-      return message.safeReply(`Failed to leave \`${name}\``);
+      return message.safeReply(`Не удалось выйти \`${name}\``);
     }
   },
 };

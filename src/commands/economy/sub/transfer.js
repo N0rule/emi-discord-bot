@@ -3,15 +3,15 @@ const { getUser } = require("@schemas/User");
 const { ECONOMY, EMBED_COLORS } = require("@root/config");
 
 module.exports = async (self, target, coins) => {
-  if (isNaN(coins) || coins <= 0) return "Please enter a valid amount of coins to transfer";
-  if (target.bot) return "You cannot transfer coins to bots!";
-  if (target.id === self.id) return "You cannot transfer coins to self!";
+  if (isNaN(coins) || coins <= 0) return "Пожалуйста, введите действительное количество монет для перевода";
+  if (target.bot) return "Вы не можете передавать монеты ботам!";
+  if (target.id === self.id) return "Вы не можете передавать монеты себе!";
 
   const userDb = await getUser(self);
 
   if (userDb.bank < coins) {
-    return `Insufficient bank balance! You only have ${userDb.bank}${ECONOMY.CURRENCY} in your bank account.${
-      userDb.coins > 0 && "\nYou must deposit your coins in bank before you can transfer"
+    return `Недостаточный баланс банка! У вас всего ${userDb.bank}${ECONOMY.CURRENCY} в вашем банковском счете.${
+      userDb.coins > 0 && "\nВы должны внести свои монеты в банк, прежде чем сможете их перевести"
     } `;
   }
 
@@ -25,8 +25,8 @@ module.exports = async (self, target, coins) => {
 
   const embed = new EmbedBuilder()
     .setColor(EMBED_COLORS.BOT_EMBED)
-    .setAuthor({ name: "Updated Balance" })
-    .setDescription(`You have successfully transferred ${coins}${ECONOMY.CURRENCY} to ${target.tag}`)
+    .setAuthor({ name: "Новый Баланс" })
+    .setDescription(`Вы успешно перевели ${target.tag} ${coins}${ECONOMY.CURRENCY} монет`) 
     .setTimestamp(Date.now());
 
   return { embeds: [embed] };

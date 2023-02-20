@@ -5,7 +5,7 @@ const botinvite = require("../shared/botinvite");
  */
 module.exports = {
   name: "botinvite",
-  description: "gives you bot invite",
+  description: "дает инвайт ссылку",
   category: "INFORMATION",
   botPermissions: ["EmbedLinks"],
   command: {

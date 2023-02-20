@@ -34,7 +34,7 @@ module.exports = {
       await interaction.deferReply({ ephemeral: context.ephemeral });
       await context.run(interaction);
     } catch (ex) {
-      interaction.followUp("Oops! An error occurred while running the command");
+      interaction.followUp("упс! Возникла Ошибка при использование команды");
       interaction.client.logger.error("contextRun", ex);
     } finally {
       applyCooldown(interaction.user.id, context);

@@ -7,7 +7,7 @@ const { EMBED_COLORS, ECONOMY } = require("@root/config.js");
  */
 module.exports = {
   name: "beg",
-  description: "beg from someone",
+  description: "попросить у кого-то",
   category: "ECONOMY",
   cooldown: 21600,
   botPermissions: ["EmbedLinks"],
@@ -31,32 +31,18 @@ module.exports = {
 
 async function beg(user) {
   let users = [
-    "PewDiePie",
-    "T-Series",
-    "Sans",
-    "RLX",
-    "Pro Gamer 711",
-    "Zenitsu",
-    "Jake Paul",
-    "Kaneki Ken",
-    "KSI",
-    "Naruto",
-    "Mr. Beast",
-    "Ur Mom",
-    "A Broke Person",
-    "Giyu Tomiaka",
-    "Bejing Embacy",
-    "A Random Asian Mom",
-    "Ur Step Sis",
-    "Jin Mori",
-    "Sakura (AKA Trash Can)",
-    "Hammy The Hamster",
-    "Kakashi Sensei",
-    "Minato",
-    "Tanjiro",
-    "ZHC",
-    "The IRS",
-    "Joe Mama",
+    "N0rule",
+    "Ребенок с донбасса",
+    "Санс",
+    "Зеницу",
+    "Твоя мама",
+    "Случайная азиатская мама",
+    "Твоя сводная сестра",
+    "Сакура (она же Мусорное ведро)",
+    "Налоговая служба",
+    "Джо Мама",
+    "Мистер Бист",
+    "Jaru D Kodo",
   ];
 
   let amount = Math.floor(Math.random() * `${ECONOMY.MAX_BEG_AMOUNT}` + `${ECONOMY.MIN_BEG_AMOUNT}`);
@@ -68,8 +54,8 @@ async function beg(user) {
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setAuthor({ name: `${user.username}`, iconURL: user.displayAvatarURL() })
     .setDescription(
-      `**${users[Math.floor(Math.random() * users.length)]}** donated you **${amount}** ${ECONOMY.CURRENCY}\n` +
-        `**Updated Balance:** **${userDb.coins}** ${ECONOMY.CURRENCY}`
+      `**${users[Math.floor(Math.random() * users.length)]}** донатит вам **${amount}** ${ECONOMY.CURRENCY}\n` +
+        `**Обновленный баланс:** **${userDb.coins}** ${ECONOMY.CURRENCY}`
     );
 
   return { embeds: [embed] };

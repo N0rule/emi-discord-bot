@@ -5,7 +5,7 @@ const { ApplicationCommandOptionType } = require("discord.js");
  */
 module.exports = {
   name: "autodelete",
-  description: "manage the autodelete settings for the server",
+  description: "управление настройками автоудаления для сервера",
   category: "AUTOMOD",
   userPermissions: ["ManageGuild"],
   command: {
@@ -14,19 +14,19 @@ module.exports = {
     subcommands: [
       {
         trigger: "attachments <on|off>",
-        description: "allow or disallow attachments in message",
+        description: "разрешить или запретить вложения в сообщение",
       },
       {
         trigger: "invites <on|off>",
-        description: "allow or disallow invites in message",
+        description: "разрешить или запретить приглашения в сообщении",
       },
       {
         trigger: "links <on|off>",
-        description: "allow or disallow links in message",
+        description: "разрешить или запретить ссылки в сообщении",
       },
       {
         trigger: "maxlines <number>",
-        description: "sets maximum lines allowed per message [0 to disable]",
+        description: "устанавливает максимальное количество строк, разрешенных для сообщения [0 для отключения]",
       },
     ],
   },
@@ -36,12 +36,12 @@ module.exports = {
     options: [
       {
         name: "attachments",
-        description: "allow or disallow attachments in message",
+        description: "разрешить или запретить вложения в сообщение",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "status",
-            description: "configuration status",
+            description: "статус конфигурации",
             required: true,
             type: ApplicationCommandOptionType.String,
             choices: [
@@ -59,12 +59,12 @@ module.exports = {
       },
       {
         name: "invites",
-        description: "allow or disallow discord invites in message",
+        description: "разрешить или запретить дискорд ивайты в сообщениях",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "status",
-            description: "configuration status",
+            description: "статус конфигурации",
             required: true,
             type: ApplicationCommandOptionType.String,
             choices: [
@@ -82,12 +82,12 @@ module.exports = {
       },
       {
         name: "links",
-        description: "allow or disallow links in message",
+        description: "разрешить или запретить ссылки в сообщении",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "status",
-            description: "configuration status",
+            description: "статус конфигурации",
             required: true,
             type: ApplicationCommandOptionType.String,
             choices: [
@@ -105,12 +105,12 @@ module.exports = {
       },
       {
         name: "maxlines",
-        description: "sets maximum lines allowed per message",
+        description: "устанавливает максимально допустимое количество строк в сообщении",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "amount",
-            description: "configuration amount (0 to disable)",
+            description: "количество строк (0 для отключения)",
             required: true,
             type: ApplicationCommandOptionType.Integer,
           },
@@ -126,21 +126,21 @@ module.exports = {
 
     if (sub == "attachments") {
       const status = args[1].toLowerCase();
-      if (!["on", "off"].includes(status)) return message.safeReply("Invalid status. Value must be `on/off`");
+      if (!["on", "off"].includes(status)) return message.safeReply("Неверный статус. Значение должно быть `вкл/выкл`");
       response = await antiAttachments(settings, status);
     }
 
     //
     else if (sub === "invites") {
       const status = args[1].toLowerCase();
-      if (!["on", "off"].includes(status)) return message.safeReply("Invalid status. Value must be `on/off`");
+      if (!["on", "off"].includes(status)) return message.safeReply("Неверный статус. Значение должно быть `вкл/выкл`");
       response = await antiInvites(settings, status);
     }
 
     //
     else if (sub == "links") {
       const status = args[1].toLowerCase();
-      if (!["on", "off"].includes(status)) return message.safeReply("Invalid status. Value must be `on/off`");
+      if (!["on", "off"].includes(status)) return message.safeReply("Неверный статус. Значение должно быть `вкл/выкл`");
       response = await antilinks(settings, status);
     }
 
@@ -148,13 +148,13 @@ module.exports = {
     else if (sub === "maxlines") {
       const max = args[1];
       if (isNaN(max) || Number.parseInt(max) < 1) {
-        return message.safeReply("Max Lines must be a valid number greater than 0");
+        return message.safeReply("Максимальное количество строк должно быть числом больше 0.");
       }
       response = await maxLines(settings, max);
     }
 
     //
-    else response = "Invalid command usage!";
+    else response = "Неверное использование команды!";
     await message.safeReply(response);
   },
 
@@ -168,7 +168,7 @@ module.exports = {
     } else if (sub === "invites") response = await antiInvites(settings, interaction.options.getString("status"));
     else if (sub == "links") response = await antilinks(settings, interaction.options.getString("status"));
     else if (sub === "maxlines") response = await maxLines(settings, interaction.options.getInteger("amount"));
-    else response = "Invalid command usage!";
+    else response = "Неверное использование команды!";
 
     await interaction.followUp(response);
   },
@@ -178,8 +178,8 @@ async function antiAttachments(settings, input) {
   const status = input.toUpperCase() === "ON" ? true : false;
   settings.automod.anti_attachments = status;
   await settings.save();
-  return `Messages ${
-    status ? "with attachments will now be automatically deleted" : "will not be filtered for attachments now"
+  return `Сообщения ${
+    status ? "с вложениями теперь будут автоматически удалены" : "теперь не будет фильтроваться для вложений"
   }`;
 }
 
@@ -187,8 +187,8 @@ async function antiInvites(settings, input) {
   const status = input.toUpperCase() === "ON" ? true : false;
   settings.automod.anti_invites = status;
   await settings.save();
-  return `Messages ${
-    status ? "with discord invites will now be automatically deleted" : "will not be filtered for discord invites now"
+  return `Сообщения ${
+    status ? "с приглашениями в дискорд теперь будут автоматически удаляться" : "с приглашениями в дискорд теперь не будет фильтроваться"
   }`;
 }
 
@@ -196,18 +196,18 @@ async function antilinks(settings, input) {
   const status = input.toUpperCase() === "ON" ? true : false;
   settings.automod.anti_links = status;
   await settings.save();
-  return `Messages ${status ? "with links will now be automatically deleted" : "will not be filtered for links now"}`;
+  return `Сообщения ${status ? "со ссылками теперь будут автоматически удаляться" : "теперь не будет фильтроваться для ссылок"}`;
 }
 
 async function maxLines(settings, input) {
   const lines = Number.parseInt(input);
-  if (isNaN(lines)) return "Please enter a valid number input";
+  if (isNaN(lines)) return "Пожалуйста, введите корректный номер";
 
   settings.automod.max_lines = lines;
   await settings.save();
   return `${
     input === 0
-      ? "Maximum line limit is disabled"
-      : `Messages longer than \`${input}\` lines will now be automatically deleted`
+      ? "Лимит максимального количества линий отключен"
+      : `Сообщения длиннее чем \`${input}\` строк теперь будут автоматически удаляться`
   }`;
 }

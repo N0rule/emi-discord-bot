@@ -14,11 +14,12 @@ const search_prefix = {
  */
 module.exports = {
   name: "play",
-  description: "play a song from youtube",
+  description: "Играет песню с ютуба",
   category: "MUSIC",
   botPermissions: ["EmbedLinks"],
   command: {
     enabled: true,
+    aliases: ["p"],
     usage: "<song-name>",
     minArgsCount: 1,
   },
@@ -27,7 +28,7 @@ module.exports = {
     options: [
       {
         name: "query",
-        description: "song name or url",
+        description: "Имя песни или URL",
         type: ApplicationCommandOptionType.String,
         required: true,
       },
@@ -52,7 +53,7 @@ module.exports = {
  * @param {string} query
  */
 async function play({ member, guild, channel }, query) {
-  if (!member.voice.channel) return "🚫 You need to join a voice channel first";
+  if (!member.voice.channel) return "🚫 Для начала нужно находится в голосовом канале";
 
   let player = guild.client.musicManager.getPlayer(guild.id);
   if (player && !guild.members.me.voice.channel) {
@@ -61,7 +62,7 @@ async function play({ member, guild, channel }, query) {
   }
 
   if (player && member.voice.channel !== guild.members.me.voice.channel) {
-    return "🚫 You must be in the same voice channel as mine";
+    return "🚫 Нужно находится в том же голосовом канале что и бот";
   }
 
   let embed = new EmbedBuilder().setColor(EMBED_COLORS.BOT_EMBED);
@@ -71,7 +72,7 @@ async function play({ member, guild, channel }, query) {
   try {
     if (guild.client.musicManager.spotify.isSpotifyUrl(query)) {
       if (!process.env.SPOTIFY_CLIENT_ID || !process.env.SPOTIFY_CLIENT_SECRET) {
-        return "🚫 Spotify songs cannot be played. Please contact the bot owner";
+        return "🚫 Spotify песни не работают. Обратитесь к N0rule";
       }
 
       const item = await guild.client.musicManager.spotify.load(query);
@@ -85,23 +86,23 @@ async function play({ member, guild, channel }, query) {
 
         case SpotifyItemType.Artist:
           tracks = await item.resolveYoutubeTracks();
-          description = `Artist: [**${item.name}**](${query})`;
+          description = `Артист: [**${item.name}**](${query})`;
           break;
 
         case SpotifyItemType.Album:
           tracks = await item.resolveYoutubeTracks();
-          description = `Album: [**${item.name}**](${query})`;
+          description = `Альбом: [**${item.name}**](${query})`;
           break;
 
         case SpotifyItemType.Playlist:
           tracks = await item.resolveYoutubeTracks();
-          description = `Playlist: [**${item.name}**](${query})`;
+          description = `Плейлист: [**${item.name}**](${query})`;
           break;
 
         default:
-          return "🚫 An error occurred while searching for the song";
+          return "🚫 Произошла ошибка при поиске песни";
       }
-
+      
       if (!tracks) guild.client.logger.debug({ query, item });
     } else {
       const res = await guild.client.musicManager.rest.loadTracks(
@@ -110,10 +111,10 @@ async function play({ member, guild, channel }, query) {
       switch (res.loadType) {
         case "LOAD_FAILED":
           guild.client.logger.error("Search Exception", res.exception);
-          return "🚫 There was an error while searching";
+          return "🚫 Произошла ошибка при поиске";
 
         case "NO_MATCHES":
-          return `No results found matching ${query}`;
+          return `Нет результатов подходящих под: ${query}`;
 
         case "PLAYLIST_LOADED":
           tracks = res.tracks;
@@ -128,39 +129,39 @@ async function play({ member, guild, channel }, query) {
         }
 
         default:
-          guild.client.logger.debug("Unknown loadType", res);
-          return "🚫 An error occurred while searching for the song";
+          guild.client.logger.debug("Unknown loadType", res.loadType);
+          return "🚫 Произошла ошибка при поиске песни";
       }
-
+      
       if (!tracks) guild.client.logger.debug({ query, res });
     }
   } catch (error) {
     guild.client.logger.error("Search Exception", typeof error === "object" ? JSON.stringify(error) : error);
-    return "🚫 An error occurred while searching for the song";
+    return "🚫 Произошла ошибка при поиске песни";
   }
 
-  if (!tracks) return "🚫 An error occurred while searching for the song";
+  if (!tracks) return "🚫 Произошла ошибка при поиске песни";
 
   if (tracks.length === 1) {
     const track = tracks[0];
     if (!player?.playing && !player?.paused && !player?.queue.tracks.length) {
-      embed.setAuthor({ name: "Added Track to queue" });
+      embed.setAuthor({ name: "Трек добавлен в очередь" });
     } else {
       const fields = [];
       embed
-        .setAuthor({ name: "Added Track to queue" })
+        .setAuthor({ name: "Трек добавлен в очередь" })
         .setDescription(`[${track.info.title}](${track.info.uri})`)
-        .setFooter({ text: `Requested By: ${member.user.tag}` });
+        .setFooter({ text: `Запрошено Пользователем: ${member.user.tag}` });
 
       fields.push({
-        name: "Song Duration",
+        name: "Длительность песни",
         value: "`" + prettyMs(track.info.length, { colonNotation: true }) + "`",
         inline: true,
       });
 
       if (player?.queue?.tracks?.length > 0) {
         fields.push({
-          name: "Position in Queue",
+          name: "Позиция в Очереди",
           value: (player.queue.tracks.length + 1).toString(),
           inline: true,
         });
@@ -169,16 +170,16 @@ async function play({ member, guild, channel }, query) {
     }
   } else {
     embed
-      .setAuthor({ name: "Added Playlist to queue" })
+      .setAuthor({ name: "Плейлист добавлен в очередь" })
       .setDescription(description)
       .addFields(
         {
-          name: "Enqueued",
-          value: `${tracks.length} songs`,
+          name: "Исключено",
+          value: `${tracks.length} песен`,
           inline: true,
         },
         {
-          name: "Playlist duration",
+          name: "Длительность Плейлиста",
           value:
             "`" +
             prettyMs(
@@ -189,7 +190,7 @@ async function play({ member, guild, channel }, query) {
           inline: true,
         }
       )
-      .setFooter({ text: `Requested By: ${member.user.tag}` });
+      .setFooter({ text: `Запрошено Пользователем: ${member.user.tag}` });
   }
 
   // create a player and/or join the member's vc

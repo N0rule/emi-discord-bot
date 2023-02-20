@@ -3,16 +3,16 @@ const { disconnectTarget } = require("@helpers/ModUtils");
 module.exports = async ({ member }, target, reason) => {
   const response = await disconnectTarget(member, target, reason);
   if (typeof response === "boolean") {
-    return `${target.user.tag} is disconnected from the voice channel`;
+    return `${target.user.tag} отключен с голосового канала`;
   }
   if (response === "MEMBER_PERM") {
-    return `You do not have permission to disconnect ${target.user.tag}`;
+    return `У тебя нет прав для отключения ${target.user.tag}`;
   }
   if (response === "BOT_PERM") {
-    return `I do not have permission to disconnect ${target.user.tag}`;
+    return `У меня нет прав для отключения ${target.user.tag}`;
   }
   if (response === "NO_VOICE") {
-    return `${target.user.tag} is not in any voice channel`;
+    return `${target.user.tag} не в голосовом канале`;
   }
-  return `Failed to disconnect ${target.user.tag}`;
+  return `Ошибка отключения ${target.user.tag}`;
 };

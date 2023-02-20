@@ -19,7 +19,7 @@ const search_prefix = {
  */
 module.exports = {
   name: "search",
-  description: "search for matching songs on youtube",
+  description: "поиск подходящих песен на ютубе",
   category: "MUSIC",
   botPermissions: ["EmbedLinks"],
   command: {
@@ -32,7 +32,7 @@ module.exports = {
     options: [
       {
         name: "query",
-        description: "song to search",
+        description: "песня для поиска",
         type: ApplicationCommandOptionType.String,
         required: true,
       },
@@ -58,7 +58,7 @@ module.exports = {
  * @param {string} query
  */
 async function search({ member, guild, channel }, query) {
-  if (!member.voice.channel) return "🚫 You need to join a voice channel first";
+  if (!member.voice.channel) return "🚫 Для начала нужно находится в голосовом канале";
 
   let player = guild.client.musicManager.getPlayer(guild.id);
   if (player && !guild.members.me.voice.channel) {
@@ -66,7 +66,7 @@ async function search({ member, guild, channel }, query) {
     await guild.client.musicManager.destroyPlayer(guild.id);
   }
   if (player && member.voice.channel !== guild.members.me.voice.channel) {
-    return "🚫 You must be in the same voice channel as mine";
+    return "🚫 Нужно находится в том же голосовом канале что и бот";
   }
 
   let res;
@@ -75,7 +75,7 @@ async function search({ member, guild, channel }, query) {
       /^https?:\/\//.test(query) ? query : `${search_prefix[MUSIC.DEFAULT_SOURCE]}:${query}`
     );
   } catch (err) {
-    return "🚫 There was an error while searching";
+    return "🚫 Произошла ошибка при поиске песни";
   }
 
   let embed = new EmbedBuilder().setColor(EMBED_COLORS.BOT_EMBED);
@@ -84,27 +84,27 @@ async function search({ member, guild, channel }, query) {
   switch (res.loadType) {
     case "LOAD_FAILED":
       guild.client.logger.error("Search Exception", res.exception);
-      return "🚫 There was an error while searching";
+      return "🚫 Произошла ошибка при поиске песни";
 
     case "NO_MATCHES":
-      return `No results found matching ${query}`;
+      return `Нет результатов подходящих под: ${query}`;
 
     case "TRACK_LOADED": {
       const [track] = res.tracks;
       tracks = [track];
       if (!player?.playing && !player?.paused && !player?.queue.tracks.length) {
-        embed.setAuthor({ name: "Added Song to queue" });
+        embed.setAuthor({ name: "Песня добавлена в очередь" });
         break;
       }
 
       const fields = [];
       embed
-        .setAuthor({ name: "Added Song to queue" })
+        .setAuthor({ name: "Песня добавлена в очередь" })
         .setDescription(`[${track.info.title}](${track.info.uri})`)
-        .setFooter({ text: `Requested By: ${member.user.tag}` });
+        .setFooter({ text: `Запрошено Пользователем: ${member.user.tag}` });
 
       fields.push({
-        name: "Song Duration",
+        name: "Длительность песни",
         value: "`" + prettyMs(track.info.length, { colonNotation: true }) + "`",
         inline: true,
       });
@@ -112,7 +112,7 @@ async function search({ member, guild, channel }, query) {
       // if (typeof track.displayThumbnail === "function") embed.setThumbnail(track.displayThumbnail("hqdefault"));
       if (player?.queue?.tracks?.length > 0) {
         fields.push({
-          name: "Position in Queue",
+          name: "Позиция в Очереди",
           value: (player.queue.tracks.length + 1).toString(),
           inline: true,
         });
@@ -124,16 +124,16 @@ async function search({ member, guild, channel }, query) {
     case "PLAYLIST_LOADED":
       tracks = res.tracks;
       embed
-        .setAuthor({ name: "Added Playlist to queue" })
+        .setAuthor({ name: "Плейлист добавлен в очередь" })
         .setDescription(res.playlistInfo.name)
         .addFields(
           {
-            name: "Enqueued",
-            value: `${res.tracks.length} songs`,
+            name: "Исключено",
+            value: `${res.tracks.length} песен`,
             inline: true,
           },
           {
-            name: "Playlist duration",
+            name: "Длительность Плейлиста",
             value:
               "`" +
               prettyMs(
@@ -144,7 +144,7 @@ async function search({ member, guild, channel }, query) {
             inline: true,
           }
         )
-        .setFooter({ text: `Requested By: ${member.user.tag}` });
+        .setFooter({ text: `Запрошено Пользователем: ${member.user.tag}` });
       break;
 
     case "SEARCH_RESULT": {
@@ -160,15 +160,15 @@ async function search({ member, guild, channel }, query) {
       const menuRow = new ActionRowBuilder().addComponents(
         new StringSelectMenuBuilder()
           .setCustomId("search-results")
-          .setPlaceholder("Choose Search Results")
+          .setPlaceholder("Выберите результат поиска")
           .setMaxValues(max)
           .addOptions(options)
       );
 
       const tempEmbed = new EmbedBuilder()
         .setColor(EMBED_COLORS.BOT_EMBED)
-        .setAuthor({ name: "Search Results" })
-        .setDescription(`Please select the songs you wish to add to queue`);
+        .setAuthor({ name: "Результат Поиска" })
+        .setDescription(`Выберите песню которую хотите добавить в очередь`);
 
       const sentMsg = await channel.send({
         embeds: [tempEmbed],
@@ -183,7 +183,7 @@ async function search({ member, guild, channel }, query) {
         });
 
         await sentMsg.delete();
-        if (!response) return "🚫 You took too long to select the songs";
+        if (!response) return "🚫 Вы слишком долго выбирали песню";
 
         if (response.customId !== "search-results") return;
         const toAdd = [];
@@ -192,17 +192,17 @@ async function search({ member, guild, channel }, query) {
         // Only 1 song is selected
         if (toAdd.length === 1) {
           tracks = [toAdd[0]];
-          embed.setAuthor({ name: "Added Song to queue" });
+          embed.setAuthor({ name: "Песня добавлена в очередь" });
         } else {
           tracks = toAdd;
           embed
-            .setDescription(`🎶 Added ${toAdd.length} songs to queue`)
-            .setFooter({ text: `Requested By: ${member.user.tag}` });
+            .setDescription(`🎶 добавлено ${toAdd.length} песен в очередь`)
+            .setFooter({ text: `Запрошено Пользователем: ${member.user.tag}` });
         }
       } catch (err) {
         console.log(err);
         await sentMsg.delete();
-        return "🚫 Failed to register your response";
+        return "🚫 Ошибка выбора ответа";
       }
     }
   }

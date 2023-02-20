@@ -1,6 +1,7 @@
 const { EmbedBuilder, ChannelType, GuildVerificationLevel } = require("discord.js");
 const { EMBED_COLORS } = require("@root/config");
 const moment = require("moment");
+moment.locale('ru')
 
 /**
  * @param {import('discord.js').Guild} guild
@@ -57,55 +58,55 @@ module.exports = async (guild) => {
 
   let desc = "";
   desc = `${desc + "❯"} **Id:** ${id}\n`;
-  desc = `${desc + "❯"} **Name:** ${name}\n`;
-  desc = `${desc + "❯"} **Owner:** ${owner.user.tag}\n`;
-  desc = `${desc + "❯"} **Region:** ${preferredLocale}\n`;
+  desc = `${desc + "❯"} **Имя:** ${name}\n`;
+  desc = `${desc + "❯"} **Владелец:** ${owner.user.tag}\n`;
+  desc = `${desc + "❯"} **Регион:** ${preferredLocale}\n`;
   desc += "\n";
 
   const embed = new EmbedBuilder()
-    .setTitle("GUILD INFORMATION")
+    .setTitle("ИНФОРМАЦИЯ О СЕРВЕРЕ")
     .setThumbnail(guild.iconURL())
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setDescription(desc)
     .addFields(
       {
-        name: `Server Members [${all}]`,
-        value: `\`\`\`Members: ${users}\nBots: ${bots}\`\`\``,
+        name: `Участники Сервера [${all}]`,
+        value: `\`\`\`Пользователи: ${users}\nБоты: ${bots}\`\`\``,
         inline: true,
       },
       {
-        name: `Online Stats [${onlineAll}]`,
-        value: `\`\`\`Members: ${onlineUsers}\nBots: ${onlineBots}\`\`\``,
+        name: `Онлайн [${onlineAll}]`,
+        value: `\`\`\`Пользователи: ${onlineUsers}\nБоты: ${onlineBots}\`\`\``,
         inline: true,
       },
       {
-        name: `Categories and channels [${totalChannels}]`,
-        value: `\`\`\`Categories: ${categories} | Text: ${textChannels} | Voice: ${voiceChannels} | Thread: ${threadChannels}\`\`\``,
+        name: `Категории и Каналы [${totalChannels}]`,
+        value: `\`\`\`Категории: ${categories} | Текст: ${textChannels} | Голос: ${voiceChannels} | Обсуждения: ${threadChannels}\`\`\``,
         inline: false,
       },
       {
-        name: `Roles [${rolesCount}]`,
+        name: `Роли [${rolesCount}]`,
         value: `\`\`\`${rolesString}\`\`\``,
         inline: false,
       },
       {
-        name: "Verification",
+        name: "Уровень Верефикация",
         value: `\`\`\`${verificationLevel}\`\`\``,
         inline: true,
       },
       {
-        name: "Boost Count",
+        name: "Количество Бустов",
         value: `\`\`\`${guild.premiumSubscriptionCount}\`\`\``,
         inline: true,
       },
       {
-        name: `Server Created [${createdAt.fromNow()}]`,
+        name: `Сервер Создан [${createdAt.fromNow()}]`,
         value: `\`\`\`${createdAt.format("dddd, Do MMMM YYYY")}\`\`\``,
         inline: false,
       }
     );
 
-  if (guild.splashURL()) embed.setImage(guild.splashURL({ extension: "png", size: 256 }));
+  if (guild.splashURL()) embed.setImage(guild.splashURL({extension: "png", size: 256}));
 
   return { embeds: [embed] };
 };

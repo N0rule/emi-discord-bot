@@ -8,7 +8,7 @@ const timestampToDate = require("timestamp-to-date");
  */
 module.exports = {
   name: "covid",
-  description: "get covid statistics for a country",
+  description: "ковид информация страны",
   cooldown: 5,
   category: "UTILITY",
   botPermissions: ["EmbedLinks"],
@@ -22,7 +22,7 @@ module.exports = {
     options: [
       {
         name: "country",
-        description: "country name to get covid statistics for",
+        description: "имя страны",
         type: ApplicationCommandOptionType.String,
         required: true,
       },
@@ -45,63 +45,63 @@ module.exports = {
 async function getCovid(country) {
   const response = await getJson(`https://disease.sh/v2/countries/${country}`);
 
-  if (response.status === 404) return "```css\nCountry with the provided name is not found```";
+  if (response.status === 404) return "```css\nСтраны с таким именем нету```";
   if (!response.success) return MESSAGES.API_ERROR;
   const { data } = response;
 
   const mg = timestampToDate(data?.updated, "dd.MM.yyyy at HH:mm");
   const embed = new EmbedBuilder()
-    .setTitle(`Covid - ${data?.country}`)
+    .setTitle(`Ковид - ${data?.country}`)
     .setThumbnail(data?.countryInfo.flag)
     .setColor(EMBED_COLORS.BOT_EMBED)
     .addFields(
       {
-        name: "Cases Total",
+        name: "Количество Случаев",
         value: data?.cases.toString(),
         inline: true,
       },
       {
-        name: "Cases Today",
+        name: "Случаев Сегодня",
         value: data?.todayCases.toString(),
         inline: true,
       },
       {
-        name: "Deaths Total",
+        name: "Количество Смертей",
         value: data?.deaths.toString(),
         inline: true,
       },
       {
-        name: "Deaths Today",
+        name: "Смертей Сегодня",
         value: data?.todayDeaths.toString(),
         inline: true,
       },
       {
-        name: "Recovered",
+        name: "Выздоровило",
         value: data?.recovered.toString(),
         inline: true,
       },
       {
-        name: "Active",
+        name: "Больных",
         value: data?.active.toString(),
         inline: true,
       },
       {
-        name: "Critical",
+        name: "Критично",
         value: data?.critical.toString(),
         inline: true,
       },
       {
-        name: "Cases per 1 million",
+        name: "Случаев на 1 миллион",
         value: data?.casesPerOneMillion.toString(),
         inline: true,
       },
       {
-        name: "Deaths per 1 million",
+        name: "Смертей на 1 миллион",
         value: data?.deathsPerOneMillion.toString(),
         inline: true,
       }
     )
-    .setFooter({ text: `Last updated on ${mg}` });
+    .setFooter({ text: `Последнее обновление в ${mg}` });
 
   return { embeds: [embed] };
 }

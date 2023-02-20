@@ -14,10 +14,10 @@ const { getRandomInt } = require("@helpers/Utils");
  */
 module.exports = {
   name: "meme",
-  description: "get a random meme",
+  description: "посмотреть случайный мем",
   category: "FUN",
   botPermissions: ["EmbedLinks"],
-  cooldown: 20,
+  cooldown: 5,
   command: {
     enabled: true,
     usage: "[category]",
@@ -27,7 +27,7 @@ module.exports = {
     options: [
       {
         name: "category",
-        description: "meme category",
+        description: "категория мема",
         type: ApplicationCommandOptionType.String,
         required: false,
       },
@@ -119,12 +119,12 @@ async function getRandomEmbed(choice) {
 
   const response = await getJson(`https://www.reddit.com/r/${rand}/random/.json`);
   if (!response.success) {
-    return new EmbedBuilder().setColor(EMBED_COLORS.ERROR).setDescription("Failed to fetch meme. Try again!");
+    return new EmbedBuilder().setColor(EMBED_COLORS.ERROR).setDescription("Ошибка получения мема. Попробуй снова!");
   }
 
   const json = response.data;
   if (!Array.isArray(json) || json.length === 0) {
-    return new EmbedBuilder().setColor(EMBED_COLORS.ERROR).setDescription(`No meme found matching ${choice}`);
+    return new EmbedBuilder().setColor(EMBED_COLORS.ERROR).setDescription(`Не найдено не одного мема :() ${choice}`);
   }
 
   try {
@@ -141,6 +141,6 @@ async function getRandomEmbed(choice) {
       .setColor("Random")
       .setFooter({ text: `👍 ${memeUpvotes} | 💬 ${memeNumComments}` });
   } catch (error) {
-    return new EmbedBuilder().setColor(EMBED_COLORS.ERROR).setDescription("Failed to fetch meme. Try again!");
+    return new EmbedBuilder().setColor(EMBED_COLORS.ERROR).setDescription("Ошибка получения мема. Попробуй снова!");
   }
 }

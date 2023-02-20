@@ -5,12 +5,12 @@ const { musicValidations } = require("@helpers/BotUtils");
  */
 module.exports = {
   name: "skip",
-  description: "skip the current song",
+  description: "пропуск текущего трека",
   category: "MUSIC",
   validations: musicValidations,
   command: {
     enabled: true,
-    aliases: ["next"],
+    aliases: ["next","sk"],
   },
   slashCommand: {
     enabled: true,
@@ -32,10 +32,10 @@ module.exports = {
  */
 function skip({ client, guildId }) {
   const player = client.musicManager.getPlayer(guildId);
-
+  
   // check if current song is playing
-  if (!player.queue.current) return "⏯️ There is no song currently being played";
+  if (!player.queue.current) return "⏯️ сейчас не играет не один трек";
 
   const { title } = player.queue.current;
-  return player.queue.next() ? `⏯️ ${title} was skipped.` : "⏯️ There is no song to skip.";
+  return player.queue.next() ? `⏯️ ${title} была пропущена` : "⏯️ Нет треков для пропуска.";
 }

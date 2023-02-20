@@ -8,7 +8,7 @@ const { stripIndent } = require("common-tags");
  */
 module.exports = {
   name: "github",
-  description: "shows github statistics of a user",
+  description: "показывает гитхаб статистику пользователя",
   cooldown: 10,
   category: "UTILITY",
   botPermissions: ["EmbedLinks"],
@@ -23,7 +23,7 @@ module.exports = {
     options: [
       {
         name: "username",
-        description: "github username",
+        description: "имя в гитхаб",
         type: ApplicationCommandOptionType.String,
         required: true,
       },
@@ -47,7 +47,7 @@ const websiteProvided = (text) => (text.startsWith("http://") ? true : text.star
 
 async function getGithubUser(target, author) {
   const response = await getJson(`https://api.github.com/users/${target}`);
-  if (response.status === 404) return "```No user found with that name```";
+  if (response.status === 404) return "```Не найдено пользователей с таким именем```";
   if (!response.success) return MESSAGES.API_ERROR;
 
   const json = response.data;
@@ -64,35 +64,34 @@ async function getGithubUser(target, author) {
     blog,
   } = json;
 
-  let website = websiteProvided(blog) ? `[Click me](${blog})` : "Not Provided";
-  if (website == null) website = "Not Provided";
-
+  let website = websiteProvided(blog) ? `[Тыкни](${blog})` : "Нету";
+  if (website == null) website = "Нету";
   const embed = new EmbedBuilder()
     .setAuthor({
-      name: `GitHub User: ${username}`,
+      name: `GitHub Пользователь: ${username}`,
       url: userPageLink,
       iconURL: avatarUrl,
     })
     .addFields(
       {
-        name: "User Info",
+        name: "Инф. Пользователя",
         value: stripIndent`
-        **Real Name**: *${name || "Not Provided"}*
-        **Location**: *${location}*
+        **Реальное Имя**: *${name || "Нету"}*
+        **Местоположение**: *${location}*
         **GitHub ID**: *${githubId}*
-        **Website**: *${website}*\n`,
+        **Вебсайт**: *${website}*\n`,
         inline: true,
       },
       {
-        name: "Social Stats",
-        value: `**Followers**: *${followers}*\n**Following**: *${following}*`,
+        name: "Соц. Статистика",
+        value: `**Подписчиков**: *${followers}*\n**Подписок**: *${following}*`,
         inline: true,
       }
     )
-    .setDescription(`**Bio**:\n${bio || "Not Provided"}`)
+    .setDescription(`**Биография**:\n${bio || "Нету Записи"}`)
     .setImage(avatarUrl)
     .setColor(0x6e5494)
-    .setFooter({ text: `Requested by ${author.tag}` });
+    .setFooter({ text: `Запрошено пользователем ${author.tag}` });
 
   return { embeds: [embed] };
 }

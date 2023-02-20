@@ -7,7 +7,7 @@ const { ApplicationCommandOptionType, ChannelType } = require("discord.js");
  */
 module.exports = {
   name: "farewell",
-  description: "setup farewell message",
+  description: "настроить сообщение ухода",
   category: "ADMIN",
   userPermissions: ["ManageGuild"],
   command: {

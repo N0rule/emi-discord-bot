@@ -7,7 +7,7 @@ const { ApplicationCommandOptionType } = require("discord.js");
  */
 module.exports = {
   name: "loop",
-  description: "loops the song or queue",
+  description: "зацикливает трек или очередь",
   category: "MUSIC",
   validations: musicValidations,
   command: {
@@ -21,7 +21,7 @@ module.exports = {
       {
         name: "type",
         type: ApplicationCommandOptionType.String,
-        description: "The entity you want to loop",
+        description: "что вы хотите зациклить",
         required: false,
         choices: [
           {
@@ -61,12 +61,12 @@ function toggleLoop({ client, guildId }, type) {
   // track
   if (type === "track") {
     player.queue.setLoop(LoopType.Song);
-    return "Loop mode is set to `track`";
+    return "Режим зацикливания установлен на `Трек`";
   }
-
+  
   // queue
   else if (type === "queue") {
     player.queue.setLoop(1);
-    return "Loop mode is set to `queue`";
+    return "Режим зацикливания установлен на `Очередь`";
   }
 }

@@ -5,7 +5,7 @@ const undeafen = require("../shared/undeafen");
  */
 module.exports = {
   name: "undeafen",
-  description: "undeafen specified member in voice channels",
+  description: "вкл.звук указанного участника в голосовых каналах",
   category: "MODERATION",
   userPermissions: ["DeafenMembers"],
   botPermissions: ["DeafenMembers"],
@@ -20,7 +20,7 @@ module.exports = {
 
   async messageRun(message, args) {
     const target = await message.guild.resolveMember(args[0], true);
-    if (!target) return message.safeReply(`No user found matching ${args[0]}`);
+    if (!target) return message.safeReply(`Нет подходяшего пользователя под: ${args[0]}`);
     const reason = message.content.split(args[0])[1].trim();
     const response = await undeafen(message, target, reason);
     await message.safeReply(response);

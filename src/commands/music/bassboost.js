@@ -13,7 +13,7 @@ const levels = {
  */
 module.exports = {
   name: "bassboost",
-  description: "set bassboost level",
+  description: "устанавливает уровень бассбуста",
   category: "MUSIC",
   validations: musicValidations,
   command: {
@@ -26,7 +26,7 @@ module.exports = {
     options: [
       {
         name: "level",
-        description: "bassboost level",
+        description: "уровень бассбуста",
         type: ApplicationCommandOptionType.String,
         required: true,
         choices: [
@@ -73,5 +73,5 @@ function setBassBoost({ client, guildId }, level) {
   const player = client.musicManager.getPlayer(guildId);
   const bands = new Array(3).fill(null).map((_, i) => ({ band: i, gain: levels[level] }));
   player.setEqualizer(...bands);
-  return `> Set the bassboost level to \`${level}\``;
+  return `> Уровень бассбуста выставлен на \`${level}\``;
 }
