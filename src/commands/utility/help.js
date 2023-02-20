@@ -100,7 +100,8 @@ async function getHelpMenu({ client, guild }) {
   }
 
   const menuRow = new ActionRowBuilder().addComponents(
-    new SelectMenuBuilder()
+    
+    new StringSelectMenuBuilder()
     .setCustomId("help-menu")
     .setPlaceholder("Выберите категорию команды")
     .addOptions(options)
