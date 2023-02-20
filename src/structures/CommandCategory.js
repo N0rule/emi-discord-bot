@@ -40,12 +40,12 @@ module.exports = {
     image: "https://icons.iconarchive.com/icons/dapino/summer-holiday/128/photo-icon.png",
     emoji: "🖼️",
   },
-  // INVITE: {
-  //   name: "Инвайты",
-  //   enabled: config.INVITE.ENABLED,
-  //   image: "https://cdn4.iconfinder.com/data/icons/general-business/150/Invite-512.png",
-  //   emoji: "📨",
-  // },
+  INVITE: {
+    name: "Инвайты",
+    enabled: config.INVITE.ENABLED,
+    image: "https://cdn4.iconfinder.com/data/icons/general-business/150/Invite-512.png",
+    emoji: "📨",
+  },
   INFORMATION: {
     name: "Информация",
     image: "https://icons.iconarchive.com/icons/graphicloads/100-flat/128/information-icon.png",
