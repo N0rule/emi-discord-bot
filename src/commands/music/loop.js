@@ -64,7 +64,7 @@ function toggleLoop({ client, guildId }, type) {
     player.queue.setLoop(LoopType.Song);
     return "Режим зацикливания установлен на `Трек`";
   }
-
+  
   // queue
   else if (type === "queue") {
     player.queue.setLoop(1);

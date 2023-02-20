@@ -100,7 +100,7 @@ module.exports = {
           {
             name: "threshold",
             description: "порог конфигурации (по умолчанию 3 упоминания)",
-            required: true,
+            required: false,
             type: ApplicationCommandOptionType.Integer,
           },
         ],

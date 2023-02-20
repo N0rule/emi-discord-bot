@@ -33,7 +33,7 @@ module.exports = {
  */
 function skip({ client, guildId }) {
   const player = client.musicManager.getPlayer(guildId);
-
+  
   // check if current song is playing
   if (!player.queue.current) return "⏯️ сейчас не играет не один трек";
 

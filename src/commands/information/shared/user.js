@@ -46,7 +46,7 @@ module.exports = (member) => {
         value: member.user.displayAvatarURL({ extension: "png" }),
       }
     )
-    .setFooter({ text: `Запрошено пользователем: ${member.user.tag}` })
+    .setFooter({ text: `Запрошено пользователем: ${member.user.username}` })
     .setTimestamp(Date.now());
 
   return { embeds: [embed] };

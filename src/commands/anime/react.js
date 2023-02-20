@@ -71,11 +71,11 @@ const genReaction = async (category, user) => {
     return new EmbedBuilder()
       .setImage(imageUrl)
       .setColor("Random")
-      .setFooter({ text: `Запрошено пользователем: ${user.tag}` });
+      .setFooter({ text: `Запрошено пользователем: ${user.username}` });
   } catch (ex) {
     return new EmbedBuilder()
       .setColor(EMBED_COLORS.ERROR)
       .setDescription("Ошибка получения мема. Попробуй еще раз!")
-      .setFooter({ text: `Запрошено пользователем: ${user.tag}` });
+      .setFooter({ text: `Запрошено пользователем: ${user.username}` });
   }
 };

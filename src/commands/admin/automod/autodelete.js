@@ -188,9 +188,7 @@ async function antiInvites(settings, input) {
   settings.automod.anti_invites = status;
   await settings.save();
   return `Сообщения ${
-    status
-      ? "с приглашениями в дискорд теперь будут автоматически удаляться"
-      : "с приглашениями в дискорд теперь не будет фильтроваться"
+    status ? "с приглашениями в дискорд теперь будут автоматически удаляться" : "с приглашениями в дискорд теперь не будет фильтроваться"
   }`;
 }
 
@@ -198,9 +196,7 @@ async function antilinks(settings, input) {
   const status = input.toUpperCase() === "ON" ? true : false;
   settings.automod.anti_links = status;
   await settings.save();
-  return `Сообщения ${
-    status ? "со ссылками теперь будут автоматически удаляться" : "теперь не будет фильтроваться для ссылок"
-  }`;
+  return `Сообщения ${status ? "со ссылками теперь будут автоматически удаляться" : "теперь не будет фильтроваться для ссылок"}`;
 }
 
 async function maxLines(settings, input) {

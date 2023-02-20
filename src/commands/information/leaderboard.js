@@ -13,6 +13,7 @@ const leaderboardTypes = ["xp", "invite", "rep"];
 module.exports = {
   name: "leaderboard",
   description: "показать топ пользователей по опыту",
+  description: "показать топ пользователей по опыту",
   category: "INFORMATION",
   botPermissions: ["EmbedLinks"],
   command: {
@@ -110,7 +111,7 @@ async function getXpLeaderboard({ guild }, author, settings) {
     .setAuthor({ name: "Таблица Лидеров" })
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setDescription(collector)
-    .setFooter({ text: `Запрошено пользователем ${author.tag}` });
+    .setFooter({ text: `Запрошено пользователем ${author.username}` });
 
   // Store the result in the cache for future requests
   cache.set(cacheKey, { embeds: [embed] });
