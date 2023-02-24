@@ -12,9 +12,8 @@ const { text } = require("stream/consumers");
 module.exports = async (client, message, guild) => {
   if (!message.guild || message.author.bot) return;
   const settings = await getSettings(message.guild);
-//FIXME:ПОЛНЫЙ ПИЗДЕЦ НАДО ФИКСИТЬ ЭТО НО Я НЕ ЕБУ КАК -3 ЧАСА ЖИЗНИ
-  let desc = `Приветики я **Еми**!\n`;
-  desc += `Личный Бот Синдиката🥰\n`;
+  let desc = `Приветики я **${client.user.username}!**\n`;
+  desc += `Личный Бот Синдиката 🥰\n`;
   desc += `Мой Префикс \`${settings.prefix}\`\n`;
   desc += `Для помощи используй команду **/help**\n`;
 
