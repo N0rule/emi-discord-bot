@@ -47,7 +47,7 @@ function getEmoji(user, emoji) {
   const embed = new EmbedBuilder()
     .setAuthor({ name: "❯ Большое Емодзи ❮" })
     .setColor(EMBED_COLORS.BOT_EMBED)
-    .setFooter({ text: `Запрошено пользователем ${user.username}` });
+    .setFooter({ text: `Запрошено пользователем: ${user.username}` });
 
   if (custom.id) {
     embed.setImage(`https://cdn.discordapp.com/emojis/${custom.id}.${custom.animated ? "gif" : "png"}`);

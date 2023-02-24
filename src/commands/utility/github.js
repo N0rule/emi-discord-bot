@@ -91,7 +91,7 @@ async function getGithubUser(target, author) {
     .setDescription(`**Биография**:\n${bio || "Нету Записи"}`)
     .setImage(avatarUrl)
     .setColor(0x6e5494)
-    .setFooter({ text: `Запрошено пользователем ${author.username}` });
+    .setFooter({ text: `Запрошено пользователем: ${author.username}` });
 
   return { embeds: [embed] };
 }

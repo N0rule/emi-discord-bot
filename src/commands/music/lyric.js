@@ -8,35 +8,35 @@ const BASE_URL = "https://some-random-api.com/lyrics";
  * @type {import("@structures/Command")}
  */
 module.exports = {
-  name: "lyric",
-  description: "find lyric of the song",
-  category: "MUSIC",
-  botPermissions: ["EmbedLinks"],
-  command: {
-    enabled: true,
-    minArgsCount: 1,
-    usage: "<Song Title - singer>",
-  },
-  slashCommand: {
-    enabled: true,
-    options: [
-      {
-        name: "query",
-        type: ApplicationCommandOptionType.String,
-        description: "find lyric of the song",
-        required: true,
-      },
-    ],
-  },
+    name: "lyric",
+    description: "найди текст песни",
+    category: "MUSIC",
+    botPermissions: ["EmbedLinks"],
+    command: {
+        enabled: true,
+        minArgsCount: 1,
+        usage: "<Имя Песни - Исполнитель>",
+    },
+    slashCommand: {
+        enabled: true,
+        options: [
+            {
+                name: "query",
+                type: ApplicationCommandOptionType.String,
+                description: "найти текст песни",
+                required: true,
+            },
+        ],
+    },
 
-  async messageRun(message, args) {
-    const choice = args.join(" ");
-    if (!choice) {
-      return message.safeReply("Invalid Lyric selected.");
-    }
-    const response = await getLyric(message.author, choice);
-    return message.safeReply(response);
-  },
+    async messageRun(message, args) {
+        const choice = args.join(" ");
+        if(!choice) {
+            return message.safeReply("Выбран неверный текст.");
+        }
+        const response = await getLyric(message.author, choice);
+        return message.safeReply(response);
+    },
 
   async interactionRun(interaction) {
     const choice = interaction.options.getString("query");
@@ -54,13 +54,13 @@ async function getLyric(user, choice) {
   const lyrics = lyric.data?.lyrics;
   const title = lyric.data?.title;
 
-  const embed = new EmbedBuilder();
-  embed
-    .setColor(EMBED_COLORS.BOT_EMBED)
-    .setTitle(`${author} - ${title}`)
-    .setThumbnail(thumbnail)
-    .setDescription(lyrics)
-    .setFooter({ text: `Request By: ${user.username}` });
+    const embed = new EmbedBuilder();
+    embed
+      .setColor(EMBED_COLORS.BOT_EMBED)
+      .setTitle(`${author} - ${title}`)
+      .setThumbnail(thumbnail)
+      .setDescription(lyrics)
+      .setFooter({ text: `Запрошено пользователем: ${user.username}` });
 
   return { embeds: [embed] };
 }
