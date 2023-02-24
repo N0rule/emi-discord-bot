@@ -9,13 +9,13 @@ const BASE_URL = "https://some-random-api.ml/lyrics";
  */
 module.exports = {
     name: "lyric",
-    description: "find lyric of the song",
+    description: "найди текст песни",
     category: "MUSIC",
     botPermissions: ["EmbedLinks"],
     command: {
         enabled: true,
         minArgsCount: 1,
-        usage: "<Song Title - singer>",
+        usage: "<Имя Песни - Исполнитель>",
     },
     slashCommand: {
         enabled: true,
@@ -23,7 +23,7 @@ module.exports = {
             {
                 name: "query",
                 type: ApplicationCommandOptionType.String,
-                description: "find lyric of the song",
+                description: "найти текст песни",
                 required: true,
             },
         ],
@@ -32,7 +32,7 @@ module.exports = {
     async messageRun(message, args) {
         const choice = args.join(" ");
         if(!choice) {
-            return message.safeReply("Invalid Lyric selected.");
+            return message.safeReply("Выбран неверный текст.");
         }
         const response = await getLyric(message.author, choice);
         return message.safeReply(response);
@@ -47,7 +47,8 @@ module.exports = {
 
 async function getLyric(user, choice) {
     const lyric = await getJson(`${BASE_URL}?title=${choice}`);
-    if(!lyric.success) return MESSAGES.API_ERROR;
+    if(!lyric.success){
+        const embed = new EmbedBuilder().setColor(EMBED_COLORS.ERROR).setDescription("🚫 Извините, я не смог найти текст этой песни.");return { embeds: [embed] };};
 
     const thumbnail = lyric.data?.thumbnail.genius;
     const author = lyric.data?.author;
@@ -60,7 +61,7 @@ async function getLyric(user, choice) {
       .setTitle(`${author} - ${title}`)
       .setThumbnail(thumbnail)
       .setDescription(lyrics)
-      .setFooter({ text: `Request By: ${user.tag}` });
+      .setFooter({ text: `Запрошено пользователем: ${user.tag}` });
 
     return { embeds: [embed] };
 }
