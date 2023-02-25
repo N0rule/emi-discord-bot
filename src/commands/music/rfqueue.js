@@ -6,7 +6,7 @@ const { EMBED_COLORS } = require("@root/config.js");
  */
 module.exports = {
   name: "rfqueue",
-  description: "удаляет песню из очереди по номеру",
+  description: "удаляет песню из очереди(last для последней)",
   category: "MUSIC",
   validations: musicValidations,
   command: {
@@ -20,7 +20,7 @@ module.exports = {
     options: [
       {
         name: "id",
-        description: "Введите позицию трека в очереди или ID трека",
+        description: "Введите позицию трека в очереди(last для последней)",
         type: ApplicationCommandOptionType.String,
         required: true,
       },
@@ -30,36 +30,46 @@ module.exports = {
   async messageRun(message, args) {
     const player = message.client.musicManager.getPlayer(message.guild.id);
     if (!player) return message.safeReply("🚫 Сейчас музыка не играет.");
-
-    const index = parseInt(args[0]) - 1;
-    if (isNaN(index) || index < 0 || index >= player.queue.tracks.length)
-      return message.safeReply(`Пожалуйста, введите допустимый номер трека (1-${player.queue.tracks.length}).`);
-
+  
+    let index;
+    if (args[0] === "last") {
+      index = player.queue.tracks.length - 1;
+    } else {
+      index = parseInt(args[0]) - 1;
+      if (isNaN(index) || index < 0 || index >= player.queue.tracks.length)
+        return message.safeReply(`Пожалуйста, введите допустимый номер трека (1-${player.queue.tracks.length}) или "last" для удаления последнего трека.`);
+    }
+  
     const removedTrack = player.queue.remove(index);
-
+  
     const embed = new EmbedBuilder()
       .setColor(EMBED_COLORS.SUCCESS)
       .setDescription(`✅ **${removedTrack.title}** был удален из очереди.`);
-
+  
     await message.safeReply({ embeds: [embed] });
   },
-
+  
   async interactionRun(interaction) {
     const player = interaction.client.musicManager.getPlayer(interaction.guild.id);
     if (!player) return interaction.followUp("🚫 Сейчас музыка не играет.");
-
+  
     const input = interaction.options.getString("id");
-    const index = parseInt(input) - 1;
-
-    if (isNaN(index) || index < 0 || index >= player.queue.tracks.length)
-      return interaction.followUp(`Пожалуйста, введите допустимый номер трека (1-${player.queue.tracks.length}).`);
-
+    let index;
+    if (input === "last") {
+      index = player.queue.tracks.length - 1;
+    } else {
+      index = parseInt(input) - 1;
+      if (isNaN(index) || index < 0 || index >= player.queue.tracks.length)
+        return interaction.followUp(`Пожалуйста, введите допустимый номер трека (1-${player.queue.tracks.length}) или "last" для удаления последнего трека.`);
+    }
+  
     const removedTrack = player.queue.remove(index);
-
+  
     const embed = new EmbedBuilder()
       .setColor(EMBED_COLORS.SUCCESS)
       .setDescription(`✅ **${removedTrack.title}** был удален из очереди.`);
-
+  
     await interaction.followUp({ embeds: [embed] });
   }
+  
 };
