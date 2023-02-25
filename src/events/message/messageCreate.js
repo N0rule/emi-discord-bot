@@ -12,7 +12,7 @@ const { text } = require("stream/consumers");
 module.exports = async (client, message, guild) => {
   if (!message.guild || message.author.bot) return;
   const settings = await getSettings(message.guild);
-  let desc = `Приветики я **${client.user.username}!**\n`;
+  const desc = `Приветики я **${message.guild.members.me.displayName}!**\n`;
   desc += `Личный Бот Синдиката 🥰\n`;
   desc += `Мой Префикс \`${settings.prefix}\`\n`;
   desc += `Для помощи используй команду **/help**\n`;
