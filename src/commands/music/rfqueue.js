@@ -44,18 +44,18 @@ module.exports = {
     }
 
     const removedTrack = player.queue.remove(index);
-
+  
     const embed = new EmbedBuilder()
       .setColor(EMBED_COLORS.SUCCESS)
       .setDescription(`✅ **${removedTrack.title}** был удален из очереди.`);
-
+  
     await message.safeReply({ embeds: [embed] });
   },
-
+  
   async interactionRun(interaction) {
     const player = interaction.client.musicManager.getPlayer(interaction.guild.id);
     if (!player) return interaction.followUp("🚫 Сейчас музыка не играет.");
-
+  
     const input = interaction.options.getString("id");
     let index;
     if (input === "last") {
@@ -69,11 +69,11 @@ module.exports = {
     }
 
     const removedTrack = player.queue.remove(index);
-
+  
     const embed = new EmbedBuilder()
       .setColor(EMBED_COLORS.SUCCESS)
       .setDescription(`✅ **${removedTrack.title}** был удален из очереди.`);
-
+  
     await interaction.followUp({ embeds: [embed] });
   },
 };
