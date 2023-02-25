@@ -5,3 +5,6 @@ node_modules/
 *.tar.gz
 .env
 lavalink/logs/
+lavalink/application.yml
+config.js
+
