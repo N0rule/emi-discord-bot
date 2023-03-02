@@ -4,7 +4,7 @@ const { EMBED_COLORS } = require("@root/config.js");
 const { Configuration, OpenAIApi } = require("openai");
 const configuration = new Configuration({ apiKey: process.env.OPENAI_API_KEY, });
 const openai = new OpenAIApi(configuration);
-const MODEL_NAME = "text-davinci-003";
+const MODEL_NAME = "gpt-3.5-turbo";
 
 /**
  * @type {import("@structures/Command")}
@@ -99,16 +99,17 @@ async function runCompletion(message) {
         }, 35000);
     });
 
-    const completionPromise = openai.createCompletion({
+    const completionPromise = await openai.createChatCompletion({
         model: MODEL_NAME,
-        prompt: message,
         max_tokens: 350,
         presence_penalty: 1.5,
+        temperature: 0.8,
+        messages: [{ role: "user", content: message }],
     });
 
     try {
         const completion = await Promise.race([timeoutPromise, completionPromise]);
-        return completion.data.choices[0].text;
+        return completion.data.choices[0].message.content;
     } catch (error) {
         throw error;
     }
