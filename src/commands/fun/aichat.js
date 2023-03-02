@@ -96,7 +96,7 @@ async function runCompletion(message) {
     const timeoutPromise = new Promise((resolve, reject) => {
         setTimeout(() => {
             reject(new Error());
-        }, 3000);
+        }, 35000);
     });
 
     const completionPromise = openai.createCompletion({
