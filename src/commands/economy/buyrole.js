@@ -14,7 +14,6 @@ module.exports = {
     enabled: true,
     usage: "<role> or \"list\"",
     minArgsCount: 1,
-    aliases: ["role"],
   },
   slashCommand: {
     enabled: true,
