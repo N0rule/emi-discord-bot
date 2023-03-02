@@ -103,10 +103,9 @@ async function runCompletion(message) {
         model: MODEL_NAME,
         max_tokens: 350,
         presence_penalty: 1.5,
-        temperature: 0.8,
-        messages: [{ role: "user", content: message }],
+        temperature: 0.4,
+        messages: [{ role: "user", content: "Представь, что ты Еми, лучший компаньон discord! ты отвечаешь в расслабленном неформальном стиле. Еми — многофункциональный discord бот женского пола, Синдиката пушистого хвостика(Fluffy Syndicate). вопрос: " + message }],
     });
-
     try {
         const completion = await Promise.race([timeoutPromise, completionPromise]);
         return completion.data.choices[0].message.content;
