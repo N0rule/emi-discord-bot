@@ -1,6 +1,6 @@
 const { EmbedBuilder, ApplicationCommandOptionType } = require("discord.js");
 const { getUser } = require("@schemas/User");
-const { EMBED_COLORS, ECONOMY } = require("@root/config.js");
+const { EMBED_COLORS, ECONOMY, BUYROLELIST } = require("@root/config.js");
 
 /**
  * @type {import("@structures/Command")}
@@ -29,7 +29,7 @@ module.exports = {
 
   async messageRun(message, args) {
     if (args[0] === "list") {
-      const roleList = Object.entries(roleData)
+      const roleList = Object.entries(BUYROLELIST)
         .map(([name,data]) => `**${name}**: ${data.rolename} - ${data.price}${ECONOMY.CURRENCY}`)
         .join("\n");
       const embed = new EmbedBuilder()
@@ -46,7 +46,7 @@ module.exports = {
 
   async interactionRun(interaction) {
     if (interaction.options.getString("role") === "list") {
-      const roleList = Object.entries(roleData)
+      const roleList = Object.entries(BUYROLELIST)
         .map(([name, data]) => `**${name}**: ${data.price}${ECONOMY.CURRENCY}`)
         .join("\n");
       const embed = new EmbedBuilder()
@@ -60,22 +60,8 @@ module.exports = {
       return interaction.followUp(response);
   },
 };
-const roleData = {
-  "1": {
-    rolename: "Rolename1",
-    id: "RoleID",
-    price: 10
-  },
-  "2": {
-    rolename: "Rolename2",
-    id: "RoleID",
-    price: 10
-  },
-  // add more roles as needed
-};
-
 async function buyRole(user, guild, roleName) {
-  const roleInfo = roleData[roleName];
+  const roleInfo = BUYROLELIST[roleName];
   if (!roleInfo) {
     return "Указанная роль не существует в списке ролей.";
   }
