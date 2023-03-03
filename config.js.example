@@ -62,7 +62,6 @@ module.exports = {
     MIN_BEG_AMOUNT: 5, // minimum coins to be received when beg command is used
     MAX_BEG_AMOUNT: 175, // maximum coins to be received when beg command is used
   },
-
   //All sellable rolles
   BUYROLELIST: {
     "1": {
