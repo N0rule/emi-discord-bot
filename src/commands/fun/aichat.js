@@ -1,10 +1,9 @@
 // Require necessary modules and create configuration
 const { EmbedBuilder, ApplicationCommandOptionType } = require("discord.js");
-const { EMBED_COLORS } = require("@root/config.js");
+const { EMBED_COLORS,AICHAT } = require("@root/config.js");
 const { Configuration, OpenAIApi } = require("openai");
 const configuration = new Configuration({ apiKey: process.env.OPENAI_API_KEY, });
 const openai = new OpenAIApi(configuration);
-const MODEL_NAME = "gpt-3.5-turbo";
 
 /**
  * @type {import("@structures/Command")}
@@ -100,11 +99,11 @@ async function runCompletion(message) {
     });
 
     const completionPromise = await openai.createChatCompletion({
-        model: MODEL_NAME,
-        max_tokens: 350,
-        presence_penalty: 1.5,
-        temperature: 0.4,
-        messages: [{ role: "user", content: "Представь, что ты Еми, лучший компаньон discord! ты отвечаешь в расслабленном неформальном стиле. Еми — многофункциональный discord бот женского пола, Синдиката пушистого хвостика(Fluffy Syndicate). вопрос: " + message }],
+        model: AICHAT.MODEL,
+        max_tokens: AICHAT.TOKENS,
+        presence_penalty: AICHAT.PRESENCE_PENALTY,
+        temperature: AICHAT.TEMPERATURE,
+        messages: [{ role: "user", content: AICHAT.IMAGINEMESSAGE + " " + message }],
     });
     try {
         const completion = await Promise.race([timeoutPromise, completionPromise]);
