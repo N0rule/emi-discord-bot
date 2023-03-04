@@ -24,7 +24,7 @@ module.exports = {
     MEMBERS: 10000,
   },
   MESSAGES: {
-    API_ERROR: "Неожиданная Ошибка Бекенда! Попробуйте позже или обратитесь к N0rule",
+    API_ERROR: "Неожиданная Ошибка Бекенда! Попробуйте позже или обратитесь к Администратору",
   },
 
   // PLUGINS
@@ -57,6 +57,7 @@ module.exports = {
     MIN_BEG_AMOUNT: 5, // minimum coins to be received when beg command is used
     MAX_BEG_AMOUNT: 175, // maximum coins to be received when beg command is used
   },
+
   //All sellable rolles
   BUYROLELIST: {
     "1": {
@@ -71,6 +72,7 @@ module.exports = {
     },    
     // add more roles as needed
   },
+  
   MUSIC: {
     ENABLED: true,
     IDLE_TIME: 60, // Time in seconds before the bot disconnects from an idle voice channel
