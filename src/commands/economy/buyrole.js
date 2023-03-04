@@ -47,7 +47,7 @@ module.exports = {
   async interactionRun(interaction) {
     if (interaction.options.getString("role") === "list") {
       const roleList = Object.entries(BUYROLELIST)
-        .map(([name, data]) => `**${name}**: ${data.price}${ECONOMY.CURRENCY}`)
+        .map(([name, data]) => `**${name}**: ${data.rolename} - ${data.price}${ECONOMY.CURRENCY}`)
         .join("\n");
       const embed = new EmbedBuilder()
         .setTitle("Список Ролей")
