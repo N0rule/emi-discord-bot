@@ -89,7 +89,10 @@ async function getMatchingBans(guild, match) {
   }
 
   const menuRow = new ActionRowBuilder().addComponents(
-    new StringSelectMenuBuilder().setCustomId("unban-menu").setPlaceholder("Выберите пользователя, которого нужно разбанить").addOptions(options)
+    new StringSelectMenuBuilder()
+      .setCustomId("unban-menu")
+      .setPlaceholder("Выберите пользователя, которого нужно разбанить")
+      .addOptions(options)
   );
 
   return { content: "Пожалуйста, выберите пользователя, которого вы хотите разбанить", components: [menuRow] };

@@ -158,7 +158,8 @@ module.exports = {
     const channel = options.getChannel("channel");
     const amount = options.getInteger("amount") || 99;
 
-    if (amount > 100) return interaction.followUp("Максимальное количество сообщений которые я могу удалить составляет 99");
+    if (amount > 100)
+      return interaction.followUp("Максимальное количество сообщений которые я могу удалить составляет 99");
 
     let response;
     switch (sub) {
@@ -208,7 +209,9 @@ module.exports = {
 
     // Bot missing permissions
     else if (response === "BOT_PERM") {
-      return interaction.followUp(`У меня нет Прав ``Прочитать историю сообщений`` и ``Управление сообщениями``, чтобы удалять сообщения в ${channel}`);
+      return interaction.followUp(
+        `У меня нет Прав ``Прочитать историю сообщений`` и ``Управление сообщениями``, чтобы удалять сообщения в ${channel}`
+      );
     }
 
     // No messages

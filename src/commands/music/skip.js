@@ -10,7 +10,7 @@ module.exports = {
   validations: musicValidations,
   command: {
     enabled: true,
-    aliases: ["next","sk"],
+    aliases: ["next", "sk"],
   },
   slashCommand: {
     enabled: true,
@@ -32,7 +32,7 @@ module.exports = {
  */
 function skip({ client, guildId }) {
   const player = client.musicManager.getPlayer(guildId);
-  
+
   // check if current song is playing
   if (!player.queue.current) return "⏯️ сейчас не играет не один трек";
 

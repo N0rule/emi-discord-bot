@@ -12,7 +12,7 @@ module.exports = {
   botPermissions: ["EmbedLinks", "ManageRoles"],
   command: {
     enabled: true,
-    usage: "<role> or \"list\"",
+    usage: '<role> or "list"',
     minArgsCount: 1,
   },
   slashCommand: {
@@ -30,7 +30,7 @@ module.exports = {
   async messageRun(message, args) {
     if (args[0] === "list") {
       const roleList = Object.entries(BUYROLELIST)
-        .map(([name,data]) => `**${name}**: ${data.rolename} - ${data.price}${ECONOMY.CURRENCY}`)
+        .map(([name, data]) => `**${name}**: ${data.rolename} - ${data.price}${ECONOMY.CURRENCY}`)
         .join("\n");
       const embed = new EmbedBuilder()
         .setTitle("Список Ролей")
@@ -38,10 +38,10 @@ module.exports = {
         .setDescription(roleList);
       await message.safeReply({ embeds: [embed] });
       return;
-    }  
-      const roleName = args[0];
-      const response = await buyRole(message.author, message.guild, roleName);
-      await message.safeReply(response);
+    }
+    const roleName = args[0];
+    const response = await buyRole(message.author, message.guild, roleName);
+    await message.safeReply(response);
   },
 
   async interactionRun(interaction) {
@@ -56,8 +56,8 @@ module.exports = {
       return interaction.followUp({ embeds: [embed] });
     }
     const roleName = interaction.options.getString("role");
-      const response = await buyRole(interaction.user, interaction.guild, roleName);
-      return interaction.followUp(response);
+    const response = await buyRole(interaction.user, interaction.guild, roleName);
+    return interaction.followUp(response);
   },
 };
 async function buyRole(user, guild, roleName) {
@@ -94,12 +94,10 @@ async function buyRole(user, guild, roleName) {
       .setAuthor({ name: `${user.username}`, iconURL: user.displayAvatarURL() })
       .setColor(EMBED_COLORS.SUCCESS)
       .setDescription(`Вы успешно купили роль **${role.name}** за ${rolePrice}${ECONOMY.CURRENCY}!\n`)
-      .setFooter({ text:  `Обновленный баланс: ${userDb?.coins}${ECONOMY.CURRENCY}`});
+      .setFooter({ text: `Обновленный баланс: ${userDb?.coins}${ECONOMY.CURRENCY}` });
     return { embeds: [embed] };
   } catch (error) {
     console.error(error);
     return "Что-то пошло не так!";
   }
 }
-
-
