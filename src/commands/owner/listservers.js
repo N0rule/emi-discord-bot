@@ -65,7 +65,11 @@ module.exports = {
       const embed = new EmbedBuilder()
         .setColor(client.config.EMBED_COLORS.BOT_EMBED)
         .setAuthor({ name: "Список Серверов" })
-        .setFooter({ text: `${match ? "Соответствующих" : "Общее Кол-во"} Серверов: ${total} • Страница ${currentPage} из ${totalPages}` });
+        .setFooter({
+          text: `${
+            match ? "Соответствующих" : "Общее Кол-во"
+          } Серверов: ${total} • Страница ${currentPage} из ${totalPages}`,
+        });
 
       const fields = [];
       for (let i = start; i < end; i++) {

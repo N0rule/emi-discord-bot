@@ -26,7 +26,7 @@ module.exports = async (self, target, coins) => {
   const embed = new EmbedBuilder()
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setAuthor({ name: "Новый Баланс" })
-    .setDescription(`Вы успешно перевели ${target.tag} ${coins}${ECONOMY.CURRENCY} монет`) 
+    .setDescription(`Вы успешно перевели ${target.tag} ${coins}${ECONOMY.CURRENCY} монет`)
     .setTimestamp(Date.now());
 
   return { embeds: [embed] };

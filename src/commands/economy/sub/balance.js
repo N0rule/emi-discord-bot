@@ -7,7 +7,7 @@ module.exports = async (user) => {
 
   const embed = new EmbedBuilder()
     .setColor(EMBED_COLORS.BOT_EMBED)
-    .setAuthor({name: `Cчет ${user.username}`})
+    .setAuthor({ name: `Cчет ${user.username}` })
     .setThumbnail(user.displayAvatarURL())
     .addFields(
       {

@@ -13,60 +13,60 @@ module.exports = {
   category: "INFORMATION",
   botPermissions: ["EmbedLinks"],
   command: {
-      enabled: true,
-      aliases: ["lb"],
-      minArgsCount: 1,
-      usage: "<xp|invite|rep>",
-    },
-    slashCommand: {
-      enabled: true,
-      options: [
-        {
-          name: "type",
-          description: "type of leaderboard to display",
-          required: true,
-          type: ApplicationCommandOptionType.String,
-          choices: [
-            {
-              name: "xp",
-              value: "xp",
-            },
-            {
-              name: "invite",
-              value: "invite",
-            },
-            {
-              name: "rep",
-              value: "rep",
-            },
-          ],
-        },
-      ],
-    },
+    enabled: true,
+    aliases: ["lb"],
+    minArgsCount: 1,
+    usage: "<xp|invite|rep>",
+  },
+  slashCommand: {
+    enabled: true,
+    options: [
+      {
+        name: "type",
+        description: "type of leaderboard to display",
+        required: true,
+        type: ApplicationCommandOptionType.String,
+        choices: [
+          {
+            name: "xp",
+            value: "xp",
+          },
+          {
+            name: "invite",
+            value: "invite",
+          },
+          {
+            name: "rep",
+            value: "rep",
+          },
+        ],
+      },
+    ],
+  },
 
-    async messageRun(message, args, data) {
-      const type = args[0].toLowerCase();
-      let response;
-  
-      if (type === "xp") response = await getXpLeaderboard(message, message.author, data.settings);
-      else if (type === "invite") response = await getInviteLeaderboard(message, message.author, data.settings);
-      else if (type === "rep") response = await getRepLeaderboard(message.author);
-      else response = "Invalid Leaderboard type. Choose either `xp` or `invite`";
-      await message.safeReply(response);
-    },
-  
-    async interactionRun(interaction, data) {
-      const type = interaction.options.getString("type");
-      let response;
-  
-      if (type === "xp") response = await getXpLeaderboard(interaction, interaction.user, data.settings);
-      else if (type === "invite") response = await getInviteLeaderboard(interaction, interaction.user, data.settings);
-      else if (type === "rep") response = await getRepLeaderboard(interaction.user);
-      else response = "Invalid Leaderboard type. Choose either `xp` or `invite`";
-  
-      await interaction.followUp(response);
-    },
-  };
+  async messageRun(message, args, data) {
+    const type = args[0].toLowerCase();
+    let response;
+
+    if (type === "xp") response = await getXpLeaderboard(message, message.author, data.settings);
+    else if (type === "invite") response = await getInviteLeaderboard(message, message.author, data.settings);
+    else if (type === "rep") response = await getRepLeaderboard(message.author);
+    else response = "Invalid Leaderboard type. Choose either `xp` or `invite`";
+    await message.safeReply(response);
+  },
+
+  async interactionRun(interaction, data) {
+    const type = interaction.options.getString("type");
+    let response;
+
+    if (type === "xp") response = await getXpLeaderboard(interaction, interaction.user, data.settings);
+    else if (type === "invite") response = await getInviteLeaderboard(interaction, interaction.user, data.settings);
+    else if (type === "rep") response = await getRepLeaderboard(interaction.user);
+    else response = "Invalid Leaderboard type. Choose either `xp` or `invite`";
+
+    await interaction.followUp(response);
+  },
+};
 
 async function getXpLeaderboard({ guild }, author, settings) {
   if (!settings.stats.enabled) return "Ранги выключены на сервере";

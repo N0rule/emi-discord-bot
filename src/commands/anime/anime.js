@@ -43,9 +43,9 @@ module.exports = {
 };
 
 async function getRandomEmbed(choice) {
-  const subReddits = ["animememes" ,"Animemes"];
+  const subReddits = ["animememes", "Animemes"];
   let rand = choice ? choice : subReddits[getRandomInt(subReddits.length)];
-  
+
   const response = await getJson(`https://www.reddit.com/r/${rand}/random/.json`);
   if (!response.success) {
     return new EmbedBuilder().setColor(EMBED_COLORS.ERROR).setDescription("Ошибка получения мема. Попробуй снова!");

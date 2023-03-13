@@ -99,8 +99,7 @@ async function setAutoRole({ guild }, role, settings) {
   if (role) {
     if (role.id === guild.roles.everyone.id) return "вы не можете поставить `@everyone` как автороль";
     if (!guild.members.me.permissions.has("ManageRoles")) return "у меня нету `Менятьроли` права";
-    if (guild.members.me.roles.highest.position < role.position)
-      return "Нет прав что-бы установить эту роль";
+    if (guild.members.me.roles.highest.position < role.position) return "Нет прав что-бы установить эту роль";
     if (role.managed) return "Упс! Эта роль управляеться интеграцией";
   }
 
