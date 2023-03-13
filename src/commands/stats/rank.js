@@ -8,7 +8,7 @@ const { getMemberStats, getXpLb } = require("@schemas/MemberStats");
  */
 module.exports = {
   name: "rank",
-  description: "displays members rank in this server",
+  description: "Отображает ранг участника на этом сервере",
   cooldown: 5,
   category: "STATS",
   botPermissions: ["AttachFiles"],
@@ -21,7 +21,7 @@ module.exports = {
     options: [
       {
         name: "user",
-        description: "target user",
+        description: "целевой пользователь",
         type: ApplicationCommandOptionType.User,
         required: false,
       },
@@ -44,10 +44,10 @@ module.exports = {
 
 async function getRank({ guild }, member, settings) {
   const { user } = member;
-  if (!settings.stats.enabled) return "Stats Tracking is disabled on this server";
+  if (!settings.stats.enabled) return "Отслеживание статистики отключено на этом сервере";
 
   const memberStats = await getMemberStats(guild.id, user.id);
-  if (!memberStats.xp) return `${user.username} is not ranked yet!`;
+  if (!memberStats.xp) return `${user.username} еще не имеет ранга!`;
 
   const lb = await getXpLb(guild.id, 100);
   let pos = -1;
@@ -75,7 +75,7 @@ async function getRank({ guild }, member, settings) {
       Authorization: `Bearer ${process.env.STRANGE_API_KEY}`,
     },
   });
-  if (!response.success) return "Failed to generate rank-card";
+  if (!response.success) return "Не удалось cгенерировать карточку игрока";
 
   const attachment = new AttachmentBuilder(response.buffer, { name: "rank.png" });
   return { files: [attachment] };

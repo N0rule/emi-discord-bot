@@ -5,7 +5,7 @@ const { ApplicationCommandOptionType, ChannelType } = require("discord.js");
  */
 module.exports = {
   name: "levelup",
-  description: "configure the levelling system",
+  description: "Настройка систему уровней",
   category: "STATS",
   userPermissions: ["ManageGuild"],
   command: {
@@ -14,11 +14,11 @@ module.exports = {
     subcommands: [
       {
         trigger: "message <new-message>",
-        description: "set custom level up message",
+        description: "Установить пользовательское сообщение об уровне",
       },
       {
         trigger: "channel <#channel|off>",
-        description: "set the channel to send level up messages to",
+        description: "установить канал для отправки сообщений об уровне",
       },
     ],
   },
@@ -27,12 +27,12 @@ module.exports = {
     options: [
       {
         name: "message",
-        description: "set custom level up message",
+        description: "Установить пользовательское сообщение об уровне",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "message",
-            description: "message to display when a user levels up",
+            description: "Сообщение для отображения, когда пользователь повышает уровень",
             type: ApplicationCommandOptionType.String,
             required: true,
           },
@@ -40,12 +40,12 @@ module.exports = {
       },
       {
         name: "channel",
-        description: "set the channel to send level up messages to",
+        description: "установить канал для отправки сообщений об повышении уровня",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "channel",
-            description: "channel to send level up messages to",
+            description: "канал для отправки сообщений повышения уровня",
             type: ApplicationCommandOptionType.Channel,
             channelTypes: [ChannelType.GuildText],
             required: true,
@@ -74,14 +74,15 @@ module.exports = {
       if (input === "off") channel = "off";
       else {
         const match = message.guild.findMatchingChannels(input);
-        if (match.length === 0) return message.safeReply("Invalid channel. Please provide a valid channel");
+        if (match.length === 0)
+          return message.safeReply("Недействительный канал. Пожалуйста,предоставьте действительный канал");
         channel = match[0];
       }
       response = await setChannel(channel, data.settings);
     }
 
     // invalid
-    else response = "Invalid subcommand";
+    else response = "Неверная субкоманда";
     await message.safeReply(response);
   },
 
@@ -91,25 +92,25 @@ module.exports = {
 
     if (sub === "message") response = await setMessage(interaction.options.getString("message"), data.settings);
     else if (sub === "channel") response = await setChannel(interaction.options.getChannel("channel"), data.settings);
-    else response = "Invalid subcommand";
+    else response = "Неверная субкоманда";
 
     await interaction.followUp(response);
   },
 };
 
 async function setMessage(message, settings) {
-  if (!message) return "Invalid message. Please provide a message";
+  if (!message) return "Неправильное сообщение. Пожалуйста предоставте правильное сообщение";
   settings.stats.xp.message = message;
   await settings.save();
-  return `Configuration saved. Level up message updated!`;
+  return `Конфигурация сохранена. Сообщение о повышении уровня обновлено!`;
 }
 
 async function setChannel(channel, settings) {
-  if (!channel) return "Invalid channel. Please provide a channel";
+  if (!channel) return "Недействительный канал. Пожалуйста,предоставьте действительный канал";
 
   if (channel === "off") settings.stats.xp.channel = null;
   else settings.stats.xp.channel = channel.id;
 
   await settings.save();
-  return `Configuration saved. Level up channel updated!`;
+  return `Конфигурация сохранена. Сообщение о повышении уровня обновлено!`;
 }

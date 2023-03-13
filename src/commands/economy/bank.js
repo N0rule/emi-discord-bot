@@ -127,7 +127,8 @@ module.exports = {
       const target = await message.guild.resolveMember(args[1], true);
       if (!target) return message.safeReply("Укажите действительного пользователя для перевода монет");
       const coins = parseInt(args[2]);
-      if (isNaN(coins)) return message.safeReply("Укажите действительное количество монет, которые вы хотите перевести");
+      if (isNaN(coins))
+        return message.safeReply("Укажите действительное количество монет, которые вы хотите перевести");
       response = await transfer(message.author, target.user, coins);
     }
 

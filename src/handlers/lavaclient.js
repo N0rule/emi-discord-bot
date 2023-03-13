@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require("discord.js");
 const { Cluster } = require("lavaclient");
-const { EMBED_COLORS} = require("@root/config");
+const { EMBED_COLORS } = require("@root/config");
 const prettyMs = require("pretty-ms");
 const { load, SpotifyItemType } = require("@lavaclient/spotify");
 require("@lavaclient/queue/register");
@@ -77,12 +77,10 @@ module.exports = (client) => {
 
   lavaclient.on("nodeQueueFinish", async (_node, queue) => {
     const channel = client.channels.cache.get(queue.player.channelId);
-    const embed = new EmbedBuilder()
-    .setColor(EMBED_COLORS.BOT_EMBED)
-    .setDescription("👋 Очередь закончилась");
+    const embed = new EmbedBuilder().setColor(EMBED_COLORS.BOT_EMBED).setDescription("👋 Очередь закончилась");
     queue.data.channel.safeSend({ embeds: [embed] });
    //channel.safeSend("Очередь закончилась.");
-    await client.musicManager.destroyPlayer(queue.player.guildId).then(queue.player.disconnect());
+   await client.musicManager.destroyPlayer(queue.player.guildId).then(queue.player.disconnect());
   });
 
   return lavaclient;

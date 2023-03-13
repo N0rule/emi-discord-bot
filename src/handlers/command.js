@@ -62,7 +62,9 @@ module.exports = {
     if (cmd.cooldown > 0) {
       const remaining = getRemainingCooldown(message.author.id, cmd);
       if (remaining > 0) {
-        return message.safeReply(`Вы на перезарядке. Вы можете использовать команду через \`${timeformat(remaining)}\``);
+        return message.safeReply(
+          `Вы на перезарядке. Вы можете использовать команду через \`${timeformat(remaining)}\``
+        );
       }
     }
 

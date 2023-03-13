@@ -1,6 +1,6 @@
 /**
  * @type {import("@structures/Command")}
- * 
+ *
  */
 module.exports = {
   name: "ping",

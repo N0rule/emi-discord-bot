@@ -113,13 +113,13 @@ async function embedSetup(channel, member) {
         ),
         new ActionRowBuilder().addComponents(
           new TextInputBuilder()
-          .setCustomId("color")
-          .setLabel("Embed Color")
-          .setStyle(TextInputStyle.Short)
-          .setRequired(false)
-      ),
-      new ActionRowBuilder().addComponents(
-        new TextInputBuilder()
+            .setCustomId("color")
+            .setLabel("Embed Color")
+            .setStyle(TextInputStyle.Short)
+            .setRequired(false)
+        ),
+        new ActionRowBuilder().addComponents(
+          new TextInputBuilder()
             .setCustomId("footer")
             .setLabel("Embed Нижний колонтитул")
             .setStyle(TextInputStyle.Short)

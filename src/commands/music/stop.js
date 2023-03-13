@@ -10,7 +10,7 @@ module.exports = {
   validations: musicValidations,
   command: {
     enabled: true,
-    aliases: ["leave","s"],
+    aliases: ["leave", "s"],
   },
   slashCommand: {
     enabled: true,

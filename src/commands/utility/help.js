@@ -100,11 +100,10 @@ async function getHelpMenu({ client, guild }) {
   }
 
   const menuRow = new ActionRowBuilder().addComponents(
-    
     new StringSelectMenuBuilder()
-    .setCustomId("help-menu")
-    .setPlaceholder("Выберите категорию команды")
-    .addOptions(options)
+      .setCustomId("help-menu")
+      .setPlaceholder("Выберите категорию команды")
+      .addOptions(options)
   );
 
   // Buttons Row
@@ -120,9 +119,7 @@ async function getHelpMenu({ client, guild }) {
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setThumbnail(client.user.displayAvatarURL())
     .setDescription(
-      "**Обо мне:**\n" +
-        `Приветики я ${guild.members.me.displayName}!\n` +
-        `Личный Бот Сервера ${guild.name} 🥰`
+      "**Обо мне:**\n" + `Приветики я ${guild.members.me.displayName}!\n` + `Личный Бот Сервера ${guild.name} 🥰`
     );
 
   return {
@@ -335,7 +332,9 @@ function getMsgCategoryEmbeds(client, category, prefix) {
       .setAuthor({ name: `${category} Команды` })
       .setDescription(item.join("\n"))
       .setFooter({
-        text: `страница ${index + 1} из ${arrSplitted.length} | напишите ${prefix}help <команда> для большей информации о команде`,
+        text: `страница ${index + 1} из ${
+          arrSplitted.length
+        } | напишите ${prefix}help <команда> для большей информации о команде`,
       });
     arrEmbeds.push(embed);
   });

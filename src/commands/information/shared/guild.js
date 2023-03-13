@@ -1,7 +1,7 @@
 const { EmbedBuilder, ChannelType, GuildVerificationLevel } = require("discord.js");
 const { EMBED_COLORS } = require("@root/config");
 const moment = require("moment");
-moment.locale('ru')
+moment.locale("ru");
 
 /**
  * @param {import('discord.js').Guild} guild
@@ -106,7 +106,7 @@ module.exports = async (guild) => {
       }
     );
 
-  if (guild.splashURL()) embed.setImage(guild.splashURL({extension: "png", size: 256}));
+  if (guild.splashURL()) embed.setImage(guild.splashURL({ extension: "png", size: 256 }));
 
   return { embeds: [embed] };
 };

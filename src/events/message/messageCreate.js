@@ -6,7 +6,7 @@ const { text } = require("stream/consumers");
 /**
  * @param {import('@src/structures').BotClient} client
  * @param {import('discord.js').Message} message
- * 
+ *
  */
 
 module.exports = async (client, message, guild) => {
@@ -15,13 +15,15 @@ module.exports = async (client, message, guild) => {
   const embed = new EmbedBuilder()
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setThumbnail(client.user.displayAvatarURL())
-    .setDescription(`Приветики я **${message.guild.members.me.displayName}!**\nЛичный Бот Синдиката 🥰\nМой Префикс \`${settings.prefix}\`\nДля помощи используй команду **/help**\n`);
+    .setDescription(
+      `Приветики я **${message.guild.members.me.displayName}!**\nЛичный Бот Синдиката 🥰\nМой Префикс \`${settings.prefix}\`\nДля помощи используй команду **/help**\n`
+    );
   // command handler
   let isCommand = false;
   if (PREFIX_COMMANDS.ENABLED) {
     // check for bot mentions
     if (message.content.includes(`${client.user.id}`)) {
-      message.channel.safeSend({ embeds: [embed] })
+      message.channel.safeSend({ embeds: [embed] });
     }
 
     if (message.content && message.content.startsWith(settings.prefix)) {
