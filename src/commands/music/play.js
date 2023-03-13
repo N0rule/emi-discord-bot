@@ -103,7 +103,7 @@ async function play({ member, guild, channel }, query) {
         default:
           return "🚫 Произошла ошибка при поиске песни";
       }
-      
+
       if (!tracks) guild.client.logger.debug({ query, item });
     } else {
       const res = await guild.client.musicManager.rest.loadTracks(
@@ -133,7 +133,7 @@ async function play({ member, guild, channel }, query) {
           guild.client.logger.debug("Unknown loadType", res.loadType);
           return "🚫 Произошла ошибка при поиске песни";
       }
-      
+
       if (!tracks) guild.client.logger.debug({ query, res });
     }
   } catch (error) {

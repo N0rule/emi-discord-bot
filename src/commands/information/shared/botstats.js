@@ -100,4 +100,3 @@ module.exports = (client) => {
 
   return { embeds: [embed] };
 };
-
