@@ -103,7 +103,11 @@ async function runCompletion(message) {
     max_tokens: AICHAT.TOKENS,
     presence_penalty: AICHAT.PRESENCE_PENALTY,
     temperature: AICHAT.TEMPERATURE,
-    messages: [{ role: "user", content: AICHAT.IMAGINEMESSAGE + " " + message }],
+    messages: [
+      { role: "system", content: AICHAT.IMAGINEMESSAGE},
+      { role: "user", content: message }
+    ],
+
   });
   try {
     const completion = await Promise.race([timeoutPromise, completionPromise]);
