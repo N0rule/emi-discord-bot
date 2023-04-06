@@ -110,7 +110,7 @@ async function getXpLeaderboard({ guild }, author, settings) {
     .setAuthor({ name: "Таблица Лидеров" })
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setDescription(collector)
-    .setFooter({ text: `Запрощено пользователем ${author.tag}` });
+    .setFooter({ text: `Запрошено пользователем ${author.tag}` });
 
   // Store the result in the cache for future requests
   cache.set(cacheKey, { embeds: [embed] });
