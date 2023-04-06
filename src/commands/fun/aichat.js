@@ -2,6 +2,7 @@
 const { EmbedBuilder, ApplicationCommandOptionType } = require("discord.js");
 const { EMBED_COLORS, AICHAT } = require("@root/config.js");
 const { Configuration, OpenAIApi } = require("openai");
+
 const configuration = new Configuration({ apiKey: process.env.OPENAI_API_KEY });
 const openai = new OpenAIApi(configuration);
 
@@ -40,9 +41,6 @@ module.exports = {
       .setDescription("Отвечаю...")
       .setThumbnail(message.client.user.displayAvatarURL())
       .setFooter({ text: `Запрошено пользователем: ${message.author.tag}` });
-
-    // Declare reply variable and initialize to null
-    let reply = null;
     try {
       // Join the arguments into one string
       const prompt = args.join(" ");
