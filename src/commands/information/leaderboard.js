@@ -88,7 +88,7 @@ async function getXpLeaderboard({ guild }, author, settings) {
     .setAuthor({ name: "Таблица Лидеров" })
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setDescription(collector)
-    .setFooter({ text: `Запрощено пользователем ${author.tag}` });
+    .setFooter({ text: `Запрошено пользователем ${author.tag}` });
 
   return { embeds: [embed] };
 }
