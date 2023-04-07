@@ -14,7 +14,7 @@ const botstats = require("../shared/botstats");
  */
 module.exports = {
   name: "bot",
-  description: "bot related commands",
+  description: "Команды, связанные с ботом",
   category: "INFORMATION",
   botPermissions: ["EmbedLinks"],
   command: {
@@ -43,7 +43,7 @@ module.exports = {
 
   async interactionRun(interaction) {
     const sub = interaction.options.getSubcommand();
-    if (!sub) return interaction.followUp("Not a valid subcommand");
+    if (!sub) return interaction.followUp("Неправильная субкоманда");
 
     /* Invite
     if (sub === "invite") {

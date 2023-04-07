@@ -63,9 +63,9 @@ const buildSuccessResponse = (output, client) => {
   output = require("util").inspect(output, { depth: 0 }).replaceAll(client.token, DUMMY_TOKEN);
 
   const embed = new EmbedBuilder()
-    .setAuthor({ name: "📤 Output" })
+    .setAuthor({ name: "📤 Результат" })
     .setDescription("```js\n" + (output.length > 4096 ? `${output.substr(0, 4000)}...` : output) + "\n```")
-    .setColor("Random")
+    .setColor(EMBED_COLORS.SUCCESS)
     .setTimestamp(Date.now());
 
   return { embeds: [embed] };
@@ -74,7 +74,7 @@ const buildSuccessResponse = (output, client) => {
 const buildErrorResponse = (err) => {
   const embed = new EmbedBuilder();
   embed
-    .setAuthor({ name: "📤 Error" })
+    .setAuthor({ name: "📤 Ошибка" })
     .setDescription("```js\n" + (err.length > 4096 ? `${err.substr(0, 4000)}...` : err) + "\n```")
     .setColor(EMBED_COLORS.ERROR)
     .setTimestamp(Date.now());
