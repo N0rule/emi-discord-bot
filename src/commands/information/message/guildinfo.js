@@ -5,7 +5,7 @@ const guildInfo = require("../shared/guild");
  */
 module.exports = {
   name: "guildinfo",
-  description: "показивает информацию о сервере",
+  description: "показывает информацию о сервере",
   category: "INFORMATION",
   botPermissions: ["EmbedLinks"],
   cooldown: 5,
