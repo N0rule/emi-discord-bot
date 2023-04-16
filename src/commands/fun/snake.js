@@ -1,39 +1,43 @@
-const SnakeGame = require("snakecord");
+const { Snake } = require("discord-gamecord");
 
 /**
  * @type {import("@structures/Command")}
  */
+
 module.exports = {
   name: "snake",
-  description: "поиграть в змейку",
+  description: "Играть в змейку",
   cooldown: 300,
   category: "FUN",
   botPermissions: ["SendMessages", "EmbedLinks", "AddReactions", "ReadMessageHistory", "ManageMessages"],
   command: {
-    enabled: true,
+    enabled: false,
   },
   slashCommand: {
     enabled: true,
-  },
-
-  async messageRun(message, args) {
-    await message.safeReply("**Запуск игры «Змейка»**");
-    await startSnakeGame(message);
+    ephermal: true,
+    options: [],
   },
 
   async interactionRun(interaction) {
-    await interaction.followUp("**Запуск игры «Змейка»**");
-    await startSnakeGame(interaction);
+    const Game = new Snake({
+      message: interaction,
+      isSlashGame: true,
+      embed: {
+        title: "Змейка",
+       
+        color: "#5865F2",
+        overTitle: "Конец Игры",
+      },
+      emojis: {
+        snakeHead: "🟢",
+        snakeBody: "🟩",
+        board: "🟦",
+        food: "🍎", 
+      },
+      stopButton: "Прекратить",
+    });
+
+    Game.startGame();
   },
 };
-
-async function startSnakeGame(data) {
-  const snakeGame = new SnakeGame({
-    title: "Змейка",
-    color: "BLUE",
-    timestamp: true,
-    gameOverTitle: "Конец Игры",
-  });
-
-  await snakeGame.newGame(data);
-}

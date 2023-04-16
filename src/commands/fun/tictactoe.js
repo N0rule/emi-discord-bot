@@ -8,7 +8,7 @@ const { ApplicationCommandOptionType, EmbedBuilder } = require("discord.js");
 module.exports = {
   name: "tictactoe",
   description: "Играйте в Крестики Нолики с друзьями",
-  cooldown: 15,
+  cooldown: 40,
   category: "FUN",
   botPermissions: ["SendMessages", "EmbedLinks", "AddReactions", "ReadMessageHistory", "ManageMessages"],
   command: {
