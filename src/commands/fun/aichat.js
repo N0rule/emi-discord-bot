@@ -41,6 +41,9 @@ module.exports = {
       .setDescription("Отвечаю...")
       .setThumbnail(message.client.user.displayAvatarURL())
       .setFooter({ text: `Запрошено пользователем: ${message.author.tag}` });
+
+
+      let reply = null;
     try {
       // Join the arguments into one string
       const prompt = args.join(" ");
