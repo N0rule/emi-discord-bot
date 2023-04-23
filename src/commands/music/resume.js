@@ -7,6 +7,7 @@ module.exports = {
   name: "resume",
   description: "продолжает музыку",
   category: "MUSIC",
+  cooldown: 5,
   validations: musicValidations,
   command: {
     enabled: true,

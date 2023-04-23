@@ -7,6 +7,7 @@ module.exports = {
   name: "pause",
   description: "остановка музыки",
   category: "MUSIC",
+  cooldown: 5,
   validations: musicValidations,
   command: {
     enabled: true,

@@ -22,6 +22,7 @@ module.exports = {
   name: "help",
   description: "меню помощи",
   category: "UTILITY",
+  cooldown: 3,
   botPermissions: ["EmbedLinks"],
   command: {
     enabled: true,
@@ -119,9 +120,9 @@ async function getHelpMenu({ client, guild }) {
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setThumbnail(client.user.displayAvatarURL())
     .setDescription(
-      "**Обо мне:**\n" +
-        `Приветики я **${guild.members.me.displayName}**!\n` +
-        `Личный Бот Сервера **${guild.name}** 🥰`
+      `Приветики я **${guild.members.me.displayName}**!\n` +
+        `Личный Бот Сервера **${guild.name}** 🥰\n` +
+        "\n Разработчик: **N0rule**\n"
     );
 
   return {

@@ -6,6 +6,7 @@ module.exports = {
   name: "ping",
   description: "Показывает Пинг",
   category: "INFORMATION",
+  cooldown: 5,
   command: {
     enabled: true,
   },

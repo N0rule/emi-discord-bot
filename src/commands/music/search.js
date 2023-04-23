@@ -22,6 +22,7 @@ module.exports = {
   description: "поиск подходящих песен на ютубе",
   category: "MUSIC",
   botPermissions: ["EmbedLinks"],
+  cooldown: 10,
   command: {
     enabled: true,
     usage: "<song-name>",
@@ -223,3 +224,4 @@ async function search({ member, guild, channel }, query) {
 
   return { embeds: [embed] };
 }
+

@@ -16,8 +16,9 @@ module.exports = {
   name: "meme",
   description: "посмотреть случайный мем",
   category: "FUN",
+  userPermissions: ["AttachFiles"],
   botPermissions: ["EmbedLinks"],
-  cooldown: 5,
+  cooldown: 10,
   command: {
     enabled: true,
     usage: "[category]",

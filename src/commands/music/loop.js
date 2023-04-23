@@ -9,6 +9,7 @@ module.exports = {
   name: "loop",
   description: "зацикливает трек или очередь",
   category: "MUSIC",
+  cooldown: 5,
   validations: musicValidations,
   command: {
     enabled: true,

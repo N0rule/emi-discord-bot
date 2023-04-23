@@ -14,6 +14,7 @@ module.exports = {
   description: "показывает разную информацию",
   category: "INFORMATION",
   botPermissions: ["EmbedLinks"],
+  cooldown: 5,
   command: {
     enabled: false,
   },

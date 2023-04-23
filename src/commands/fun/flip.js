@@ -11,6 +11,7 @@ module.exports = {
   name: "flip",
   description: "подбрасывает монетку или текст",
   category: "FUN",
+  cooldown: 10,
   botPermissions: ["EmbedLinks"],
   command: {
     enabled: true,

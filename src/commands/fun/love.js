@@ -69,8 +69,8 @@ async function getUserLove(user1, user2, mauthor) {
   // Determine love image based on percentage
   const loveImage =
     result >= 51
-      ? "https://media1.giphy.com/media/TmngSmlDjzJfO/giphy.gif?cid=ecf05e47brm0fzk1kan0ni753jmvvik6h27sp13fkn8a9kih&rid=giphy.gif&ct=g"
-      : "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNTA5ZDk2MDg5NjI3NWM0ZmRlN2MzZDQ1YTdiOTU3ZTY5YTQxZjc1NSZjdD1n/ftdjO4qK3toNIsIynN/giphy.gif";
+      ? "https://cdn.discordapp.com/attachments/448160851266895873/1097600320273666191/4tV3rPl.gif"
+      : "https://cdn.discordapp.com/attachments/448160851266895873/1097600320684703844/E8xBX50.gif";
 
   // Create embed
   const embed = new EmbedBuilder()
@@ -92,7 +92,7 @@ async function getUserLove(user1, user2, mauthor) {
     })
     .setImage(loveImage)
     .setTimestamp()
-    .setThumbnail("https://www.wownow.net.in/assets/images/love.gif")
+    .setThumbnail("https://cdn.discordapp.com/attachments/448160851266895873/1097600830221328504/ooSRUAv.gif")
     .setFooter({ text: `Запрошено пользователем ${mauthor.tag}` });
 
   return { embeds: [embed] };

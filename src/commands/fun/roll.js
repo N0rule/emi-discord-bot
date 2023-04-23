@@ -3,8 +3,9 @@ const { EMBED_COLORS } = require("@root/config.js");
 module.exports = {
   name: "roll",
   description: "Бросить кубик, чтобы получить случайное число.",
-  cooldown: 0,
+  cooldown: 10,
   category: "FUN",
+  botPermissions: ["SendMessages"],
   command: {
     enabled: true,
     usage: "<roll_amount>", // Instruction on how to use the command

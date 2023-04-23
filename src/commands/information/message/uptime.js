@@ -8,6 +8,7 @@ module.exports = {
   description: "аптайм",
   category: "INFORMATION",
   botPermissions: ["EmbedLinks"],
+  cooldown: 5,
   command: {
     enabled: true,
   },
