@@ -7,6 +7,7 @@ module.exports = {
   name: "stop",
   description: "останавливает музыку",
   category: "MUSIC",
+  cooldown: 3,
   validations: musicValidations,
   command: {
     enabled: true,

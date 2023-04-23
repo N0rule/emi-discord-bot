@@ -7,6 +7,7 @@ module.exports = {
   name: "shuffle",
   description: "перемешивает очередь",
   category: "MUSIC",
+  cooldown: 3,
   validations: musicValidations,
   command: {
     enabled: true,

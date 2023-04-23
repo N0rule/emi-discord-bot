@@ -8,6 +8,7 @@ module.exports = {
   description: "показывает информации об аватаре пользователя",
   category: "INFORMATION",
   botPermissions: ["EmbedLinks"],
+  cooldown: 5,
   command: {
     enabled: true,
     usage: "[@member|id]",

@@ -9,6 +9,7 @@ module.exports = {
   description: "показивает текущую музыкальную очередь",
   category: "MUSIC",
   botPermissions: ["EmbedLinks"],
+  cooldown: 5,
   command: {
     enabled: true,
     aliases: ["q"],

@@ -50,6 +50,11 @@ module.exports = {
     IMAGINEMESSAGE: "" // Message before user input, for example you can set chat to be someone" imagine you are Rayan Ghostling,you should aswer as he would, question:", if you dont want to use it just leave blank
   },
 
+  AIPHOTO: {
+    Count: 1, //TODO CURENTLY DOES NOTHING DON'T CHANGE FROM 1 // You can request 1-10 images at a time.
+    size: "256x256", // Generated images can have a size of 256x256, 512x512, or 1024x1024 pixels.
+  },
+  
   ECONOMY: {
     ENABLED: true,
     CURRENCY: " 🪙",

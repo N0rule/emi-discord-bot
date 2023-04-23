@@ -5,10 +5,11 @@ const botstats = require("../shared/botstats");
  */
 module.exports = {
   name: "botstats",
-  description: "показивает информацию о боте",
+  description: "показывает информацию о боте",
   category: "INFORMATION",
+  userPermissions: ["ManageGuild"],
   botPermissions: ["EmbedLinks"],
-  cooldown: 5,
+  cooldown: 10,
   command: {
     enabled: true,
     aliases: ["botstat", "botinfo"],

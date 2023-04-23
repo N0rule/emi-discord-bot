@@ -11,6 +11,7 @@ module.exports = {
   description: "Получить информацию о пользователе osu!",
   cooldown: 0,
   category: "FUN",
+  botPermissions: ["SendMessages", "EmbedLinks"],
   command: {
     enabled: true,
     usage: "<username>", // Instruction on how to use the command

@@ -17,6 +17,7 @@ module.exports = {
   description: "Играет песню с ютуба",
   category: "MUSIC",
   botPermissions: ["EmbedLinks"],
+  cooldown: 3,
   command: {
     enabled: true,
     aliases: ["p"],

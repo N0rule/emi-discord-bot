@@ -12,7 +12,7 @@ const openai = new OpenAIApi(configuration);
 // Command Module exporting an object with the command details and properties
 module.exports = {
   name: "aichat",
-  description: "промnт для ChatGPT (Experimental)", // String describing the command
+  description: "промпт для ChatGPT (Experimental)", // String describing the command
   category: "FUN", // Category to which the command belongs
   cooldown: 10,
   command: {
@@ -26,7 +26,7 @@ module.exports = {
     options: [
       {
         name: "prompt", // Option name that is assigned to a value in an object
-        description: "промnт для ChatGPT", // Description of the option
+        description: "промпт для ChatGPT", // Description of the option
         type: ApplicationCommandOptionType.String, // Data type of the value
         required: true, // Boolean indicating if it is mandatory or not
       },
@@ -42,8 +42,7 @@ module.exports = {
       .setThumbnail(message.client.user.displayAvatarURL())
       .setFooter({ text: `Запрошено пользователем: ${message.author.tag}` });
 
-
-      let reply = null;
+    let reply = null; // i don't know why, but it fixes multimessages
     try {
       // Join the arguments into one string
       const prompt = args.join(" ");
@@ -93,7 +92,7 @@ module.exports = {
 
 // runCompletion function to use the OpenAi API to generate results based on user prompts
 async function runCompletion(message) {
-  const timeoutPromise = new Promise((resolve, reject) => {
+  const timeoutPromise = new Promise((reject) => {
     setTimeout(() => {
       reject(new Error());
     }, 35000);

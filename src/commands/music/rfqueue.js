@@ -8,6 +8,7 @@ module.exports = {
   name: "rfqueue",
   description: "удаляет песню из очереди(last для последней)",
   category: "MUSIC",
+  cooldown: 3,
   validations: musicValidations,
   command: {
     enabled: true,

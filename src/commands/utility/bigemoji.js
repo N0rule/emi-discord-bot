@@ -10,6 +10,7 @@ module.exports = {
   description: "увеличить емодзи",
   category: "UTILITY",
   botPermissions: ["EmbedLinks"],
+  cooldown: 10,
   command: {
     enabled: true,
     usage: "<emoji>",

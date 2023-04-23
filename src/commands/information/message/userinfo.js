@@ -5,9 +5,10 @@ const userInfo = require("../shared/user");
  */
 module.exports = {
   name: "userinfo",
-  description: "показивает информацию о пользователе",
+  description: "показывает информацию о пользователе",
   category: "INFORMATION",
   botPermissions: ["EmbedLinks"],
+  cooldown: 5,
   command: {
     enabled: true,
     usage: "[@member|id]",
