@@ -119,10 +119,7 @@ async function getHelpMenu({ client, guild }) {
   const embed = new EmbedBuilder()
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setThumbnail(client.user.displayAvatarURL())
-    .setDescription(
-      `Приветики я **${guild.members.me.displayName}**!\n` +
-        `Личный Бот Сервера **${guild.name}** 🥰\n`
-    );
+    .setDescription(`Приветики я **${guild.members.me.displayName}**!\n` + `Личный Бот Сервера **${guild.name}** 🥰\n`);
 
   return {
     embeds: [embed],

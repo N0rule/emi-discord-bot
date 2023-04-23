@@ -224,4 +224,3 @@ async function search({ member, guild, channel }, query) {
 
   return { embeds: [embed] };
 }
-

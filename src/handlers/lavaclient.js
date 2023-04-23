@@ -79,8 +79,8 @@ module.exports = (client) => {
     const channel = client.channels.cache.get(queue.player.channelId);
     const embed = new EmbedBuilder().setColor(EMBED_COLORS.BOT_EMBED).setDescription("👋 Очередь закончилась");
     queue.data.channel.safeSend({ embeds: [embed] });
-   //channel.safeSend("Очередь закончилась.");
-   await client.musicManager.destroyPlayer(queue.player.guildId).then(queue.player.disconnect());
+    //channel.safeSend("Очередь закончилась.");
+    await client.musicManager.destroyPlayer(queue.player.guildId).then(queue.player.disconnect());
   });
 
   return lavaclient;
