@@ -16,7 +16,7 @@ module.exports = async (client, message, guild) => {
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setThumbnail(client.user.displayAvatarURL())
     .setDescription(
-      `Приветики я **${message.guild.members.me.displayName}!**\n Личный Бот **${message.guild.name} 🥰**\nМой Префикс \`${settings.prefix}\`\nДля помощи используй команду **/help**\n\n Разработчик: **N0rule**\n`
+      `Приветики я **${message.guild.members.me.displayName}!**\n Личный Бот **${message.guild.name} 🥰**\nМой Префикс \`${settings.prefix}\`\nДля помощи используй команду **/help**\n`
     );
   // command handler
   let isCommand = false;
