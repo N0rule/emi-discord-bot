@@ -121,8 +121,7 @@ async function getHelpMenu({ client, guild }) {
     .setThumbnail(client.user.displayAvatarURL())
     .setDescription(
       `Приветики я **${guild.members.me.displayName}**!\n` +
-        `Личный Бот Сервера **${guild.name}** 🥰\n` +
-        "\n Разработчик: **N0rule**\n"
+        `Личный Бот Сервера **${guild.name}** 🥰\n`
     );
 
   return {
