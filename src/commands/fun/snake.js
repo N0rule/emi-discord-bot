@@ -26,7 +26,6 @@ module.exports = {
       isSlashGame: true,
       embed: {
         title: "Змейка",
-       
         color: "#5865F2",
         overTitle: "Конец Игры",
       },
@@ -34,7 +33,7 @@ module.exports = {
         snakeHead: "🟢",
         snakeBody: "🟩",
         board: "🟦",
-        food: "🍎", 
+        food: "🍎",
       },
       stopButton: "Прекратить",
     });

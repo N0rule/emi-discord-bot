@@ -73,7 +73,7 @@ async function play({ member, guild, channel }, query) {
   try {
     if (guild.client.musicManager.spotify.isSpotifyUrl(query)) {
       if (!process.env.SPOTIFY_CLIENT_ID || !process.env.SPOTIFY_CLIENT_SECRET) {
-        return "🚫 Spotify песни не работают. Обратитесь к N0rule";
+        return "🚫 Spotify песни не работают. Обратитесь к Администратору";
       }
 
       const item = await guild.client.musicManager.spotify.load(query);
