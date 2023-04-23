@@ -11,6 +11,7 @@ module.exports = {
   description: "показать какой трек сейчас играет",
   category: "MUSIC",
   botPermissions: ["EmbedLinks"],
+  cooldown: 5,
   command: {
     enabled: true,
     aliases: ["nowplaying"],

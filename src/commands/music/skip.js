@@ -7,6 +7,7 @@ module.exports = {
   name: "skip",
   description: "пропуск текущего трека",
   category: "MUSIC",
+  cooldown: 3,
   validations: musicValidations,
   command: {
     enabled: true,

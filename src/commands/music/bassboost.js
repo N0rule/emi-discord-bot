@@ -15,6 +15,7 @@ module.exports = {
   name: "bassboost",
   description: "устанавливает уровень бассбуста",
   category: "MUSIC",
+  cooldown: 5,
   validations: musicValidations,
   command: {
     enabled: true,

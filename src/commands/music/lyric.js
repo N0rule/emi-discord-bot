@@ -12,6 +12,7 @@ module.exports = {
   description: "найди текст песни",
   category: "MUSIC",
   botPermissions: ["EmbedLinks"],
+  cooldown: 10,
   command: {
     enabled: true,
     minArgsCount: 1,

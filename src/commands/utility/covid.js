@@ -9,7 +9,7 @@ const timestampToDate = require("timestamp-to-date");
 module.exports = {
   name: "covid",
   description: "ковид информация страны",
-  cooldown: 5,
+  cooldown: 10,
   category: "UTILITY",
   botPermissions: ["EmbedLinks"],
   command: {

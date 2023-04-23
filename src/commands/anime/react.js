@@ -14,6 +14,8 @@ module.exports = {
   description: "аниме реакции",
   enabled: true,
   category: "ANIME",
+  userPermissions: ["AttachFiles"],
+  botPermissions: ["EmbedLinks"],
   cooldown: 5,
   command: {
     enabled: true,

@@ -16,8 +16,9 @@ module.exports = {
   name: "anime",
   description: "посмотреть случайный аниме пост",
   category: "ANIME",
+  userPermissions: ["AttachFiles"],
   botPermissions: ["EmbedLinks"],
-  cooldown: 5,
+  cooldown: 10,
   command: {
     enabled: true,
   },

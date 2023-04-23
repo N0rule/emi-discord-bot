@@ -10,6 +10,7 @@ module.exports = {
   name: "seek",
   description: "устанавливает позицию воспроизводимого трека в указанную позицию",
   category: "MUSIC",
+  cooldown: 3,
   validations: musicValidations,
   command: {
     enabled: true,
