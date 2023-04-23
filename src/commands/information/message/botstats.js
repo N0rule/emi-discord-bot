@@ -5,11 +5,7 @@ const botstats = require("../shared/botstats");
  */
 module.exports = {
   name: "botstats",
-<<<<<<< HEAD
   description: "показывает информацию о боте",
-=======
-  description: "показивает информацию о боте",
->>>>>>> 2e79b8e (Private per merge)
   category: "INFORMATION",
   userPermissions: ["ManageGuild"],
   botPermissions: ["EmbedLinks"],

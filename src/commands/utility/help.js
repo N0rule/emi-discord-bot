@@ -120,8 +120,9 @@ async function getHelpMenu({ client, guild }) {
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setThumbnail(client.user.displayAvatarURL())
     .setDescription(
-      `Приветики я **${guild.members.me.displayName}**!\n` +
-        `Личный Бот Сервера **${guild.name}** 🥰\n`
+      "**Обо мне:**\n" +
+        `Приветики я **${guild.members.me.displayName}**!\n` +
+        `Личный Бот Сервера **${guild.name}** 🥰`
     );
 
   return {
