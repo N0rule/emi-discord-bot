@@ -86,60 +86,82 @@ async function getUserInfo(username, mauthor) {
   try {
     const response = await usersapi.searchUsers(username, undefined, 1);
     const userInfo = response.data[0];
-    console.log(userInfo);
+    //console.log(userInfo);
     if (!userInfo) {
-      throw new Error("Пользователь не найден.");
+      return { content: "🚫Пользователь не найден." };
     }
 
     const embed = new EmbedBuilder()
-      .setTitle(`Информация О Пользователе **${username}**`)
+      .setTitle(`VRchat Пользователь: ${username}`)
       .setColor(EMBED_COLORS.SUCCESS)
-      .addFields(
-        {
-          name: "Имя пользователя",
+      .setTimestamp();
+
+      if (userInfo.displayName) {
+        embed.addFields({
+          name: "Имя пользователя:",
           value: userInfo.displayName,
-          inline: false
-        },
-        {
-          name: "ID",
+          inline: false,
+        });
+      }
+      
+      if (userInfo.id) {
+        embed.addFields({
+          name: "ID:",
           value: userInfo.id,
+          inline: false,
+        });
+      }
+      
+      if (userInfo.bio) {
+        embed.addFields({
+          name: "БИО:",
+          value: userInfo.bio,
+          inline: false,
+        });
+      }
+      
+      if (userInfo.bioLinks && userInfo.bioLinks.length > 0) {
+        embed.addFields({
+          name: "Ссылки в БИО:",
+          value: userInfo.bioLinks.join('\n'),
           inline: false
-        },
-        {
-          name: "БИО",
-          value: userInfo.bio || "Нет БИО",
-          inline: false
-        },
-        {
-          name: "Ссылки в БИО",
-          value: userInfo.bioLinks.join('\n') || "Нет Ссылок",
-          inline: false
-        },
-        {
-          name: "Статус",
+        });
+      }
+      
+      if (userInfo.status) {
+        embed.addFields({
+          name: "Статус:",
           value: userInfo.status,
-          inline: false
-        },
-        {
-          name: "Описание Статуса",
+          inline: false,
+        });
+      }
+      
+      if (userInfo.statusDescription) {
+        embed.addFields({
+          name: "Описание Статуса:",
           value: userInfo.statusDescription,
           inline: false
-        },
-        {
-          name: "Последняя Платформа",
+        });
+      }
+      
+      if (userInfo.last_platform) {
+        embed.addFields({
+          name: "Последняя Платформа:",
           value: userInfo.last_platform,
-          inline: false
-        },
-        {
-          name: "Теги",
+          inline: false,
+        });
+      }
+      
+      if (userInfo.tags && userInfo.tags.length > 0) {
+        embed.addFields({
+          name: "Теги:",
           value: userInfo.tags.join(', '),
           inline: false
-        }
-      ) 
-      // .setDescription(
-      //   `**Имя пользователя:** ${userInfo.displayName}\n**ID:** ${userInfo.id}\n**БИО:** ${userInfo.bio || "Нету биографии"}\n**Местоположение:** ${userInfo.location || "Нету местоположения"}\n**Статус:** ${userInfo.status}\n**Описание Статуса:** ${userInfo.statusDescription}\n**Последняя Платформа:** ${userInfo.last_platform}\n**Теги:** ${userInfo.tags.join(', ')}`
-      // )
-      .setThumbnail(userInfo.currentAvatarThumbnailImageUrl)
+        });
+      }
+      
+
+      embed.setImage(userInfo.currentAvatarImageUrl)
       .setFooter({
         text: `Запрошено пользователем ${mauthor.tag}`,
       });
