@@ -2,9 +2,8 @@ const { ApplicationCommandOptionType, EmbedBuilder } = require("discord.js");
 const { EMBED_COLORS } = require("@root/config.js");
 const { BotClient } = require("@src/structures");
 const client = new BotClient();
-// Please set your username, password and User-Agent.
+
 const vrchat = require("vrchat");
-// const readline = require('readline');
 const configuration = new vrchat.Configuration({
   username: process.env.VRC_LOGIN,
   password: process.env.VRC_PASSWORD,
@@ -28,7 +27,7 @@ AuthenticationApi.getCurrentUser().then(resp => {
 //for Email Autentif
 
 // setTimeout(() => {
-
+// const readline = require('readline');
 //   AuthenticationApi.getCurrentUser().then(resp => {
 //     const readInterface = readline.createInterface({
 //       input: process.stdin,
