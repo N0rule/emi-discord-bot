@@ -32,6 +32,14 @@ module.exports = {
       const roleList = Object.entries(BUYROLELIST)
         .map(([name, data]) => `**${name}**: ${data.rolename} - ${data.price}${ECONOMY.CURRENCY}`)
         .join("\n");
+        if (roleList.length === 0) {
+          const embed = new EmbedBuilder()
+            .setTitle("Список Ролей")
+            .setColor(EMBED_COLORS.BOT_EMBED)
+            .setDescription("В данный момент нет ролей, которые можно купить.");
+          await message.safeReply({ embeds: [embed] });
+          return;
+        }
       const embed = new EmbedBuilder()
         .setTitle("Список Ролей")
         .setColor(EMBED_COLORS.BOT_EMBED)
