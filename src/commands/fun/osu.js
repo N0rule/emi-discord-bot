@@ -9,7 +9,7 @@ const osuApi = new osu.Api(process.env.OSU_API_KEY, {
 module.exports = {
   name: "osu",
   description: "Получить информацию о пользователе osu!",
-  cooldown: 0,
+  cooldown: 5,
   category: "FUN",
   botPermissions: ["SendMessages", "EmbedLinks"],
   command: {

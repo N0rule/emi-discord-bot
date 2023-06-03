@@ -48,7 +48,7 @@ AuthenticationApi.getCurrentUser().then(resp => {
 module.exports = {
   name: "vrchat",
   description: "Получить информацию о пользователе vrchat!",
-  cooldown: 0,
+  cooldown: 5,
   category: "FUN",
   botPermissions: ["SendMessages", "EmbedLinks"],
   command: {
