@@ -63,7 +63,13 @@ module.exports = {
     MAX_BEG_AMOUNT: 175, // maximum coins to be received when beg command is used
   },
 
-  //All sellable rolles
+
+  //Enable sellable rolles command
+  BUYROLE: {
+    ENABLED: false,
+  },
+
+//All sellable rolles
   BUYROLELIST: {
     "1": {
       rolename: "InsertRoleName", // Can be any name you like
