@@ -12,8 +12,8 @@ const configuration = new vrchat.Configuration({
     headers: {
       "User-Agent": process.env.USER_AGENT,
       // "Cookie": "auth=" + process.env.VRC_AUTHCOOKIE,
-    }
-  }
+    },
+  },
 });
 const AuthenticationApi = new vrchat.AuthenticationApi(configuration);
 
@@ -28,16 +28,16 @@ const usersapi = new vrchat.UsersApi(configuration);
 
 function authenticateUserWith2FA() {
   setTimeout(() => {
-    const readline = require('readline');
-    AuthenticationApi.getCurrentUser().then(resp => {
+    const readline = require("readline");
+    AuthenticationApi.getCurrentUser().then((resp) => {
       const readInterface = readline.createInterface({
         input: process.stdin,
-        output: process.stdout
+        output: process.stdout,
       });
-      readInterface.question("Vrchat 2FA Code>", code => {
+      readInterface.question("Vrchat 2FA Code>", (code) => {
         readInterface.close();
-        AuthenticationApi.verify2FAEmailCode({ 'code': code }).then(resp => {
-          AuthenticationApi.getCurrentUser().then(resp => {
+        AuthenticationApi.verify2FAEmailCode({ code: code }).then((resp) => {
+          AuthenticationApi.getCurrentUser().then((resp) => {
             const currentUser = resp.data;
             client.logger.success(`Logged in as: ${currentUser.displayName}`);
           });
@@ -127,8 +127,8 @@ async function getUserInfo(username, mauthor) {
     if (userInfo.bioLinks && userInfo.bioLinks.length > 0) {
       embed.addFields({
         name: "Ссылки в БИО:",
-        value: userInfo.bioLinks.join('\n'),
-        inline: false
+        value: userInfo.bioLinks.join("\n"),
+        inline: false,
       });
     }
 
@@ -144,7 +144,7 @@ async function getUserInfo(username, mauthor) {
       embed.addFields({
         name: "Описание Статуса:",
         value: userInfo.statusDescription,
-        inline: false
+        inline: false,
       });
     }
 
@@ -159,15 +159,14 @@ async function getUserInfo(username, mauthor) {
     if (userInfo.tags && userInfo.tags.length > 0) {
       embed.addFields({
         name: "Теги:",
-        value: userInfo.tags.join(', '),
-        inline: false
+        value: userInfo.tags.join(", "),
+        inline: false,
       });
     }
 
-    embed.setImage(userInfo.currentAvatarImageUrl)
-      .setFooter({
-        text: `Запрошено пользователем ${mauthor.tag}`,
-      });
+    embed.setImage(userInfo.currentAvatarImageUrl).setFooter({
+      text: `Запрошено пользователем ${mauthor.tag}`,
+    });
 
     return { embeds: [embed] };
   } catch (error) {
@@ -175,4 +174,3 @@ async function getUserInfo(username, mauthor) {
     return { content: "Произошла ошибка при получении пользовательской информации." };
   }
 }
-
