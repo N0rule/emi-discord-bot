@@ -1,6 +1,6 @@
 const { EmbedBuilder, ApplicationCommandOptionType } = require("discord.js");
 const { getUser } = require("@schemas/User");
-const { EMBED_COLORS, ECONOMY, BUYROLELIST } = require("@root/config.js");
+const { BUYROLE,EMBED_COLORS, ECONOMY, BUYROLELIST } = require("@root/config.js");
 
 /**
  * @type {import("@structures/Command")}
@@ -11,12 +11,12 @@ module.exports = {
   category: "ECONOMY",
   botPermissions: ["EmbedLinks", "ManageRoles"],
   command: {
-    enabled: true,
+    enabled: BUYROLE.ENABLED,
     usage: '<role> or "list"',
     minArgsCount: 1,
   },
   slashCommand: {
-    enabled: true,
+    enabled: BUYROLE.ENABLED,
     options: [
       {
         name: "role",
