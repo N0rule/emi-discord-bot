@@ -11,7 +11,7 @@ const configuration = new vrchat.Configuration({
   baseOptions: {
     headers: {
       "User-Agent": process.env.USER_AGENT,
-      "Cookie": "auth=" + process.env.VRC_AUTHCOOKIE,
+      // "Cookie": "auth=" + process.env.VRC_AUTHCOOKIE,
     }
   }
 });
@@ -19,45 +19,47 @@ const AuthenticationApi = new vrchat.AuthenticationApi(configuration);
 
 const usersapi = new vrchat.UsersApi(configuration);
 
-AuthenticationApi.getCurrentUser().then(resp => {
-  const currentUser = resp.data;
-  client.logger.success(`Successfully logged to VRC Account:${currentUser.displayName}`);
-});
+// AuthenticationApi.getCurrentUser().then(resp => {
+//   const currentUser = resp.data;
+//   client.logger.success(`Successfully logged to VRC Account:${currentUser.displayName}`);
+// });
 
 //for Email Autentif
 
-// setTimeout(() => {
-// const readline = require('readline');
-//   AuthenticationApi.getCurrentUser().then(resp => {
-//     const readInterface = readline.createInterface({
-//       input: process.stdin,
-//       output: process.stdout
-//     });
-//     readInterface.question("Vrchat 2FA Code>", code => {
-//       readInterface.close();
-//       AuthenticationApi.verify2FAEmailCode({ 'code': code }).then(resp => {
-//         AuthenticationApi.getCurrentUser().then(resp => {
-//           const currentUser = resp.data;
-//           client.logger.success(`Logged in as: ${currentUser.displayName}`);
-//         });
-//       });
-//     });
-//   });
-// }, 4000);
+function authenticateUserWith2FA() {
+  setTimeout(() => {
+    const readline = require('readline');
+    AuthenticationApi.getCurrentUser().then(resp => {
+      const readInterface = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+      });
+      readInterface.question("Vrchat 2FA Code>", code => {
+        readInterface.close();
+        AuthenticationApi.verify2FAEmailCode({ 'code': code }).then(resp => {
+          AuthenticationApi.getCurrentUser().then(resp => {
+            const currentUser = resp.data;
+            client.logger.success(`Logged in as: ${currentUser.displayName}`);
+          });
+        });
+      });
+    });
+  }, 4000);
+}
 
 module.exports = {
   name: "vrchat",
   description: "Получить информацию о пользователе vrchat!",
-  cooldown: 0,
+  cooldown: 5,
   category: "FUN",
   botPermissions: ["SendMessages", "EmbedLinks"],
   command: {
-    enabled: true,
+    enabled: false,
     usage: "<username>",
     minArgsCount: 1,
   },
   slashCommand: {
-    enabled: true,
+    enabled: false,
     options: [
       {
         name: "username",
@@ -80,6 +82,9 @@ module.exports = {
   },
 };
 
+if (module.exports.command.enabled || module.exports.slashCommand.enabled) {
+  authenticateUserWith2FA();
+}
 
 async function getUserInfo(username, mauthor) {
   try {
@@ -95,72 +100,71 @@ async function getUserInfo(username, mauthor) {
       .setColor(EMBED_COLORS.SUCCESS)
       .setTimestamp();
 
-      if (userInfo.displayName) {
-        embed.addFields({
-          name: "Имя пользователя:",
-          value: userInfo.displayName,
-          inline: false,
-        });
-      }
-      
-      if (userInfo.id) {
-        embed.addFields({
-          name: "ID:",
-          value: userInfo.id,
-          inline: false,
-        });
-      }
-      
-      if (userInfo.bio) {
-        embed.addFields({
-          name: "БИО:",
-          value: userInfo.bio,
-          inline: false,
-        });
-      }
-      
-      if (userInfo.bioLinks && userInfo.bioLinks.length > 0) {
-        embed.addFields({
-          name: "Ссылки в БИО:",
-          value: userInfo.bioLinks.join('\n'),
-          inline: false
-        });
-      }
-      
-      if (userInfo.status) {
-        embed.addFields({
-          name: "Статус:",
-          value: userInfo.status,
-          inline: false,
-        });
-      }
-      
-      if (userInfo.statusDescription) {
-        embed.addFields({
-          name: "Описание Статуса:",
-          value: userInfo.statusDescription,
-          inline: false
-        });
-      }
-      
-      if (userInfo.last_platform) {
-        embed.addFields({
-          name: "Последняя Платформа:",
-          value: userInfo.last_platform,
-          inline: false,
-        });
-      }
-      
-      if (userInfo.tags && userInfo.tags.length > 0) {
-        embed.addFields({
-          name: "Теги:",
-          value: userInfo.tags.join(', '),
-          inline: false
-        });
-      }
-      
+    if (userInfo.displayName) {
+      embed.addFields({
+        name: "Имя пользователя:",
+        value: userInfo.displayName,
+        inline: false,
+      });
+    }
 
-      embed.setImage(userInfo.currentAvatarImageUrl)
+    if (userInfo.id) {
+      embed.addFields({
+        name: "ID:",
+        value: userInfo.id,
+        inline: false,
+      });
+    }
+
+    if (userInfo.bio) {
+      embed.addFields({
+        name: "БИО:",
+        value: userInfo.bio,
+        inline: false,
+      });
+    }
+
+    if (userInfo.bioLinks && userInfo.bioLinks.length > 0) {
+      embed.addFields({
+        name: "Ссылки в БИО:",
+        value: userInfo.bioLinks.join('\n'),
+        inline: false
+      });
+    }
+
+    if (userInfo.status) {
+      embed.addFields({
+        name: "Статус:",
+        value: userInfo.status,
+        inline: false,
+      });
+    }
+
+    if (userInfo.statusDescription) {
+      embed.addFields({
+        name: "Описание Статуса:",
+        value: userInfo.statusDescription,
+        inline: false
+      });
+    }
+
+    if (userInfo.last_platform) {
+      embed.addFields({
+        name: "Последняя Платформа:",
+        value: userInfo.last_platform,
+        inline: false,
+      });
+    }
+
+    if (userInfo.tags && userInfo.tags.length > 0) {
+      embed.addFields({
+        name: "Теги:",
+        value: userInfo.tags.join(', '),
+        inline: false
+      });
+    }
+
+    embed.setImage(userInfo.currentAvatarImageUrl)
       .setFooter({
         text: `Запрошено пользователем ${mauthor.tag}`,
       });
