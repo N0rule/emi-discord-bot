@@ -59,10 +59,6 @@ async function getLyric(user, choice) {
   const author = lyric.data?.author;
   const lyrics = lyric.data?.lyrics;
   const title = lyric.data?.title;
-  const thumbnail = lyric.data?.thumbnail.genius;
-  const author = lyric.data?.author;
-  const lyrics = lyric.data?.lyrics;
-  const title = lyric.data?.title;
 
     const embed = new EmbedBuilder();
     embed
