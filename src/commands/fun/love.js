@@ -88,12 +88,12 @@ async function getUserLove(user1, user2, mauthor) {
     })
     .setColor("LuminousVividPink")
     .setFooter({
-      text: `Запрошено пользователем ${mauthor.tag}`,
+      text: `Запрошено пользователем ${mauthor.username}`,
     })
     .setImage(loveImage)
     .setTimestamp()
     .setThumbnail("https://cdn.discordapp.com/attachments/448160851266895873/1097600830221328504/ooSRUAv.gif")
-    .setFooter({ text: `Запрошено пользователем ${mauthor.tag}` });
+    .setFooter({ text: `Запрошено пользователем ${mauthor.username}` });
 
   return { embeds: [embed] };
 }

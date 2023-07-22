@@ -43,7 +43,7 @@ function rollDice(rollamount, mauthor) {
     .setColor(EMBED_COLORS.SUCCESS)
     .setDescription(`Вам выпало **${randomNumber}** 🎲`)
     .setFooter({
-      text: `Запрошено пользователем ${mauthor.tag}`,
+      text: `Запрошено пользователем ${mauthor.username}`,
     });
 
   return { embeds: [embed] };

@@ -40,7 +40,7 @@ module.exports = {
       .setTitle("PhotoGen")
       .setDescription("Генерирую...")
       .setThumbnail(message.client.user.displayAvatarURL())
-      .setFooter({ text: `Запрошено пользователем: ${message.author.tag}` });
+      .setFooter({ text: `Запрошено пользователем: ${message.author.username}` });
 
     let reply = null; // i don't know why, but it fixes multimessages
     try {
@@ -72,7 +72,7 @@ module.exports = {
       .setTitle("PhotoGen")
       .setDescription("Генерирую...")
       .setThumbnail(interaction.client.user.displayAvatarURL())
-      .setFooter({ text: `Запрошено пользователем: ${interaction.user.tag}` });
+      .setFooter({ text: `Запрошено пользователем: ${interaction.user.username}` });
     try {
       // Get the value of option prompt from interaction
       const prompt = interaction.options.getString("prompt");

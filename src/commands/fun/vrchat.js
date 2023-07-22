@@ -165,7 +165,7 @@ async function getUserInfo(username, mauthor) {
     }
 
     embed.setImage(userInfo.currentAvatarImageUrl).setFooter({
-      text: `Запрошено пользователем ${mauthor.tag}`,
+      text: `Запрошено пользователем ${mauthor.username}`,
     });
 
     return { embeds: [embed] };

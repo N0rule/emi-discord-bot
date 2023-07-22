@@ -58,7 +58,7 @@ async function getUserInfo(username, mauthor) {
       )
       .setThumbnail(`https://a.ppy.sh/${user.id}`)
       .setFooter({
-        text: `Запрошено пользователем ${mauthor.tag}`,
+        text: `Запрошено пользователем ${mauthor.username}`,
       });
     return { embeds: [embed] };
   } catch (error) {
