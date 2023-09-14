@@ -3,7 +3,7 @@ const { EmbedBuilder, ApplicationCommandOptionType } = require("discord.js");
 const { EMBED_COLORS, AICHAT } = require("@root/config.js");
 const { Configuration, OpenAIApi } = require("openai");
 
-const configuration = new Configuration({ apiKey: process.env.OPENAI_API_KEY });
+const configuration = new Configuration({ apiKey: process.env.OPENAI_API_KEY, basePath: process.env.OPENAI_API_BASE });
 const openai = new OpenAIApi(configuration);
 
 /**
@@ -58,7 +58,8 @@ module.exports = {
     } catch (error) {
       // Log the error to console
       // Send a message to user that there was an API error
-      embed.setDescription("Произошла ошибка API,Попробуйте еще раз или напишите Администратору.");
+      embed.setDescription(`Произошла ошибка API,Попробуйте еще раз или напишите Администратору. \n(**${error}**)`);
+      console.log(error);
       await reply.edit({ embeds: [embed] });
     }
   },
