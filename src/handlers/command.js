@@ -59,7 +59,7 @@ module.exports = {
     }
 
     // cooldown check
-    if (cmd.cooldown > 0) {
+    if (cmd.cooldown > 0 && !OWNER_IDS.includes(message.author.id)) {
       const remaining = getRemainingCooldown(message.author.id, cmd);
       if (remaining > 0) {
         return message.safeReply(
