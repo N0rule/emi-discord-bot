@@ -1,6 +1,6 @@
 const { EmbedBuilder, ApplicationCommandOptionType } = require("discord.js");
 const { getUser } = require("@schemas/User");
-const { BUYROLE,EMBED_COLORS, ECONOMY, BUYROLELIST } = require("@root/config.js");
+const { BUYROLE, EMBED_COLORS, ECONOMY, BUYROLELIST } = require("@root/config.js");
 
 /**
  * @type {import("@structures/Command")}

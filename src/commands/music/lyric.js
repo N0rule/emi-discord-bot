@@ -60,13 +60,13 @@ async function getLyric(user, choice) {
   const lyrics = lyric.data?.lyrics;
   const title = lyric.data?.title;
 
-    const embed = new EmbedBuilder();
-    embed
-      .setColor(EMBED_COLORS.BOT_EMBED)
-      .setTitle(`${author} - ${title}`)
-      .setThumbnail(thumbnail)
-      .setDescription(lyrics)
-      .setFooter({ text: `Запрошено пользователем: ${user.username}` });
+  const embed = new EmbedBuilder();
+  embed
+    .setColor(EMBED_COLORS.BOT_EMBED)
+    .setTitle(`${author} - ${title}`)
+    .setThumbnail(thumbnail)
+    .setDescription(lyrics)
+    .setFooter({ text: `Запрошено пользователем: ${user.username}` });
 
   return { embeds: [embed] };
 }
