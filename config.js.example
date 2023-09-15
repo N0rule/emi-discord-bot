@@ -43,6 +43,7 @@ module.exports = {
   },
 
   AICHAT: {
+    ENABLED: false,
     MODEL: "gpt-3.5-turbo", //Model Of AI to use https://platform.openai.com/docs/models/gpt-3-5
     TOKENS: 350, //The maximum number of tokens to generate in the completion. https://platform.openai.com/docs/api-reference/completions/create
     PRESENCE_PENALTY: 1.5, // Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.
@@ -51,6 +52,7 @@ module.exports = {
   },
 
   AIPHOTO: {
+    ENABLED: false,
     Count: 1, //TODO CURENTLY DOES NOTHING DON'T CHANGE FROM 1 // You can request 1-10 images at a time.
     size: "256x256", // Generated images can have a size of 256x256, 512x512, or 1024x1024 pixels.
   },

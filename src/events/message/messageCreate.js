@@ -1,8 +1,13 @@
 const { commandHandler, automodHandler, statsHandler } = require("@src/handlers");
-const { EMBED_COLORS, PREFIX_COMMANDS } = require("@root/config");
+const { EMBED_COLORS, PREFIX_COMMANDS, AICHAT } = require("@root/config");
 const { getSettings } = require("@schemas/Guild");
 const { EmbedBuilder } = require("discord.js");
 const { text } = require("stream/consumers");
+const { Configuration, OpenAIApi } = require("openai");
+
+const configuration = new Configuration({ apiKey: process.env.OPENAI_API_KEY, basePath: process.env.OPENAI_API_BASE });
+const openai = new OpenAIApi(configuration);
+
 /**
  * @param {import('@src/structures').BotClient} client
  * @param {import('discord.js').Message} message
@@ -23,7 +28,20 @@ module.exports = async (client, message, guild) => {
   if (PREFIX_COMMANDS.ENABLED) {
     // check for bot mentions
     if (message.content.includes(`${client.user.id}`)) {
-      message.channel.safeSend({ embeds: [embed] });
+      const regextext = /<@[!&]?(\d+)> (.+)/;
+      const mentionWithTextMatch = message.content.match(regextext);
+      if (mentionWithTextMatch && AICHAT.ENABLED) {
+        const mentionedText = mentionWithTextMatch[2];
+        try {
+          await message.channel.sendTyping();
+          message.reply(await runCompletion(mentionedText));
+        } catch (error) {
+          // Handle the error here, for example:
+          message.reply(`Произошла ошибка API,Попробуйте еще раз или напишите Администратору. \n(**${error}**)`);
+        }
+      } else {
+        message.reply({ embeds: [embed] });
+      }
     }
 
     if (message.content && message.content.startsWith(settings.prefix)) {
@@ -41,4 +59,30 @@ module.exports = async (client, message, guild) => {
 
   // if not a command
   if (!isCommand) await automodHandler.performAutomod(message, settings);
+
+  // runCompletion function to use the OpenAi API to generate results based on user prompts
+  async function runCompletion(message) {
+    const timeoutPromise = new Promise((reject) => {
+      setTimeout(() => {
+        reject(new Error());
+      }, 35000);
+    });
+
+    const completionPromise = await openai.createChatCompletion({
+      model: AICHAT.MODEL,
+      max_tokens: AICHAT.TOKENS,
+      presence_penalty: AICHAT.PRESENCE_PENALTY,
+      temperature: AICHAT.TEMPERATURE,
+      messages: [
+        { role: "system", content: AICHAT.IMAGINEMESSAGE },
+        { role: "user", content: message },
+      ],
+    });
+    try {
+      const completion = await Promise.race([timeoutPromise, completionPromise]);
+      return completion.data.choices[0].message.content;
+    } catch (error) {
+      throw error;
+    }
+  }
 };

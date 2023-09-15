@@ -16,13 +16,13 @@ module.exports = {
   category: "FUN", // Category to which the command belongs
   cooldown: 120,
   command: {
-    enabled: true, // Boolean to activate or deactivate command
+    enabled: AIPHOTO.ENABLED, // Boolean to activate or deactivate command
     aliases: ["aip", "gptphoto"], // Array of alternate strings used to call command
     usage: "<text>", // Instruction on how to use the command
     minArgsCount: 1, // Integer for minimum arguments count
   },
   slashCommand: {
-    enabled: true, // Boolean to turn on or off
+    enabled: AIPHOTO.ENABLED, // Boolean to turn on or off
     options: [
       {
         name: "prompt", // Option name that is assigned to a value in an object
@@ -48,7 +48,7 @@ module.exports = {
       const prompt = args.join(" ");
 
       // Send a message with embed and save it in a variable reply
-      reply = await message.safeReply({ embeds: [embed] });
+      reply = await message.reply({ embeds: [embed] });
       // Run the function runCompletion with prompt and get the response from API
       const response = await runCompletion(prompt);
       // Update the embed with the response from API
