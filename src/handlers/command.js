@@ -126,7 +126,7 @@ module.exports = {
     }
 
     // cooldown check
-    if (cmd.cooldown > 0) {
+    if (cmd.cooldown > 0 && !OWNER_IDS.includes(interaction.user.id)) {
       const remaining = getRemainingCooldown(interaction.user.id, cmd);
       if (remaining > 0) {
         return interaction.reply({
