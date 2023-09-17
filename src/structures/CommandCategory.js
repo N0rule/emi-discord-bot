@@ -17,6 +17,12 @@ module.exports = {
     image: "https://cdn-icons-png.flaticon.com/512/3370/3370972.png",
     emoji: "🎨",
   },
+  AI: {
+    name: "AI",
+    enabled: config.AIPHOTO.ENABLED || config.AICHAT.ENABLED,
+    image: "https://cdn-icons-png.flaticon.com/512/5278/5278402.png ",
+    emoji: "🤖",
+  },
   ECONOMY: {
     name: "Економика",
     enabled: config.ECONOMY.ENABLED,

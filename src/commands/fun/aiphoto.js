@@ -13,7 +13,7 @@ const openai = new OpenAIApi(configuration);
 module.exports = {
   name: "aiphoto",
   description: "промпт для DALLE (Experimental)", // String describing the command
-  category: "FUN", // Category to which the command belongs
+  category: "AI", // Category to which the command belongs
   cooldown: 120,
   command: {
     enabled: AIPHOTO.ENABLED, // Boolean to activate or deactivate command

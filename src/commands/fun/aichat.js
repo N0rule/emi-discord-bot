@@ -13,7 +13,7 @@ const openai = new OpenAIApi(configuration);
 module.exports = {
   name: "aichat",
   description: "промпт для ChatGPT (Experimental)", // String describing the command
-  category: "FUN", // Category to which the command belongs
+  category: "AI", // Category to which the command belongs
   cooldown: 10,
   command: {
     enabled: AICHAT.ENABLED, // Boolean to activate or deactivate command
