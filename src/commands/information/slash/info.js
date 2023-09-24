@@ -2,7 +2,7 @@ const user = require("../shared/user");
 const channelInfo = require("../shared/channel");
 const guildInfo = require("../shared/guild");
 const avatar = require("../shared/avatar");
-const emojiInfo = require("../shared/emoji");
+// const emojiInfo = require("../shared/emoji");
 const botInfo = require("../shared/botstats");
 const { ApplicationCommandOptionType } = require("discord.js");
 
@@ -70,19 +70,19 @@ module.exports = {
           },
         ],
       },
-      {
-        name: "emoji",
-        description: "получить информацию о эмодзи",
-        type: ApplicationCommandOptionType.Subcommand,
-        options: [
-          {
-            name: "name",
-            description: "имя эмодзи",
-            type: ApplicationCommandOptionType.String,
-            required: true,
-          },
-        ],
-      },
+      // {
+      //   name: "emoji",
+      //   description: "получить информацию о эмодзи",
+      //   type: ApplicationCommandOptionType.Subcommand,
+      //   options: [
+      //     {
+      //       name: "name",
+      //       description: "имя эмодзи",
+      //       type: ApplicationCommandOptionType.String,
+      //       required: true,
+      //     },
+      //   ],
+      // },
     ],
   },
 
@@ -121,10 +121,10 @@ module.exports = {
     }
 
     // emoji
-    else if (sub === "emoji") {
-      let emoji = interaction.options.getString("name");
-      response = emojiInfo(emoji);
-    }
+    // else if (sub === "emoji") {
+    //   let emoji = interaction.options.getString("name");
+    //   response = emojiInfo(emoji);
+    // }
 
     // return
     else {

@@ -25,9 +25,9 @@ const CLOSE_PERMS = ["ManageChannels", "ReadMessageHistory"];
 function isTicketChannel(channel) {
   return (
     channel.type === ChannelType.GuildText &&
-    channel.name.startsWith("tіcket-") &&
+    channel.name.startsWith("билет-") &&
     channel.topic &&
-    channel.topic.startsWith("tіcket|")
+    channel.topic.startsWith("билет|")
   );
 }
 
@@ -54,7 +54,7 @@ async function parseTicketDetails(channel) {
   if (!channel.topic) return;
   const split = channel.topic?.split("|");
   const userId = split[1];
-  const catName = split[2] || "Default";
+  const catName = split[2] || "по умолчанию";
   const user = await channel.client.users.fetch(userId, { cache: false }).catch(() => {});
   return { user, catName };
 }
@@ -82,33 +82,33 @@ async function closeTicket(channel, closedBy, reason) {
       content += "\n";
     });
 
-    const logsUrl = await postToBin(content, `Ticket Logs for ${channel.name}`);
+    const logsUrl = await postToBin(content, `Логи билета для ${channel.name}`);
     const ticketDetails = await parseTicketDetails(channel);
 
     const components = [];
     if (logsUrl) {
       components.push(
         new ActionRowBuilder().addComponents(
-          new ButtonBuilder().setLabel("Transcript").setURL(logsUrl.short).setStyle(ButtonStyle.Link)
+          new ButtonBuilder().setLabel("Транскрипт").setURL(logsUrl.short).setStyle(ButtonStyle.Link)
         )
       );
     }
 
     if (channel.deletable) await channel.delete();
 
-    const embed = new EmbedBuilder().setAuthor({ name: "Ticket Closed" }).setColor(TICKET.CLOSE_EMBED);
+    const embed = new EmbedBuilder().setAuthor({ name: "Билет закрыт" }).setColor(TICKET.CLOSE_EMBED);
     const fields = [];
 
-    if (reason) fields.push({ name: "Reason", value: reason, inline: false });
+    if (reason) fields.push({ name: "Причина", value: reason, inline: false });
     fields.push(
       {
-        name: "Opened By",
-        value: ticketDetails.user ? ticketDetails.user.username : "Unknown",
+        name: "Открыт",
+        value: ticketDetails.user ? ticketDetails.user.username : "Неизвестно",
         inline: true,
       },
       {
-        name: "Closed By",
-        value: closedBy ? closedBy.username : "Unknown",
+        name: "Закрыто",
+        value: closedBy ? closedBy.username : "Неизвестно",
         inline: true,
       }
     );
@@ -124,7 +124,7 @@ async function closeTicket(channel, closedBy, reason) {
     // send embed to user
     if (ticketDetails.user) {
       const dmEmbed = embed
-        .setDescription(`**Server:** ${channel.guild.name}\n**Category:** ${ticketDetails.catName}`)
+        .setDescription(`**Сервер:** ${channel.guild.name}\n**Категория:** ${ticketDetails.catName}`)
         .setThumbnail(channel.guild.iconURL());
       ticketDetails.user.send({ embeds: [dmEmbed], components }).catch((ex) => {});
     }
@@ -146,7 +146,7 @@ async function closeAllTickets(guild, author) {
   let failed = 0;
 
   for (const ch of channels) {
-    const status = await closeTicket(ch[1], author, "Force close all open tickets");
+    const status = await closeTicket(ch[1], author, "Закрыть все открытые билеты");
     if (status === "SUCCESS") success += 1;
     else failed += 1;
   }
@@ -163,17 +163,17 @@ async function handleTicketOpen(interaction) {
 
   if (!guild.members.me.permissions.has(OPEN_PERMS))
     return interaction.followUp(
-      "Cannot create ticket channel, missing `Manage Channel` permission. Contact server manager for help!"
+      "Невозможно создать канал билета, отсутствует разрешение `Управление каналом`. Свяжитесь с Алминистртором сервера для помощи!"
     );
 
   const alreadyExists = getExistingTicketChannel(guild, user.id);
-  if (alreadyExists) return interaction.followUp(`You already have an open ticket`);
+  if (alreadyExists) return interaction.followUp(`У вас уже есть открытый билет`);
 
   const settings = await getSettings(guild);
 
   // limit check
   const existing = getTicketChannels(guild).size;
-  if (existing > settings.ticket.limit) return interaction.followUp("There are too many open tickets. Try again later");
+  if (existing > settings.ticket.limit) return interaction.followUp("Слишком много открытых билетов. Попробуйте позже");
 
   // check categories
   let catName = null;
@@ -185,11 +185,11 @@ async function handleTicketOpen(interaction) {
     const menuRow = new ActionRowBuilder().addComponents(
       new StringSelectMenuBuilder()
         .setCustomId("ticket-menu")
-        .setPlaceholder("Choose the ticket category")
+        .setPlaceholder("Выберите категорию билетов")
         .addOptions(options)
     );
 
-    await interaction.followUp({ content: "Please choose a ticket category", components: [menuRow] });
+    await interaction.followUp({ content: "Пожалуйста, выберите категорию билетов", components: [menuRow] });
     const res = await interaction.channel
       .awaitMessageComponent({
         componentType: ComponentType.StringSelect,
@@ -199,8 +199,8 @@ async function handleTicketOpen(interaction) {
         if (err.message.includes("time")) return;
       });
 
-    if (!res) return interaction.editReply({ content: "Timed out. Try again", components: [] });
-    await interaction.editReply({ content: "Processing", components: [] });
+    if (!res) return interaction.editReply({ content: "Время вышло. Попробуйте еще раз", components: [] });
+    await interaction.editReply({ content: "Обработка", components: [] });
     catName = res.values[0];
     catPerms = categories.find((cat) => cat.name === catName)?.staff_roles || [];
   }
@@ -234,25 +234,25 @@ async function handleTicketOpen(interaction) {
     }
 
     const tktChannel = await guild.channels.create({
-      name: `tіcket-${ticketNumber}`,
+      name: `билет-${ticketNumber}`,
       type: ChannelType.GuildText,
-      topic: `tіcket|${user.id}|${catName || "Default"}`,
+      topic: `билет|${user.id}|${catName || "по умолчанию"}`,
       permissionOverwrites,
     });
 
     const embed = new EmbedBuilder()
-      .setAuthor({ name: `Ticket #${ticketNumber}` })
+      .setAuthor({ name: `Билет #${ticketNumber}` })
       .setDescription(
-        `Hello ${user.toString()}
-        Support will be with you shortly
-        ${catName ? `\n**Category:** ${catName}` : ""}
+        `Привет ${user.toString()}
+        Поддержка свяжеться с вами в ближайшее время
+        ${catName ? `\n**Категория:** ${catName}` : ""}
         `
       )
-      .setFooter({ text: "You may close your ticket anytime by clicking the button below" });
+      .setFooter({ text: "Вы можете закрыть свой билет в любое время, нажав кнопку ниже" });
 
     let buttonsRow = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
-        .setLabel("Close Ticket")
+        .setLabel("Закрыть билет")
         .setCustomId("TICKET_CLOSE")
         .setEmoji("🔒")
         .setStyle(ButtonStyle.Primary)
@@ -262,24 +262,24 @@ async function handleTicketOpen(interaction) {
 
     const dmEmbed = new EmbedBuilder()
       .setColor(TICKET.CREATE_EMBED)
-      .setAuthor({ name: "Ticket Created" })
+      .setAuthor({ name: "Билет создан" })
       .setThumbnail(guild.iconURL())
       .setDescription(
-        `**Server:** ${guild.name}
-        ${catName ? `**Category:** ${catName}` : ""}
+        `**Сервер:** ${guild.name}
+        ${catName ? `**Категория:** ${catName}` : ""}
         `
       );
 
     const row = new ActionRowBuilder().addComponents(
-      new ButtonBuilder().setLabel("View Channel").setURL(sent.url).setStyle(ButtonStyle.Link)
+      new ButtonBuilder().setLabel("Просмотреть канал").setURL(sent.url).setStyle(ButtonStyle.Link)
     );
 
     user.send({ embeds: [dmEmbed], components: [row] }).catch((ex) => {});
 
-    await interaction.editReply(`Ticket created! 🔥`);
+    await interaction.editReply(`Билет создан! 🔥`);
   } catch (ex) {
     error("handleTicketOpen", ex);
-    return interaction.editReply("Failed to create ticket channel, an error occurred!");
+    return interaction.editReply("Не удалось создать билетный канал, произошла ошибка!");
   }
 }
 
@@ -290,9 +290,9 @@ async function handleTicketClose(interaction) {
   await interaction.deferReply({ ephemeral: true });
   const status = await closeTicket(interaction.channel, interaction.user);
   if (status === "MISSING_PERMISSIONS") {
-    return interaction.followUp("Cannot close the ticket, missing permissions. Contact server manager for help!");
+    return interaction.followUp("Не могу закрыть билет, пропущенные разрешения. Свяжитесь с администратором сервера для помощи!");
   } else if (status == "ERROR") {
-    return interaction.followUp("Failed to close the ticket, an error occurred!");
+    return interaction.followUp("Не удалось закрыть билет, произошла ошибка!");
   }
 }
 

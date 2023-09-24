@@ -1,7 +1,7 @@
-const { AttachmentBuilder, ApplicationCommandOptionType } = require("discord.js");
-const { EMBED_COLORS, IMAGE } = require("@root/config");
-const { getBuffer } = require("@helpers/HttpUtils");
+const { EmbedBuilder, ApplicationCommandOptionType } = require("discord.js");
+const { EMBED_COLORS } = require("@root/config");
 const { getMemberStats, getXpLb } = require("@schemas/MemberStats");
+const { stripIndents } = require("common-tags");
 
 /**
  * @type {import("@structures/Command")}
@@ -59,24 +59,19 @@ async function getRank({ guild }, member, settings) {
 
   const xpNeeded = memberStats.level * memberStats.level * 100;
 
-  const url = new URL(`${IMAGE.BASE_API}/utils/rank-card`);
-  url.searchParams.append("name", user.username);
-  if (user.discriminator != 0) url.searchParams.append("discriminator", user.discriminator);
-  url.searchParams.append("avatar", user.displayAvatarURL({ extension: "png", size: 128 }));
-  url.searchParams.append("currentxp", memberStats.xp);
-  url.searchParams.append("reqxp", xpNeeded);
-  url.searchParams.append("level", memberStats.level);
-  url.searchParams.append("barcolor", EMBED_COLORS.BOT_EMBED);
-  url.searchParams.append("status", member?.presence?.status?.toString() || "idle");
-  if (pos !== -1) url.searchParams.append("rank", pos);
-
-  const response = await getBuffer(url.href, {
-    headers: {
-      Authorization: `Bearer ${process.env.STRANGE_API_KEY}`,
-    },
-  });
-  if (!response.success) return "Не удалось cгенерировать карточку игрока";
-
-  const attachment = new AttachmentBuilder(response.buffer, { name: "rank.png" });
-  return { files: [attachment] };
+  const embed = new EmbedBuilder()
+    .setThumbnail(member.user.displayAvatarURL())
+    .setTitle(`⬆️ Ранг участника ${user.username}`)
+    .setDescription(
+      stripIndents`
+      ❯ **Место в Топе:** ${pos}
+      ❯ **Текущий Уровень:** ${memberStats.level}
+      ❯ **Кол-во Опыта:** ${memberStats.xp}
+      ❯ **До следующего уровня:** ${xpNeeded}
+    `
+    )
+    .setFooter({ text: "Статистика Сгенерирована" })
+    .setColor(EMBED_COLORS.BOT_EMBED)
+    .setTimestamp();
+  return { embeds: [embed] };
 }

@@ -13,7 +13,6 @@ const leaderboardTypes = ["xp", "invite", "rep"];
 module.exports = {
   name: "leaderboard",
   description: "показать топ пользователей по опыту",
-  description: "показать топ пользователей по опыту",
   category: "INFORMATION",
   botPermissions: ["EmbedLinks"],
   command: {
@@ -27,7 +26,7 @@ module.exports = {
     options: [
       {
         name: "type",
-        description: "type of leaderboard to display",
+        description: "тип таблицы лидеров для отображения",
         required: true,
         type: ApplicationCommandOptionType.String,
         choices: leaderboardTypes.map((type) => ({
@@ -52,7 +51,7 @@ module.exports = {
         response = await getRepLeaderboard(message.author);
         break;
       default:
-        response = "Invalid Leaderboard type. Choose either `xp`, `invite`or `rep`";
+        response = "Неверный тип таблицы лидеров. Выберите либо `xp`, `invite` или `rep`";
     }
 
     await message.safeReply(response);
@@ -73,7 +72,7 @@ module.exports = {
         response = await getRepLeaderboard(interaction.user);
         break;
       default:
-        response = "Invalid Leaderboard type. Choose either `xp`, `invite`or `rep`";
+        response = "Неверный тип таблицы лидеров. Выберите либо `xp`, `invite` или `rep`";
     }
     await interaction.followUp(response);
   },
@@ -101,14 +100,14 @@ async function getXpLeaderboard({ guild }, author, settings) {
   for (let i = 0; i < lb.length; i++) {
     try {
       const user = await author.client.users.fetch(lb[i].member_id);
-      collector += `**#${(i + 1).toString()}** - ${escapeInlineCode(user.tag)}\n`;
+      collector += `**#${(i + 1).toString()}** - ${escapeInlineCode(user.username)}\n`;
     } catch (ex) {
       // Ignore
     }
   }
 
   const embed = new EmbedBuilder()
-    .setAuthor({ name: "Таблица Лидеров" })
+    .setAuthor({ name: "⬆️ Таблица Лидеров" })
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setDescription(collector)
     .setFooter({ text: `Запрошено пользователем ${author.username}` });

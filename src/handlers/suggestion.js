@@ -31,13 +31,13 @@ const getVotesMessage = (upVotes, downVotes) => {
   const total = upVotes + downVotes;
   if (total === 0) {
     return stripIndents`
-  _Upvotes: NA_
-  _Downvotes: NA_
+  _Лайков: Нету_
+  _Дизлайков: Нету_
   `;
   } else {
     return stripIndents`
-  _Upvotes: ${upVotes} [${Math.round((upVotes / (upVotes + downVotes)) * 100)}%]_
-  _Downvotes: ${downVotes} [${Math.round((downVotes / (upVotes + downVotes)) * 100)}%]_
+  _Лайков: ${upVotes} [${Math.round((upVotes / (upVotes + downVotes)) * 100)}%]_
+  _Дизлайков: ${downVotes} [${Math.round((downVotes / (upVotes + downVotes)) * 100)}%]_
   `;
   }
 };
@@ -60,12 +60,12 @@ async function approveSuggestion(member, channel, messageId, reason) {
   const settings = await getSettings(guild);
 
   // validate permissions
-  if (!hasPerms(member, settings)) return "You don't have permission to approve suggestions!";
+  if (!hasPerms(member, settings)) return "У вас нет разрешения утверждать предложения!";
 
   // validate if document exists
   const doc = await findSuggestion(guild.id, messageId);
-  if (!doc) return "Suggestion not found";
-  if (doc.status === "APPROVED") return "Suggestion already approved";
+  if (!doc) return "Предложение не найдено";
+  if (doc.status === "APPROVED") return "Предложение уже одобрено";
 
   /**
    * @type {import('discord.js').Message}
@@ -74,24 +74,24 @@ async function approveSuggestion(member, channel, messageId, reason) {
   try {
     message = await channel.messages.fetch({ message: messageId, force: true });
   } catch (err) {
-    return "Suggestion message not found";
+    return "Сообщение о предложении не найдено";
   }
 
   let buttonsRow = new ActionRowBuilder().addComponents(
     new ButtonBuilder()
       .setCustomId("SUGGEST_APPROVE")
-      .setLabel("Approve")
+      .setLabel("Утвердить")
       .setStyle(ButtonStyle.Success)
       .setDisabled(true),
-    new ButtonBuilder().setCustomId("SUGGEST_REJECT").setLabel("Reject").setStyle(ButtonStyle.Danger),
-    new ButtonBuilder().setCustomId("SUGGEST_DELETE").setLabel("Delete").setStyle(ButtonStyle.Secondary)
+    new ButtonBuilder().setCustomId("SUGGEST_REJECT").setLabel("Отклонять").setStyle(ButtonStyle.Danger),
+    new ButtonBuilder().setCustomId("SUGGEST_DELETE").setLabel("Удалить").setStyle(ButtonStyle.Secondary)
   );
 
   const approvedEmbed = new EmbedBuilder()
     .setDescription(message.embeds[0].data.description)
     .setColor(SUGGESTIONS.APPROVED_EMBED)
-    .setAuthor({ name: "Suggestion Approved" })
-    .setFooter({ text: `Approved By ${member.user.username}`, iconURL: member.displayAvatarURL() })
+    .setAuthor({ name: "Предложение одобрено" })
+    .setFooter({ text: `Одобрено ${member.user.username}`, iconURL: member.displayAvatarURL() })
     .setTimestamp();
 
   const fields = [];
@@ -102,13 +102,13 @@ async function approveSuggestion(member, channel, messageId, reason) {
     const [upVotes, downVotes] = getStats(message);
     doc.stats.upvotes = upVotes;
     doc.stats.downvotes = downVotes;
-    fields.push({ name: "Stats", value: getVotesMessage(upVotes, downVotes) });
+    fields.push({ name: "Статистика", value: getVotesMessage(upVotes, downVotes) });
   } else {
     fields.push(statsField);
   }
 
   // update reason
-  if (reason) fields.push({ name: "Reason", value: "```" + reason + "```" });
+  if (reason) fields.push({ name: "Причина", value: "```" + reason + "```" });
 
   approvedEmbed.addFields(fields);
 
@@ -136,10 +136,10 @@ async function approveSuggestion(member, channel, messageId, reason) {
     }
 
     await doc.save();
-    return "Suggestion approved";
+    return "Предложение одобрено";
   } catch (ex) {
     guild.client.logger.error("approveSuggestion", ex);
-    return "Failed to approve suggestion";
+    return "Не удалось одобрить предложение";
   }
 }
 
@@ -154,31 +154,31 @@ async function rejectSuggestion(member, channel, messageId, reason) {
   const settings = await getSettings(guild);
 
   // validate permissions
-  if (!hasPerms(member, settings)) return "You don't have permission to reject suggestions!";
+  if (!hasPerms(member, settings)) return "У вас нет разрешения отклонить предложения!";
 
   // validate if document exists
   const doc = await findSuggestion(guild.id, messageId);
-  if (!doc) return "Suggestion not found";
-  if (doc.is_rejected) return "Suggestion already rejected";
+  if (!doc) return "Предложение не найдено";
+  if (doc.is_rejected) return "Предложение уже отвергнуто";
 
   let message;
   try {
     message = await channel.messages.fetch({ message: messageId });
   } catch (err) {
-    return "Suggestion message not found";
+    return "Сообщение о предложении не найдено";
   }
 
   let buttonsRow = new ActionRowBuilder().addComponents(
-    new ButtonBuilder().setCustomId("SUGGEST_APPROVE").setLabel("Approve").setStyle(ButtonStyle.Success),
-    new ButtonBuilder().setCustomId("SUGGEST_REJECT").setLabel("Reject").setStyle(ButtonStyle.Danger).setDisabled(true),
-    new ButtonBuilder().setCustomId("SUGGEST_DELETE").setLabel("Delete").setStyle(ButtonStyle.Secondary)
+    new ButtonBuilder().setCustomId("SUGGEST_APPROVE").setLabel("Утвердить").setStyle(ButtonStyle.Success),
+    new ButtonBuilder().setCustomId("SUGGEST_REJECT").setLabel("Отклонять").setStyle(ButtonStyle.Danger).setDisabled(true),
+    new ButtonBuilder().setCustomId("SUGGEST_DELETE").setLabel("Удалить").setStyle(ButtonStyle.Secondary)
   );
 
   const rejectedEmbed = new EmbedBuilder()
     .setDescription(message.embeds[0].data.description)
     .setColor(SUGGESTIONS.DENIED_EMBED)
-    .setAuthor({ name: "Suggestion Rejected" })
-    .setFooter({ text: `Rejected By ${member.user.username}`, iconURL: member.displayAvatarURL() })
+    .setAuthor({ name: "Предложение отвергнуто" })
+    .setFooter({ text: `Отвергнуто ${member.user.username}`, iconURL: member.displayAvatarURL() })
     .setTimestamp();
 
   const fields = [];
@@ -189,13 +189,13 @@ async function rejectSuggestion(member, channel, messageId, reason) {
     const [upVotes, downVotes] = getStats(message);
     doc.stats.upvotes = upVotes;
     doc.stats.downvotes = downVotes;
-    fields.push({ name: "Stats", value: getVotesMessage(upVotes, downVotes) });
+    fields.push({ name: "Статистика", value: getVotesMessage(upVotes, downVotes) });
   } else {
     fields.push(statsField);
   }
 
   // update reason
-  if (reason) fields.push({ name: "Reason", value: "```" + reason + "```" });
+  if (reason) fields.push({ name: "Причина", value: "```" + reason + "```" });
 
   rejectedEmbed.addFields(fields);
 
@@ -224,10 +224,10 @@ async function rejectSuggestion(member, channel, messageId, reason) {
 
     await doc.save();
 
-    return "Suggestion rejected";
+    return "Предложение отвергнуто";
   } catch (ex) {
     guild.client.logger.error("rejectSuggestion", ex);
-    return "Failed to reject suggestion";
+    return "Не удалось отклонить предложение";
   }
 }
 
@@ -242,15 +242,15 @@ async function deleteSuggestion(member, channel, messageId, reason) {
   const settings = await getSettings(guild);
 
   // validate permissions
-  if (!hasPerms(member, settings)) return "You don't have permission to delete suggestions!";
+  if (!hasPerms(member, settings)) return "У вас нет разрешения на удаление предложений!";
 
   try {
     await channel.messages.delete(messageId);
     await deleteSuggestionDb(guild.id, messageId, member.id, reason);
-    return "Suggestion deleted";
+    return "Предложение удалено";
   } catch (ex) {
     guild.client.logger.error("deleteSuggestion", ex);
-    return "Failed to delete suggestion! Please delete manually";
+    return "Не удалось удалить предложения! Пожалуйста, удалите вручную";
   }
 }
 
@@ -260,13 +260,13 @@ async function deleteSuggestion(member, channel, messageId, reason) {
 async function handleApproveBtn(interaction) {
   await interaction.showModal(
     new ModalBuilder({
-      title: "Approve Suggestion",
+      title: "Одобрить предложение",
       customId: "SUGGEST_APPROVE_MODAL",
       components: [
         new ActionRowBuilder().addComponents([
           new TextInputBuilder()
             .setCustomId("reason")
-            .setLabel("reason")
+            .setLabel("причина")
             .setStyle(TextInputStyle.Paragraph)
             .setMinLength(4),
         ]),
@@ -291,13 +291,13 @@ async function handleApproveModal(modal) {
 async function handleRejectBtn(interaction) {
   await interaction.showModal(
     new ModalBuilder({
-      title: "Reject Suggestion",
+      title: "Отклонить предложение",
       customId: "SUGGEST_REJECT_MODAL",
       components: [
         new ActionRowBuilder().addComponents([
           new TextInputBuilder()
             .setCustomId("reason")
-            .setLabel("reason")
+            .setLabel("причина")
             .setStyle(TextInputStyle.Paragraph)
             .setMinLength(4),
         ]),
@@ -322,13 +322,13 @@ async function handleRejectModal(modal) {
 async function handleDeleteBtn(interaction) {
   await interaction.showModal(
     new ModalBuilder({
-      title: "Delete Suggestion",
+      title: "Удалить предложение",
       customId: "SUGGEST_DELETE_MODAL",
       components: [
         new ActionRowBuilder().addComponents([
           new TextInputBuilder()
             .setCustomId("reason")
-            .setLabel("reason")
+            .setLabel("причина")
             .setStyle(TextInputStyle.Paragraph)
             .setMinLength(4),
         ]),

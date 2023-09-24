@@ -35,7 +35,7 @@ module.exports = (client) => {
   });
 
   lavaclient.on("nodeError", (node, error) => {
-    client.logger.error(`Node "${node.id}" encountered an error: ${error.message}.`, error);
+    client.logger.error(`Node "${node.id}" encountered an error: ${error.message}.`);
   });
 
   lavaclient.on("nodeDebug", (node, message) => {

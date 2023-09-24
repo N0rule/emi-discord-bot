@@ -59,7 +59,16 @@ module.exports = class Validator {
     if (config.OWNER_IDS.length === 0) warn("config.js: OWNER_IDS are empty");
     if (!config.SUPPORT_SERVER) warn("config.js: SUPPORT_SERVER is not provided");
     if (!process.env.WEATHERSTACK_KEY) warn("env: WEATHERSTACK_KEY is missing. Weather command won't work");
-    if (!process.env.STRANGE_API_KEY) warn("env: STRANGE_API_KEY is missing. Image commands won't work");
+    if (!process.env.OPENAI_API_KEY) warn("env: OPENAI_API_KEY is missing. AI commands won't work");
+    if (!process.env.OSU_API_KEY) warn("env: OSU_API_KEY is missing. OSU! command won't work");
+    if (
+      !process.env.VRC_LOGIN ||
+      !process.env.VRC_PASSWORD ||
+      !process.env.VRC_APIKEY ||
+      !process.env.VRC_AUTHCOOKIE ||
+      !process.env.USER_AGENT
+    )
+      warn("env: Vrchat credentials are missing. Vrchat command won't work");
   }
 
   /**

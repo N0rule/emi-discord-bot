@@ -37,12 +37,11 @@ module.exports = {
   GIVEAWAY: {
     name: "Раздачи",
     enabled: config.GIVEAWAYS.ENABLED,
-    image: "https://cdn-icons-png.flaticon.com/512/4470/4470928.png",
+    image: "https://cdn-icons-png.flaticon.com/512/6021/6021967.png",
     emoji: "🎉",
   },
   IMAGE: {
     name: "Изображения",
-    enabled: config.IMAGE.ENABLED,
     image: "https://cdn-icons-png.flaticon.com/512/9187/9187477.png",
     emoji: "🖼️",
   },
@@ -92,7 +91,7 @@ module.exports = {
     emoji: "📝",
   },
   TICKET: {
-    name: "Тикеты",
+    name: "Билеты",
     enabled: config.TICKET.ENABLED,
     image: "https://cdn-icons-png.flaticon.com/512/2545/2545830.png",
     emoji: "🎫",

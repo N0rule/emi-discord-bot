@@ -81,8 +81,8 @@ const buildGreeting = async (member, type, config, inviterData) => {
   if (!config.content && !config.embed.description && !config.embed.footer) {
     content =
       type === "WELCOME"
-        ? `Welcome to the server, ${member.displayName} 🎉`
-        : `${member.user.username} has left the server 👋`;
+        ? `Добро пожаловать на сервер, ${member.user.username}! 🎉`
+        : `${member.user.username} покинул сервер! 👋`;
     return { content };
   }
 

@@ -12,9 +12,9 @@ const openai = new OpenAIApi(configuration);
 // Command Module exporting an object with the command details and properties
 module.exports = {
   name: "aiphoto",
-  description: "промпт для DALLE (Experimental)", // String describing the command
+  description: "промпт для DALLE", // String describing the command
   category: "AI", // Category to which the command belongs
-  cooldown: 120,
+  cooldown: 30,
   command: {
     enabled: AIPHOTO.ENABLED, // Boolean to activate or deactivate command
     aliases: ["aip", "gptphoto"], // Array of alternate strings used to call command
@@ -102,8 +102,8 @@ async function runCompletion(message) {
 
   const completionPromise = await openai.createImage({
     prompt: message,
-    n: AIPHOTO.Count,
-    size: AIPHOTO.size,
+    n: 1,
+    size: AIPHOTO.SIZE,
   });
   try {
     const completion = await Promise.race([timeoutPromise, completionPromise]);

@@ -3,11 +3,11 @@
  * @param {string} messageId
  */
 module.exports = async (member, messageId) => {
-  if (!messageId) return "You must provide a valid message id.";
+  if (!messageId) return "Вы должны предоставить действительный ID-сообщения.";
 
   // Permissions
   if (!member.permissions.has("ManageMessages")) {
-    return "You need to have the manage messages permissions to manage giveaways.";
+    return "Вы должны иметь разрешения на управление сообщениями для управления раздачами.";
   }
 
   // Search with messageId
@@ -16,16 +16,16 @@ module.exports = async (member, messageId) => {
   );
 
   // If no giveaway was found
-  if (!giveaway) return `Unable to find a giveaway for messageId: ${messageId}`;
+  if (!giveaway) return `Невозможно найти раздачу для этого ID-сообщения: ${messageId}`;
 
   // Check if the giveaway is unpaused
-  if (!giveaway.pauseOptions.isPaused) return "This giveaway is not paused.";
+  if (!giveaway.pauseOptions.isPaused) return "Эта раздача не приостановлен.";
 
   try {
     await giveaway.unpause();
-    return "Success! Giveaway unpaused!";
+    return "Успех! Раздача возобновлена!";
   } catch (error) {
     member.client.logger.error("Giveaway Resume", error);
-    return `An error occurred while unpausing the giveaway: ${error.message}`;
+    return `Произошла ошибка во время возобновления раздачи: ${error.message}`;
   }
 };

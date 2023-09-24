@@ -14,13 +14,13 @@
     "format": "prettier --write src",
     "docker:build": "docker build -t saitejamadha/discord-js-bot:5.4.0 ."
   },
-  "homepage": "https://github.com/saiteja-madha/discord-js-bot#readme",
+  "homepage": "https://github.com/N0rule/Emi-discord-bot#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/saiteja-madha/discord-js-bot.git"
+    "url": "git+https://github.com/N0rule/emi-discord-bot.git"
   },
   "bugs": {
-    "url": "https://github.com/saiteja-madha/discord-js-bot/issues"
+    "url": "https://github.com/N0rule/emi-discord-bot/issues"
   },
   "dependencies": {
     "@lavaclient/queue": "^2.1.1",

@@ -1,5 +1,5 @@
 const { CommandCategory, BotClient } = require("@src/structures");
-const { EMBED_COLORS, SUPPORT_SERVER } = require("@root/config.js");
+const { EMBED_COLORS } = require("@root/config.js");
 const {
   EmbedBuilder,
   ActionRowBuilder,
@@ -200,35 +200,7 @@ const waiter = (msg, userId, prefix) => {
 function getSlashCategoryEmbeds(client, category) {
   let collector = "";
 
-  // For IMAGE Category
-  if (category === "IMAGE") {
-    client.slashCommands
-      .filter((cmd) => cmd.category === category)
-      .forEach((cmd) => (collector += `\`/${cmd.name}\`\n ❯ ${cmd.description}\n\n`));
-
-    const availableFilters = client.slashCommands
-      .get("filter")
-      .slashCommand.options[0].choices.map((ch) => ch.name)
-      .join(", ");
-
-    const availableGens = client.slashCommands
-      .get("generator")
-      .slashCommand.options[0].choices.map((ch) => ch.name)
-      .join(", ");
-
-    collector +=
-      "**Available Filters:**\n" + `${availableFilters}` + `*\n\n**Available Generators**\n` + `${availableGens}`;
-
-    const embed = new EmbedBuilder()
-      .setColor(EMBED_COLORS.BOT_EMBED)
-      .setThumbnail(CommandCategory[category]?.image)
-      .setAuthor({ name: `${category} Команды` })
-      .setDescription(collector);
-
-    return [embed];
-  }
-
-  // For REMAINING Categories
+  // For Categories
   const commands = Array.from(client.slashCommands.filter((cmd) => cmd.category === category).values());
 
   if (commands.length === 0) {
@@ -278,35 +250,7 @@ function getSlashCategoryEmbeds(client, category) {
  * @param {string} prefix
  */
 function getMsgCategoryEmbeds(client, category, prefix) {
-  let collector = "";
-
-  // For IMAGE Category
-  if (category === "IMAGE") {
-    client.commands
-      .filter((cmd) => cmd.category === category)
-      .forEach((cmd) =>
-        cmd.command.aliases.forEach((alias) => {
-          collector += `\`${alias}\`, `;
-        })
-      );
-
-    collector +=
-      "\n\nYou can use these image commands in following formats\n" +
-      `**${prefix}cmd:** Picks message authors avatar as image\n` +
-      `**${prefix}cmd <@member>:** Picks mentioned members avatar as image\n` +
-      `**${prefix}cmd <url>:** Picks image from provided URL\n` +
-      `**${prefix}cmd [attachment]:** Picks attachment image`;
-
-    const embed = new EmbedBuilder()
-      .setColor(EMBED_COLORS.BOT_EMBED)
-      .setThumbnail(CommandCategory[category]?.image)
-      .setAuthor({ name: `${category} Команды` })
-      .setDescription(collector);
-
-    return [embed];
-  }
-
-  // For REMAINING Categories
+  // For Categories
   const commands = client.commands.filter((cmd) => cmd.category === category);
 
   if (commands.length === 0) {

@@ -12,7 +12,7 @@ const openai = new OpenAIApi(configuration);
 // Command Module exporting an object with the command details and properties
 module.exports = {
   name: "aichat",
-  description: "промпт для ChatGPT (Experimental)", // String describing the command
+  description: "промпт для ChatGPT", // String describing the command
   category: "AI", // Category to which the command belongs
   cooldown: 10,
   command: {

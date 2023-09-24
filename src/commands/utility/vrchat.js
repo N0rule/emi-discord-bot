@@ -51,7 +51,7 @@ module.exports = {
   name: "vrchat",
   description: "Получить информацию о пользователе vrchat!",
   cooldown: 5,
-  category: "FUN",
+  category: "UTILITY",
   botPermissions: ["SendMessages", "EmbedLinks"],
   command: {
     enabled: false,

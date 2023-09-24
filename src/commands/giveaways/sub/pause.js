@@ -3,7 +3,7 @@
  * @param {string} messageId
  */
 module.exports = async (member, messageId) => {
-  if (!messageId) return "You must provide a valid message id.";
+  if (!messageId) return "Вы должны предоставить действительный ID-сообщения.";
 
   // Permissions
   if (!member.permissions.has("ManageMessages")) {
@@ -16,7 +16,7 @@ module.exports = async (member, messageId) => {
   );
 
   // If no giveaway was found
-  if (!giveaway) return `Unable to find a giveaway for messageId: ${messageId}`;
+  if (!giveaway) return `Невозможно найти раздачу для этого ID-сообщения: ${messageId}`;
 
   // Check if the giveaway is paused
   if (giveaway.pauseOptions.isPaused) return "This giveaway is already paused.";

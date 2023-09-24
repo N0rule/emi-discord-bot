@@ -166,6 +166,8 @@ module.exports = class ModUtils {
    * @param {number} amount
    * @param {any} argument
    */
+
+  // TODO make BulkDelete more than 100 Messages
   static async clearMessages(issuer, channel, type, amount, argument) {
     if (!channel.permissionsFor(issuer).has(["ManageMessages", "ReadMessageHistory"])) {
       return "MEMBER_PERM";

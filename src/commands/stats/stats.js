@@ -70,19 +70,19 @@ async function stats(member, settings) {
       {
         name: "💬 Отправлено сообщений",
         value: stripIndents`
-      ❯ Сообщений: ${memberStats.messages}
-      ❯ Префикс команд: ${memberStats.commands.prefix}
-      ❯ Слеш(/) команд: ${memberStats.commands.slash}
-      ❯ Опт Получено: ${memberStats.xp}
-      ❯ Текущий Уровень: ${memberStats.level}
+      ❯ **Сообщений:** ${memberStats.messages}
+      ❯ **Префикс команд:** ${memberStats.commands.prefix}
+      ❯ **Слеш(/) команд:** ${memberStats.commands.slash}
+      ❯ **Кол-во Опыта:** ${memberStats.xp}
+      ❯ **Текущий Уровень:** ${memberStats.level}
     `,
         inline: false,
       },
       {
         name: "🎙️ Голосовая Статистика",
         value: stripIndents`
-      ❯ Количество Подключений: ${memberStats.voice.connections}
-      ❯ Времени Проведено: ${Math.floor(memberStats.voice.time / 60)} мин
+      ❯ **Количество Подключений:** ${memberStats.voice.connections}
+      ❯ **Времени Проведено:** ${Math.floor(memberStats.voice.time / 60)} мин
     `,
       }
     )

@@ -1,6 +1,7 @@
 const { ApplicationCommandOptionType, EmbedBuilder } = require("discord.js");
 const osu = require("node-osu");
 const { EMBED_COLORS } = require("@root/config.js");
+const { stripIndents } = require("common-tags");
 const osuApi = new osu.Api(process.env.OSU_API_KEY, {
   notFoundAsError: true,
   completeScores: false,
@@ -10,7 +11,7 @@ module.exports = {
   name: "osu",
   description: "Получить информацию о пользователе osu!",
   cooldown: 5,
-  category: "FUN",
+  category: "UTILITY",
   botPermissions: ["SendMessages", "EmbedLinks"],
   command: {
     enabled: true,
@@ -48,13 +49,16 @@ async function getUserInfo(username, mauthor) {
       .setTitle(`**osu! Профиль**`)
       .setColor(EMBED_COLORS.SUCCESS)
       .setDescription(
-        `**Имя пользователя:** ${user.name}\n**Уровень:** ${Math.floor(user.level)}\n**Ранг:** ${Math.floor(
-          user.pp.rank
-        )}\n**PP:** ${Math.floor(user.pp.raw)}\n**SS:** ${user.counts.SS} **S:** ${user.counts.S} **A:** ${
-          user.counts.A
-        }\n**Страна:** ${user.country}\n**Точность:** ${Math.floor(user.accuracy)}%\n**Игры сыграно:** ${
-          user.counts.plays
-        }`
+        stripIndents`
+        ❯ **Имя пользователя:** ${user.name}
+        ❯ **Уровень:** ${Math.floor(user.level)}
+        ❯ **Ранг:** ${Math.floor(user.pp.rank)}
+        ❯ **PP:** ${Math.floor(user.pp.raw)}
+        ❯ **SS:** ${user.counts.SS} **S:** ${user.counts.S} **A:** ${user.counts.A}
+        ❯ **Страна:** ${user.country}
+        ❯ **Точность:** ${Math.floor(user.accuracy)}%
+        ❯ **Игры сыграно:** ${user.counts.plays}
+      `
       )
       .setThumbnail(`https://a.ppy.sh/${user.id}`)
       .setFooter({

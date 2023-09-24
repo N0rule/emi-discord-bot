@@ -1,10 +1,4 @@
-const {
-  EmbedBuilder,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ApplicationCommandOptionType,
-  ButtonStyle,
-} = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const { EMBED_COLORS } = require("@root/config.js");
 const { getJson } = require("@helpers/HttpUtils");
 const { getRandomInt } = require("@helpers/Utils");
@@ -29,9 +23,7 @@ module.exports = {
   async messageRun(message, args) {
     const choice = args[0];
     const embed = await getRandomEmbed(choice);
-    const sentMsg = await message.safeReply({
-      embeds: [embed],
-    });
+    await message.safeReply({ embeds: [embed] });
   },
 
   async interactionRun(interaction) {

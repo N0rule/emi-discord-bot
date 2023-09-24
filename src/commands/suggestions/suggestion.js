@@ -9,7 +9,7 @@ const CHANNEL_PERMS = ["ViewChannel", "SendMessages", "EmbedLinks", "ManageMessa
  */
 module.exports = {
   name: "suggestion",
-  description: "configure suggestion system",
+  description: "Настройка системы предложений",
   category: "SUGGESTION",
   userPermissions: ["ManageGuild"],
   command: {
@@ -18,35 +18,35 @@ module.exports = {
     subcommands: [
       {
         trigger: "status <on|off>",
-        description: "enable/disable suggestion system",
+        description: "Включить/отключить систему предложений",
       },
       {
         trigger: "channel <#channel|off>",
-        description: "configure suggestion channel or disable it",
+        description: "Настроить канал предложений или отключить его",
       },
       {
         trigger: "appch <#channel>",
-        description: "configure approved suggestions channel or disable it",
+        description: "Настроить канал утвержденных предложений или отключить его",
       },
       {
         trigger: "rejch <#channel>",
-        description: "configure rejected suggestions channel or disable it",
+        description: "Настроить отклоненные предложения канала или отключить его",
       },
       {
         trigger: "approve <channel> <messageId> [reason]",
-        description: "approve a suggestion",
+        description: "одобрить предложение",
       },
       {
         trigger: "reject <channel> <messageId> [reason]",
-        description: "reject a suggestion",
+        description: "отвергнуть предложение",
       },
       {
         trigger: "staffadd <roleId>",
-        description: "add a staff role",
+        description: "Добавить роль администратора",
       },
       {
         trigger: "staffremove <roleId>",
-        description: "remove a staff role",
+        description: "удалить роль администратора",
       },
     ],
   },
@@ -56,12 +56,12 @@ module.exports = {
     options: [
       {
         name: "status",
-        description: "enable or disable suggestion status",
+        description: "Включить/отключить систему предложений",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "status",
-            description: "enabled or disabled",
+            description: "включено или отключено",
             required: true,
             type: ApplicationCommandOptionType.String,
             choices: [
@@ -79,12 +79,12 @@ module.exports = {
       },
       {
         name: "channel",
-        description: "configure suggestion channel or disable it",
+        description: "Настроить канал предложений или отключить его",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "channel_name",
-            description: "the channel where suggestions will be sent",
+            description: "канал, куда будут отправлены предложения",
             type: ApplicationCommandOptionType.Channel,
             channelTypes: [ChannelType.GuildText],
             required: false,
@@ -93,12 +93,12 @@ module.exports = {
       },
       {
         name: "appch",
-        description: "configure approved suggestions channel or disable it",
+        description: "Настроить канал утвержденных предложений или отключить его",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "channel_name",
-            description: "the channel where approved suggestions will be sent",
+            description: "канал, где будут отправлены утвержденные предложения",
             type: ApplicationCommandOptionType.Channel,
             channelTypes: [ChannelType.GuildText],
             required: false,
@@ -107,12 +107,12 @@ module.exports = {
       },
       {
         name: "rejch",
-        description: "configure rejected suggestions channel or disable it",
+        description: "Настроить отклоненные предложения канала или отключить его",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "channel_name",
-            description: "the channel where rejected suggestions will be sent",
+            description: "канал, куда будут отправлены отклоненные предложения",
             type: ApplicationCommandOptionType.Channel,
             channelTypes: [ChannelType.GuildText],
             required: false,
@@ -121,25 +121,25 @@ module.exports = {
       },
       {
         name: "approve",
-        description: "approve a suggestion",
+        description: "одобрить предложение",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "channel_name",
-            description: "the channel where message exists",
+            description: "канал, где существует сообщение",
             type: ApplicationCommandOptionType.Channel,
             channelTypes: [ChannelType.GuildText],
             required: true,
           },
           {
             name: "message_id",
-            description: "the message id of the suggestion",
+            description: "ID-сообщения предложения",
             type: ApplicationCommandOptionType.String,
             required: true,
           },
           {
             name: "reason",
-            description: "the причина для the approval",
+            description: "причина для одобрения",
             type: ApplicationCommandOptionType.String,
             required: false,
           },
@@ -147,25 +147,25 @@ module.exports = {
       },
       {
         name: "reject",
-        description: "reject a suggestion",
+        description: "отвергнуть предложение",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "channel_name",
-            description: "the channel where message exists",
+            description: "канал, где существует сообщение",
             type: ApplicationCommandOptionType.Channel,
             channelTypes: [ChannelType.GuildText],
             required: true,
           },
           {
             name: "message_id",
-            description: "the message id of the suggestion",
+            description: "ID-сообщения предложения",
             type: ApplicationCommandOptionType.String,
             required: true,
           },
           {
             name: "reason",
-            description: "the причина для the rejection",
+            description: "причина для отказа",
             type: ApplicationCommandOptionType.String,
             required: false,
           },
@@ -173,12 +173,12 @@ module.exports = {
       },
       {
         name: "staffadd",
-        description: "add a staff role",
+        description: "Добавить роль администратора",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "role",
-            description: "the role to add as a staff",
+            description: "роль, которую нужно добавить в качестве администратора",
             type: ApplicationCommandOptionType.Role,
             required: true,
           },
@@ -186,12 +186,12 @@ module.exports = {
       },
       {
         name: "staffremove",
-        description: "staffremove a staff role",
+        description: "удалить роль администратора",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "role",
-            description: "the role to staffremove from a staff",
+            description: "роль, которую нужно удалить в качестве администратора",
             type: ApplicationCommandOptionType.Role,
             required: true,
           },
@@ -208,7 +208,7 @@ module.exports = {
     if (sub == "status") {
       const status = args[1]?.toUpperCase();
       if (!status || !["ON", "OFF"].includes(status))
-        return message.safeReply("Invalid status. Value must be `on/off`");
+        return message.safeReply("Неверный статус. Значение должно быть `on/off`");
       response = await setStatus(data.settings, status);
     }
 
@@ -217,7 +217,7 @@ module.exports = {
       const input = args[1];
       let matched = message.guild.findMatchingChannels(input);
       if (matched.length == 0) response = `Подходящие каналы не найдены для ${input}`;
-      else if (matched.length > 1) response = `Multiple channels found for ${input}. Please be more specific.`;
+      else if (matched.length > 1) response = `Найдено много подходящих каналов для ${input}. Пожалуйста, будьте более конкретны.`;
       else response = await setChannel(data.settings, matched[0]);
     }
 
@@ -226,7 +226,7 @@ module.exports = {
       const input = args[1];
       let matched = message.guild.findMatchingChannels(input);
       if (matched.length == 0) response = `Подходящие каналы не найдены для ${input}`;
-      else if (matched.length > 1) response = `Multiple channels found for ${input}. Please be more specific.`;
+      else if (matched.length > 1) response = `Найдено много подходящих каналов для ${input}. Пожалуйста, будьте более конкретны.`;
       else response = await setApprovedChannel(data.settings, matched[0]);
     }
 
@@ -235,7 +235,7 @@ module.exports = {
       const input = args[1];
       let matched = message.guild.findMatchingChannels(input);
       if (matched.length == 0) response = `Подходящие каналы не найдены для ${input}`;
-      else if (matched.length > 1) response = `Multiple channels found for ${input}. Please be more specific.`;
+      else if (matched.length > 1) response = `Найдено много подходящих каналов для ${input}. Пожалуйста, будьте более конкретны.`;
       else response = await setRejectedChannel(data.settings, matched[0]);
     }
 
@@ -244,7 +244,7 @@ module.exports = {
       const input = args[1];
       let matched = message.guild.findMatchingChannels(input);
       if (matched.length == 0) response = `Подходящие каналы не найдены для ${input}`;
-      else if (matched.length > 1) response = `Multiple channels found for ${input}. Please be more specific.`;
+      else if (matched.length > 1) response = `Найдено много подходящих каналов для ${input}. Пожалуйста, будьте более конкретны.`;
       else {
         const messageId = args[2];
         const reason = args.slice(3).join(" ");
@@ -257,7 +257,7 @@ module.exports = {
       const input = args[1];
       let matched = message.guild.findMatchingChannels(input);
       if (matched.length == 0) response = `Подходящие каналы не найдены для ${input}`;
-      else if (matched.length > 1) response = `Multiple channels found for ${input}. Please be more specific.`;
+      else if (matched.length > 1) response = `Найдено много подходящих каналов для ${input}. Пожалуйста, будьте более конкретны.`;
       else {
         const messageId = args[2];
         const reason = args.slice(3).join(" ");
@@ -269,8 +269,8 @@ module.exports = {
     else if (sub == "staffadd") {
       const input = args[1];
       let matched = message.guild.findMatchingRoles(input);
-      if (matched.length == 0) response = `No matching roles found for ${input}`;
-      else if (matched.length > 1) response = `Multiple roles found for ${input}. Please be more specific.`;
+      if (matched.length == 0) response = `Не найдено подходящих ролей для ${input}`;
+      else if (matched.length > 1) response = `Найдено много подходящих ролей для ${input}. Пожалуйста, будьте более конкретны.`;
       else response = await addStaffRole(data.settings, matched[0]);
     }
 
@@ -278,13 +278,13 @@ module.exports = {
     else if (sub == "staffremove") {
       const input = args[1];
       let matched = message.guild.findMatchingRoles(input);
-      if (matched.length == 0) response = `No matching roles found for ${input}`;
-      else if (matched.length > 1) response = `Multiple roles found for ${input}. Please be more specific.`;
+      if (matched.length == 0) response = `Не найдено подходящих ролей для ${input}`;
+      else if (matched.length > 1) response = `Найдено много подходящих ролей для ${input}. Пожалуйста, будьте более конкретны.`;
       else response = await removeStaffRole(data.settings, matched[0]);
     }
 
     // else
-    else response = "Not a valid subcommand";
+    else response = "Не действительный подкоманда";
     await message.safeReply(response);
   },
 
@@ -343,7 +343,7 @@ module.exports = {
     }
 
     // else
-    else response = "Not a valid subcommand";
+    else response = "Не действительный подкоманда";
     await interaction.followUp(response);
   },
 };
@@ -352,71 +352,71 @@ async function setStatus(settings, status) {
   const enabled = status.toUpperCase() === "ON" ? true : false;
   settings.suggestions.enabled = enabled;
   await settings.save();
-  return `Suggestion system is now ${enabled ? "enabled" : "disabled"}`;
+  return `Конфигурация сохранена! Система предложений сейчас ${enabled ? "включена" : "отключена"}`;
 }
 
 async function setChannel(settings, channel) {
   if (!channel) {
     settings.suggestions.channel_id = null;
     await settings.save();
-    return "Suggestion system is now disabled";
+    return "Система предложений теперь отключена";
   }
 
   if (!channel.permissionsFor(channel.guild.members.me).has(CHANNEL_PERMS)) {
-    return `I need the following permissions in ${channel}\n${parsePermissions(CHANNEL_PERMS)}`;
+    return `Мне нужны следующие разрешения в ${channel}\n${parsePermissions(CHANNEL_PERMS)}`;
   }
 
   settings.suggestions.channel_id = channel.id;
   await settings.save();
-  return `Suggestions will now be sent to ${channel}`;
+  return `Предложения теперь будут отправлены ${channel}`;
 }
 
 async function setApprovedChannel(settings, channel) {
   if (!channel) {
     settings.suggestions.approved_channel = null;
     await settings.save();
-    return "Suggestion approved channel is now disabled";
+    return "Утвержденный предложение канал теперь отключен";
   }
 
   if (!channel.permissionsFor(channel.guild.members.me).has(CHANNEL_PERMS)) {
-    return `I need the following permissions in ${channel}\n${parsePermissions(CHANNEL_PERMS)}`;
+    return `Мне нужны следующие разрешения в ${channel}\n${parsePermissions(CHANNEL_PERMS)}`;
   }
 
   settings.suggestions.approved_channel = channel.id;
   await settings.save();
-  return `Approved suggestions will now be sent to ${channel}`;
+  return `Утвержденные предложения теперь будут отправлены в ${channel}`;
 }
 
 async function setRejectedChannel(settings, channel) {
   if (!channel) {
     settings.suggestions.rejected_channel = null;
     await settings.save();
-    return "Suggestion rejected channel is now disabled";
+    return "Предложение отклонено канал теперь отключен";
   }
 
   if (!channel.permissionsFor(channel.guild.members.me).has(CHANNEL_PERMS)) {
-    return `I need the following permissions in ${channel}\n${parsePermissions(CHANNEL_PERMS)}`;
+    return `Мне нужны следующие разрешения в ${channel}\n${parsePermissions(CHANNEL_PERMS)}`;
   }
 
   settings.suggestions.rejected_channel = channel.id;
   await settings.save();
-  return `Rejected suggestions will now be sent to ${channel}`;
+  return `Отклоненные предложения теперь будут отправлены в ${channel}`;
 }
 
 async function addStaffRole(settings, role) {
   if (settings.suggestions.staff_roles.includes(role.id)) {
-    return `\`${role.name}\` is already a staff role`;
+    return `\`${role.name}\` уже является ролью персонала`;
   }
   settings.suggestions.staff_roles.push(role.id);
   await settings.save();
-  return `\`${role.name}\` is now a staff role`;
+  return `\`${role.name}\` Сейчас является роль персонала`;
 }
 
 async function removeStaffRole(settings, role) {
   if (!settings.suggestions.staff_roles.includes(role.id)) {
-    return `${role} is not a staff role`;
+    return `${role} не является ролью персонала`;
   }
   settings.suggestions.staff_roles.splice(settings.suggestions.staff_roles.indexOf(role.id), 1);
   await settings.save();
-  return `\`${role.name}\` is no longer a staff role`;
+  return `\`${role.name}\` больше не является ролью персонала`;
 }

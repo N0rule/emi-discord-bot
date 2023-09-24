@@ -6,7 +6,7 @@ const { EMBED_COLORS } = require("@root/config");
 module.exports = async (member) => {
   // Permissions
   if (!member.permissions.has("ManageMessages")) {
-    return "You need to have the manage messages permissions to manage giveaways.";
+    return "Вы должны иметь разрешения на управление сообщениями для управления раздачи.";
   }
 
   // Search with all giveaways
@@ -16,15 +16,15 @@ module.exports = async (member) => {
 
   // No giveaways
   if (giveaways.length === 0) {
-    return "There are no giveaways running in this server.";
+    return "На этом сервере сейчас нет незавершенных раздач.";
   }
 
   const description = giveaways.map((g, i) => `${i + 1}. ${g.prize} in <#${g.channelId}>`).join("\n");
-
+  const color = parseInt(EMBED_COLORS.SUCCESS.replace("#", ""), 16);
   try {
-    return { embeds: [{ description, color: EMBED_COLORS.GIVEAWAYS }] };
+    return { embeds: [{ description, color }] };
   } catch (error) {
     member.client.logger.error("Giveaway List", error);
-    return `An error occurred while listing the giveaways: ${error.message}`;
+    return `Произошла ошибка при перечислении раздач: ${error.message}`;
   }
 };

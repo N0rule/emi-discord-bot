@@ -14,7 +14,7 @@ module.exports = {
       const remaining = getRemainingCooldown(interaction.user.id, context);
       if (remaining > 0) {
         return interaction.reply({
-          content: `You are on cooldown. You can again use the command after ${timeformat(remaining)}`,
+          content: `Вы находитесь на перезарядке. Вы можете снова использовать команду после ${timeformat(remaining)}`,
           ephemeral: true,
         });
       }
@@ -24,7 +24,7 @@ module.exports = {
     if (interaction.member && context.userPermissions && context.userPermissions?.length > 0) {
       if (!interaction.member.permissions.has(context.userPermissions)) {
         return interaction.reply({
-          content: `You need ${parsePermissions(context.userPermissions)} for this command`,
+          content: `Тебе нужно ${parsePermissions(context.userPermissions)} для этой команды`,
           ephemeral: true,
         });
       }

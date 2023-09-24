@@ -29,32 +29,27 @@ module.exports = {
         type: ApplicationCommandOptionType.User,
         required: true,
       },
-    ]
-    },
+    ],
+  },
 
   async messageRun(message, args) {
     const target = args[0];
-    const embed = await genReaction(message.author,target);
+    const embed = await genReaction(message.author, target);
     await message.safeReply({ embeds: [embed] });
   },
 
   async interactionRun(interaction) {
     const target = interaction.options.getUser("user");
-    const embed = await genReaction(interaction.user,target);
+    const embed = await genReaction(interaction.user, target);
     await interaction.followUp({ embeds: [embed] });
   },
 };
 
 const genReaction = async (user, target) => {
   try {
-      imageUrl = (await neko["hug"]()).url;
-    return new EmbedBuilder()
-      .setDescription(`${user} обнял ${target}!`)
-      .setImage(imageUrl)
-      .setColor("Random");
+    imageUrl = (await neko["hug"]()).url;
+    return new EmbedBuilder().setDescription(`${user} обнял ${target}!`).setImage(imageUrl).setColor("Random");
   } catch (ex) {
-    return new EmbedBuilder()
-      .setColor(EMBED_COLORS.ERROR)
-      .setDescription("Ошибка получения мема. Попробуй еще раз!");
+    return new EmbedBuilder().setColor(EMBED_COLORS.ERROR).setDescription("Ошибка получения мема. Попробуй еще раз!");
   }
 };

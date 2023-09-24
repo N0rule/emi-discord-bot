@@ -13,11 +13,11 @@ module.exports = async (member, giveawayChannel, duration, prize, winners, host,
   try {
     if (!host) host = member.user;
     if (!member.permissions.has("ManageMessages")) {
-      return "You need to have the manage messages permissions to start giveaways.";
+      return "Вам необходимо иметь разрешения на управление сообщениями для начала раздачи.";
     }
 
     if (!giveawayChannel.type === ChannelType.GuildText) {
-      return "You can only start giveaways in text channels.";
+      return "Вы можете начать раздачу только в текстовых каналах.";
     }
 
     /**
@@ -28,13 +28,19 @@ module.exports = async (member, giveawayChannel, duration, prize, winners, host,
       prize,
       winnerCount: winners,
       hostedBy: host,
-      thumbnail: "https://i.imgur.com/DJuTuxs.png",
+      thumbnail: "https://cdn-icons-png.flaticon.com/512/6021/6021967.png",
       messages: {
-        giveaway: "🎉 **GIVEAWAY** 🎉",
-        giveawayEnded: "🎉 **GIVEAWAY ENDED** 🎉",
-        inviteToParticipate: "React with 🎁 to enter",
-        dropMessage: "Be the first to react with 🎁 to win!",
-        hostedBy: `\nHosted by: ${host.username}`,
+        giveaway: "🎉 **РАЗДАЧА** 🎉",
+        giveawayEnded: "🎉 **РАЗДАЧА ЗАКОНЧИЛАСЬ** 🎉",
+        inviteToParticipate: "Реагируйте с помощью 🎁 что-бы участвовать!",
+        dropMessage: "Будьте первым, кто отреагирует с 🎁, чтобы выиграть!",
+        hostedBy: `\nАвтор: {this.hostedBy}`,
+        winMessage: "Поздравляю, {winners}! Вы выиграли **{this.prize}**!\n{this.messageURL}",
+        winners: "**Победители:**",
+        noWinner: "Раздача отменена, недостаточно участников.",
+        drawing: "Начало розыгрыша {timestamp}.",
+        endedAt: "Закончилось в",
+        embedFooter: "{this.winnerCount} Победитель(ы)",
       },
     };
 
@@ -43,9 +49,9 @@ module.exports = async (member, giveawayChannel, duration, prize, winners, host,
     }
 
     await member.client.giveawaysManager.start(giveawayChannel, options);
-    return `Giveaway started in ${giveawayChannel}`;
+    return `Раздача началась в ${giveawayChannel}`;
   } catch (error) {
     member.client.logger.error("Giveaway Start", error);
-    return `An error occurred while starting the giveaway: ${error.message}`;
+    return `Произошла ошибка при запуске раздачи: ${error.message}`;
   }
 };

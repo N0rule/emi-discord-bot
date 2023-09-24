@@ -3,11 +3,11 @@
  * @param {string} messageId
  */
 module.exports = async (member, messageId) => {
-  if (!messageId) return "You must provide a valid message id.";
+  if (!messageId) return "Вы должны предоставить действительный ID-сообщения.";
 
   // Permissions
   if (!member.permissions.has("ManageMessages")) {
-    return "You need to have the manage messages permissions to start giveaways.";
+    return "Вам необходимо иметь разрешения на управление сообщениями для начала раздачи.";
   }
 
   // Search with messageId
@@ -16,16 +16,16 @@ module.exports = async (member, messageId) => {
   );
 
   // If no giveaway was found
-  if (!giveaway) return `Unable to find a giveaway for messageId: ${messageId}`;
+  if (!giveaway) return `Невозможно найти раздачу для этого ID-сообщения: ${messageId}`;
 
   // Check if the giveaway is ended
-  if (giveaway.ended) return "The giveaway has already ended.";
+  if (giveaway.ended) return "Раздача уже закончилась.";
 
   try {
     await giveaway.end();
-    return "Success! The giveaway has ended!";
+    return "Успех! Раздача закончилась!";
   } catch (error) {
     member.client.logger.error("Giveaway End", error);
-    return `An error occurred while ending the giveaway: ${error.message}`;
+    return `Произошла ошибка при попытке завершить раздачу: ${error.message}`;
   }
 };

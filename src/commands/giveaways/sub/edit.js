@@ -6,11 +6,11 @@
  * @param {number} newWinnerCount
  */
 module.exports = async (member, messageId, addDuration, newPrize, newWinnerCount) => {
-  if (!messageId) return "You must provide a valid message id.";
+  if (!messageId) return "Вы должны предоставить действительный ID-сообщения.";
 
   // Permissions
   if (!member.permissions.has("ManageMessages")) {
-    return "You need to have the manage messages permissions to start giveaways.";
+    return "Вам необходимо иметь разрешения на управление сообщениями для начала раздачи.";
   }
 
   // Search with messageId
@@ -19,7 +19,7 @@ module.exports = async (member, messageId, addDuration, newPrize, newWinnerCount
   );
 
   // If no giveaway was found
-  if (!giveaway) return `Unable to find a giveaway for messageId: ${messageId}`;
+  if (!giveaway) return `Невозможно найти раздачу для этого ID-сообщения: ${messageId}`;
 
   try {
     await member.client.giveawaysManager.edit(messageId, {
@@ -28,9 +28,9 @@ module.exports = async (member, messageId, addDuration, newPrize, newWinnerCount
       newWinnerCount: newWinnerCount || giveaway.winnerCount,
     });
 
-    return `Successfully updated the giveaway!`;
+    return `Раздача успешно обновлена!`;
   } catch (error) {
     member.client.logger.error("Giveaway Edit", error);
-    return `An error occurred while updating the giveaway: ${error.message}`;
+    return `Произошла ошибка при обновлении раздачи: ${error.message}`;
   }
 };

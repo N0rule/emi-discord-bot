@@ -5,7 +5,7 @@ const { ApplicationCommandOptionType, EmbedBuilder } = require("discord.js");
  */
 module.exports = {
   name: "ticketcat",
-  description: "manage ticket categories",
+  description: "Управлять категориями билетов",
   category: "TICKET",
   userPermissions: ["ManageGuild"],
   command: {
@@ -14,15 +14,15 @@ module.exports = {
     subcommands: [
       {
         trigger: "list",
-        description: "list all ticket categories",
+        description: "Перечислить все категории билетов",
       },
       {
         trigger: "add <category> | <staff_roles>",
-        description: "add a ticket category",
+        description: "Добавить категорию билетов",
       },
       {
         trigger: "remove <category>",
-        description: "remove a ticket category",
+        description: "Удалить категорию билетов",
       },
     ],
   },
@@ -32,23 +32,23 @@ module.exports = {
     options: [
       {
         name: "list",
-        description: "list all ticket categories",
+        description: "Перечислить все категории билетов",
         type: ApplicationCommandOptionType.Subcommand,
       },
       {
         name: "add",
-        description: "add a ticket category",
+        description: "Добавить категорию билетов",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "category",
-            description: "the category name",
+            description: "название категории",
             type: ApplicationCommandOptionType.String,
             required: true,
           },
           {
             name: "staff_roles",
-            description: "the staff roles",
+            description: "Роли администраторов",
             type: ApplicationCommandOptionType.String,
             required: false,
           },
@@ -56,12 +56,12 @@ module.exports = {
       },
       {
         name: "remove",
-        description: "remove a ticket category",
+        description: "Удалить категорию билетов",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "category",
-            description: "the category name",
+            description: "название категории",
             type: ApplicationCommandOptionType.String,
             required: true,
           },
@@ -95,7 +95,7 @@ module.exports = {
 
     // invalid subcommand
     else {
-      response = "Invalid subcommand.";
+      response = "Неверный подкоманда.";
     }
 
     await message.safeReply(response);
@@ -124,30 +124,30 @@ module.exports = {
     }
 
     //
-    else response = "Invalid subcommand";
+    else response = "Неверный подкоманда";
     await interaction.followUp(response);
   },
 };
 
 function listCategories(data) {
   const categories = data.settings.ticket.categories;
-  if (categories?.length === 0) return "No ticket categories found.";
+  if (categories?.length === 0) return "Категории билетов не найдены.";
 
   const fields = [];
   for (const category of categories) {
     const roleNames = category.staff_roles.map((r) => `<@&${r}>`).join(", ");
-    fields.push({ name: category.name, value: `**Staff:** ${roleNames || "None"}` });
+    fields.push({ name: category.name, value: `**Администраторы:** ${roleNames || "Нету"}` });
   }
-  const embed = new EmbedBuilder().setAuthor({ name: "Ticket Categories" }).addFields(fields);
+  const embed = new EmbedBuilder().setAuthor({ name: "Категории билетов" }).addFields(fields);
   return { embeds: [embed] };
 }
 
 async function addCategory(guild, data, category, staff_roles) {
-  if (!category) return "Invalid usage! Missing category name.";
+  if (!category) return "Неверное использование! Отсутствует название категории.";
 
   // check if category already exists
   if (data.settings.ticket.categories.find((c) => c.name === category)) {
-    return `Category \`${category}\` already exists.`;
+    return `Категория \`${category}\` уже существует.`;
   }
 
   const staffRoles = (staff_roles?.split(",")?.map((r) => r.trim()) || []).filter((r) => guild.roles.cache.has(r));
@@ -155,18 +155,18 @@ async function addCategory(guild, data, category, staff_roles) {
   data.settings.ticket.categories.push({ name: category, staff_roles: staffRoles });
   await data.settings.save();
 
-  return `Category \`${category}\` added.`;
+  return `Категория \`${category}\` добавлена.`;
 }
 
 async function removeCategory(data, category) {
   const categories = data.settings.ticket.categories;
   // check if category exists
   if (!categories.find((c) => c.name === category)) {
-    return `Category \`${category}\` does not exist.`;
+    return `Категории \`${category}\` не существует.`;
   }
 
   data.settings.ticket.categories = categories.filter((c) => c.name !== category);
   await data.settings.save();
 
-  return `Category \`${category}\` removed.`;
+  return `Категория \`${category}\` удалена.`;
 }

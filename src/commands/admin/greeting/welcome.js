@@ -7,7 +7,7 @@ const { ApplicationCommandOptionType, ChannelType } = require("discord.js");
  */
 module.exports = {
   name: "welcome",
-  description: "настроить сообщение прихода",
+  description: "настроить приветственное прихода",
   category: "ADMIN",
   userPermissions: ["ManageGuild"],
   command: {
@@ -16,35 +16,35 @@ module.exports = {
     subcommands: [
       {
         trigger: "status <on|off>",
-        description: "enable or disable welcome message",
+        description: "Включить или отключить приветственное сообщение",
       },
       {
         trigger: "channel <#channel>",
-        description: "configure welcome message",
+        description: "Настроить приветственное сообщение",
       },
       {
         trigger: "preview",
-        description: "preview the configured welcome message",
+        description: "Предварительный просмотр приветственного сообщения",
       },
       {
         trigger: "desc <text>",
-        description: "set embed description",
+        description: "Установите embed описание",
       },
       {
         trigger: "thumbnail <ON|OFF>",
-        description: "enable/disable embed thumbnail",
+        description: "Включить/отключить встроенный миниатюр",
       },
       {
         trigger: "color <hexcolor>",
-        description: "set embed color",
+        description: "Установите embed цвет",
       },
       {
         trigger: "footer <text>",
-        description: "set embed footer content",
+        description: "установить содержание embed footer",
       },
       {
         trigger: "image <url>",
-        description: "set embed image",
+        description: "Установите embed изображение",
       },
     ],
   },
@@ -54,12 +54,12 @@ module.exports = {
     options: [
       {
         name: "status",
-        description: "enable or disable welcome message",
+        description: "Включить или отключить приветственное сообщение",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "status",
-            description: "enabled or disabled",
+            description: "включено или отключено",
             required: true,
             type: ApplicationCommandOptionType.String,
             choices: [
@@ -77,17 +77,17 @@ module.exports = {
       },
       {
         name: "preview",
-        description: "preview the configured welcome message",
+        description: "Предварительный просмотр приветственного сообщения",
         type: ApplicationCommandOptionType.Subcommand,
       },
       {
         name: "channel",
-        description: "set welcome channel",
+        description: "установить приветственный канал",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "channel",
-            description: "channel name",
+            description: "Название канала",
             type: ApplicationCommandOptionType.Channel,
             channelTypes: [ChannelType.GuildText],
             required: true,
@@ -96,12 +96,12 @@ module.exports = {
       },
       {
         name: "desc",
-        description: "set embed description",
+        description: "Установите embed описание",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "content",
-            description: "description content",
+            description: "содержание",
             type: ApplicationCommandOptionType.String,
             required: true,
           },
@@ -109,12 +109,12 @@ module.exports = {
       },
       {
         name: "thumbnail",
-        description: "configure embed thumbnail",
+        description: "Настройка embed миниатюры",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "status",
-            description: "thumbnail status",
+            description: "Статус миниатюры",
             type: ApplicationCommandOptionType.String,
             required: true,
             choices: [
@@ -132,12 +132,12 @@ module.exports = {
       },
       {
         name: "color",
-        description: "set embed color",
+        description: "Установите embed цвет",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "hex-code",
-            description: "hex color code",
+            description: "цветовой hex-код",
             type: ApplicationCommandOptionType.String,
             required: true,
           },
@@ -145,12 +145,12 @@ module.exports = {
       },
       {
         name: "footer",
-        description: "set embed footer",
+        description: "установить embed footer",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "content",
-            description: "footer content",
+            description: "Содержание footer",
             type: ApplicationCommandOptionType.String,
             required: true,
           },
@@ -158,12 +158,12 @@ module.exports = {
       },
       {
         name: "image",
-        description: "set embed image",
+        description: "Установить embed изображение",
         type: ApplicationCommandOptionType.Subcommand,
         options: [
           {
             name: "url",
-            description: "image url",
+            description: "URL изображения",
             type: ApplicationCommandOptionType.String,
             required: true,
           },
@@ -186,7 +186,7 @@ module.exports = {
     else if (type === "status") {
       const status = args[1]?.toUpperCase();
       if (!status || !["ON", "OFF"].includes(status))
-        return message.safeReply("Invalid status. Value must be `on/off`");
+        return message.safeReply("Неверный статус. Значение должно быть `on/off`");
       response = await setStatus(settings, status);
     }
 
@@ -198,7 +198,7 @@ module.exports = {
 
     // desc
     else if (type === "desc") {
-      if (args.length < 2) return message.safeReply("Insufficient arguments! Please provide valid content");
+      if (args.length < 2) return message.safeReply("Недостаточно аргументов! Пожалуйста, предоставьте действительный контент");
       const desc = args.slice(1).join(" ");
       response = await setDescription(settings, desc);
     }
@@ -207,20 +207,20 @@ module.exports = {
     else if (type === "thumbnail") {
       const status = args[1]?.toUpperCase();
       if (!status || !["ON", "OFF"].includes(status))
-        return message.safeReply("Invalid status. Value must be `on/off`");
+        return message.safeReply("Неверный статус. Значение должно быть `on/off`");
       response = await setThumbnail(settings, status);
     }
 
     // color
     else if (type === "color") {
       const color = args[1];
-      if (!color || !isHex(color)) return message.safeReply("Invalid color. Value must be a valid hex color");
+      if (!color || !isHex(color)) return message.safeReply("Неверный цвет. Значение должно быть hex-кодом");
       response = await setColor(settings, color);
     }
 
     // footer
     else if (type === "footer") {
-      if (args.length < 2) return message.safeReply("Insufficient arguments! Please provide valid content");
+      if (args.length < 2) return message.safeReply("Недостаточно аргументов! Пожалуйста, предоставьте действительный контент");
       const content = args.slice(1).join(" ");
       response = await setFooter(settings, content);
     }
@@ -228,12 +228,12 @@ module.exports = {
     // image
     else if (type === "image") {
       const url = args[1];
-      if (!url) return message.safeReply("Invalid image url. Please provide a valid url");
+      if (!url) return message.safeReply("Недопустимый URL. Пожалуйста, предоставьте действительный URL");
       response = await setImage(settings, url);
     }
 
     //
-    else response = "Invalid command usage!";
+    else response = "Неверное использование команды!";
     return message.safeReply(response);
   },
 
@@ -284,62 +284,62 @@ module.exports = {
 };
 
 async function sendPreview(settings, member) {
-  if (!settings.welcome?.enabled) return "Welcome message not enabled in this server";
+  if (!settings.welcome?.enabled) return "Приветственное сообщение не включено на этом сервере";
 
   const targetChannel = member.guild.channels.cache.get(settings.welcome.channel);
-  if (!targetChannel) return "No channel is configured to send welcome message";
+  if (!targetChannel) return "Ни один канал не настроен на отправку приветственного сообщения";
 
   const response = await buildGreeting(member, "WELCOME", settings.welcome);
   await targetChannel.safeSend(response);
 
-  return `Sent welcome preview to ${targetChannel.toString()}`;
+  return `Отправлено предпросмотр приветственного сообщения в ${targetChannel.toString()}`;
 }
 
 async function setStatus(settings, status) {
   const enabled = status.toUpperCase() === "ON" ? true : false;
   settings.welcome.enabled = enabled;
   await settings.save();
-  return `Configuration saved! Welcome message ${enabled ? "enabled" : "disabled"}`;
+  return `Конфигурация сохранена! Приветственное сообщение ${enabled ? "включено" : "выключено"}`;
 }
 
 async function setChannel(settings, channel) {
   if (!channel.canSendEmbeds()) {
     return (
-      "Ugh! I cannot send greeting to that channel? I need the `Write Messages` and `Embed Links` permissions in " +
+      "Фу!Я не могу отправить приветствие на этот канал? Мне нужны разрешения `записывать сообщения` и `встраивать ссылки`  в " +
       channel.toString()
     );
   }
   settings.welcome.channel = channel.id;
   await settings.save();
-  return `Configuration saved! Welcome message will be sent to ${channel ? channel.toString() : "Not found"}`;
+  return `Конфигурация сохранена! Приветственное сообщение будет отправлены в канал ${channel ? channel.toString() : "Не найдено"}`;
 }
 
 async function setDescription(settings, desc) {
   settings.welcome.embed.description = desc;
   await settings.save();
-  return "Configuration saved! Welcome message updated";
+  return "Конфигурация сохранена!Приветственное сообщение обновлено";
 }
 
 async function setThumbnail(settings, status) {
   settings.welcome.embed.thumbnail = status.toUpperCase() === "ON" ? true : false;
   await settings.save();
-  return "Configuration saved! Welcome message updated";
+  return "Конфигурация сохранена!Приветственное сообщение обновлено";
 }
 
 async function setColor(settings, color) {
   settings.welcome.embed.color = color;
   await settings.save();
-  return "Configuration saved! Welcome message updated";
+  return "Конфигурация сохранена!Приветственное сообщение обновлено";
 }
 
 async function setFooter(settings, content) {
   settings.welcome.embed.footer = content;
   await settings.save();
-  return "Configuration saved! Welcome message updated";
+  return "Конфигурация сохранена!Приветственное сообщение обновлено";
 }
 
 async function setImage(settings, url) {
   settings.welcome.embed.image = url;
   await settings.save();
-  return "Configuration saved! Welcome message updated";
+  return "Конфигурация сохранена!Приветственное сообщение обновлено";
 }
