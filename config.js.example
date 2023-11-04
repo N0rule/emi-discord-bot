@@ -52,7 +52,8 @@ module.exports = {
   },
 
   AIPHOTO: {
-    ENABLED: false,
+    ENABLED: false
+    MODEL: "dall-e", //Model Of AI to use
     SIZE: "512x512", // Generated images can have a size of 256x256, 512x512, or 1024x1024 pixels.
   },
 

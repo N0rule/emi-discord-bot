@@ -57,7 +57,6 @@ module.exports = {
       // Edit the message reply with the new embed
       await reply.edit({ embeds: [embed] });
     } catch (error) {
-      // Log the error to console
       // Send a message to user that there was an API error
       embed.setDescription(error.toString());
       await reply.edit({ embeds: [embed] });
@@ -84,7 +83,6 @@ module.exports = {
       embed.setImage(response);
       await interaction.editReply({ embeds: [embed] });
     } catch (error) {
-      // Log the error to console
       // Send an interaction with a message that there was an API error
       embed.setDescription(error.toString());
       await interaction.editReply({ embeds: [embed] });
@@ -101,6 +99,7 @@ async function runCompletion(message) {
   });
 
   const completionPromise = await openai.createImage({
+    model: AIPHOTO.MODEL,
     prompt: message,
     n: 1,
     size: AIPHOTO.SIZE,
