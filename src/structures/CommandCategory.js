@@ -19,7 +19,7 @@ module.exports = {
   },
   AI: {
     name: "AI",
-    enabled: config.AIPHOTO.ENABLED || config.AICHAT.ENABLED,
+    enabled: config.AIIMAGE.ENABLED || config.AICHAT.ENABLED,
     image: "https://cdn-icons-png.flaticon.com/512/5278/5278402.png ",
     emoji: "🤖",
   },

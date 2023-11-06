@@ -51,7 +51,7 @@ module.exports = {
     IMAGINEMESSAGE: "" // Message before user input, for example you can set chat to be someone: "You are Rayan Ghostling", if you dont want to use it just leave blank.
   },
 
-  AIPHOTO: {
+  AIIMAGE: {
     ENABLED: false
     MODEL: "dall-e", //Model Of AI to use
     SIZE: "512x512", // Generated images can have a size of 256x256, 512x512, or 1024x1024 pixels.
