@@ -170,7 +170,11 @@ async function rejectSuggestion(member, channel, messageId, reason) {
 
   let buttonsRow = new ActionRowBuilder().addComponents(
     new ButtonBuilder().setCustomId("SUGGEST_APPROVE").setLabel("Утвердить").setStyle(ButtonStyle.Success),
-    new ButtonBuilder().setCustomId("SUGGEST_REJECT").setLabel("Отклонять").setStyle(ButtonStyle.Danger).setDisabled(true),
+    new ButtonBuilder()
+      .setCustomId("SUGGEST_REJECT")
+      .setLabel("Отклонять")
+      .setStyle(ButtonStyle.Danger)
+      .setDisabled(true),
     new ButtonBuilder().setCustomId("SUGGEST_DELETE").setLabel("Удалить").setStyle(ButtonStyle.Secondary)
   );
 

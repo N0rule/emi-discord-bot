@@ -35,8 +35,6 @@ async function getAnimal(user) {
   if (!response.success) return MESSAGES.API_ERROR;
 
   const imageUrl = response.data?.image;
-  const embed = new EmbedBuilder()
-    .setColor("Random")
-    .setImage(imageUrl)
+  const embed = new EmbedBuilder().setColor("Random").setImage(imageUrl);
   return { embeds: [embed] };
 }

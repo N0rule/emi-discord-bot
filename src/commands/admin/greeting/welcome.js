@@ -198,7 +198,8 @@ module.exports = {
 
     // desc
     else if (type === "desc") {
-      if (args.length < 2) return message.safeReply("Недостаточно аргументов! Пожалуйста, предоставьте действительный контент");
+      if (args.length < 2)
+        return message.safeReply("Недостаточно аргументов! Пожалуйста, предоставьте действительный контент");
       const desc = args.slice(1).join(" ");
       response = await setDescription(settings, desc);
     }
@@ -220,7 +221,8 @@ module.exports = {
 
     // footer
     else if (type === "footer") {
-      if (args.length < 2) return message.safeReply("Недостаточно аргументов! Пожалуйста, предоставьте действительный контент");
+      if (args.length < 2)
+        return message.safeReply("Недостаточно аргументов! Пожалуйста, предоставьте действительный контент");
       const content = args.slice(1).join(" ");
       response = await setFooter(settings, content);
     }
@@ -311,7 +313,9 @@ async function setChannel(settings, channel) {
   }
   settings.welcome.channel = channel.id;
   await settings.save();
-  return `Конфигурация сохранена! Приветственное сообщение будет отправлены в канал ${channel ? channel.toString() : "Не найдено"}`;
+  return `Конфигурация сохранена! Приветственное сообщение будет отправлены в канал ${
+    channel ? channel.toString() : "Не найдено"
+  }`;
 }
 
 async function setDescription(settings, desc) {

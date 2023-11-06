@@ -1,10 +1,7 @@
 // Require necessary modules and create configuration
 const { EmbedBuilder, ApplicationCommandOptionType } = require("discord.js");
 const { EMBED_COLORS, AICHAT } = require("@root/config.js");
-const { Configuration, OpenAIApi } = require("openai");
-
-const configuration = new Configuration({ apiKey: process.env.OPENAI_API_KEY, basePath: process.env.OPENAI_API_BASE });
-const openai = new OpenAIApi(configuration);
+const { aiChat } = require("@helpers/ChatGeneration");
 
 /**
  * @type {import("@structures/Command")}
@@ -43,25 +40,17 @@ module.exports = {
       .setFooter({ text: `Запрошено пользователем: ${message.author.username}` });
 
     let reply = null; // i don't know why, but it fixes multimessages
-    try {
-      // Join the arguments into one string
-      const prompt = args.join(" ");
+    // Join the arguments into one string
+    const prompt = args.join(" ");
 
-      // Send a message with embed and save it in a variable reply
-      reply = await message.reply({ embeds: [embed] });
-      // Run the function runCompletion with prompt and get the response from API
-      const response = await runCompletion(prompt);
-      // Update the embed with the response from API
-      embed.setDescription(response);
-      // Edit the message reply with the new embed
-      await reply.edit({ embeds: [embed] });
-    } catch (error) {
-      // Log the error to console
-      // Send a message to user that there was an API error
-      embed.setDescription(`Произошла ошибка API,Попробуйте еще раз или напишите Администратору. \n(**${error}**)`);
-      console.log(error);
-      await reply.edit({ embeds: [embed] });
-    }
+    // Send a message with embed and save it in a variable reply
+    reply = await message.reply({ embeds: [embed] });
+    // Run the function aichat with prompt and get the response from API
+    const response = await aiChat(prompt);
+    // Update the embed with the response from API
+    embed.setDescription(response.toString());
+    // Edit the message reply with the new embed
+    await reply.edit({ embeds: [embed] });
   },
 
   // This function runs when an interaction with option prompt is received
@@ -73,46 +62,13 @@ module.exports = {
       .setDescription("Отвечаю...")
       .setThumbnail(interaction.client.user.displayAvatarURL())
       .setFooter({ text: `Запрошено пользователем: ${interaction.user.username}` });
-    try {
-      // Get the value of option prompt from interaction
-      const prompt = interaction.options.getString("prompt");
-      // Send an interaction with embed
-      await interaction.followUp({ embeds: [embed] });
-      // Run the function runCompletion with prompt and get the response from API
-      const response = await runCompletion(prompt);
-      embed.setDescription(response);
-      await interaction.editReply({ embeds: [embed] });
-    } catch (error) {
-      // Log the error to console
-      // Send an interaction with a message that there was an API error
-      embed.setDescription("Произошла ошибка API,Попробуйте еще раз или напишите Администратору.");
-      await interaction.editReply({ embeds: [embed] });
-    }
+    // Get the value of option prompt from interaction
+    const prompt = interaction.options.getString("prompt");
+    // Send an interaction with embed
+    await interaction.followUp({ embeds: [embed] });
+    // Run the function aichat with prompt and get the response from API
+    const response = await aiChat(prompt);
+    embed.setDescription(response.toString());
+    await interaction.editReply({ embeds: [embed] });
   },
 };
-
-// runCompletion function to use the OpenAi API to generate results based on user prompts
-async function runCompletion(message) {
-  const timeoutPromise = new Promise((reject) => {
-    setTimeout(() => {
-      reject(new Error());
-    }, 35000);
-  });
-
-  const completionPromise = await openai.createChatCompletion({
-    model: AICHAT.MODEL,
-    max_tokens: AICHAT.TOKENS,
-    presence_penalty: AICHAT.PRESENCE_PENALTY,
-    temperature: AICHAT.TEMPERATURE,
-    messages: [
-      { role: "system", content: AICHAT.IMAGINEMESSAGE },
-      { role: "user", content: message },
-    ],
-  });
-  try {
-    const completion = await Promise.race([timeoutPromise, completionPromise]);
-    return completion.data.choices[0].message.content;
-  } catch (error) {
-    throw error;
-  }
-}

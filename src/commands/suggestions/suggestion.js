@@ -217,7 +217,8 @@ module.exports = {
       const input = args[1];
       let matched = message.guild.findMatchingChannels(input);
       if (matched.length == 0) response = `Подходящие каналы не найдены для ${input}`;
-      else if (matched.length > 1) response = `Найдено много подходящих каналов для ${input}. Пожалуйста, будьте более конкретны.`;
+      else if (matched.length > 1)
+        response = `Найдено много подходящих каналов для ${input}. Пожалуйста, будьте более конкретны.`;
       else response = await setChannel(data.settings, matched[0]);
     }
 
@@ -226,7 +227,8 @@ module.exports = {
       const input = args[1];
       let matched = message.guild.findMatchingChannels(input);
       if (matched.length == 0) response = `Подходящие каналы не найдены для ${input}`;
-      else if (matched.length > 1) response = `Найдено много подходящих каналов для ${input}. Пожалуйста, будьте более конкретны.`;
+      else if (matched.length > 1)
+        response = `Найдено много подходящих каналов для ${input}. Пожалуйста, будьте более конкретны.`;
       else response = await setApprovedChannel(data.settings, matched[0]);
     }
 
@@ -235,7 +237,8 @@ module.exports = {
       const input = args[1];
       let matched = message.guild.findMatchingChannels(input);
       if (matched.length == 0) response = `Подходящие каналы не найдены для ${input}`;
-      else if (matched.length > 1) response = `Найдено много подходящих каналов для ${input}. Пожалуйста, будьте более конкретны.`;
+      else if (matched.length > 1)
+        response = `Найдено много подходящих каналов для ${input}. Пожалуйста, будьте более конкретны.`;
       else response = await setRejectedChannel(data.settings, matched[0]);
     }
 
@@ -244,7 +247,8 @@ module.exports = {
       const input = args[1];
       let matched = message.guild.findMatchingChannels(input);
       if (matched.length == 0) response = `Подходящие каналы не найдены для ${input}`;
-      else if (matched.length > 1) response = `Найдено много подходящих каналов для ${input}. Пожалуйста, будьте более конкретны.`;
+      else if (matched.length > 1)
+        response = `Найдено много подходящих каналов для ${input}. Пожалуйста, будьте более конкретны.`;
       else {
         const messageId = args[2];
         const reason = args.slice(3).join(" ");
@@ -257,7 +261,8 @@ module.exports = {
       const input = args[1];
       let matched = message.guild.findMatchingChannels(input);
       if (matched.length == 0) response = `Подходящие каналы не найдены для ${input}`;
-      else if (matched.length > 1) response = `Найдено много подходящих каналов для ${input}. Пожалуйста, будьте более конкретны.`;
+      else if (matched.length > 1)
+        response = `Найдено много подходящих каналов для ${input}. Пожалуйста, будьте более конкретны.`;
       else {
         const messageId = args[2];
         const reason = args.slice(3).join(" ");
@@ -270,7 +275,8 @@ module.exports = {
       const input = args[1];
       let matched = message.guild.findMatchingRoles(input);
       if (matched.length == 0) response = `Не найдено подходящих ролей для ${input}`;
-      else if (matched.length > 1) response = `Найдено много подходящих ролей для ${input}. Пожалуйста, будьте более конкретны.`;
+      else if (matched.length > 1)
+        response = `Найдено много подходящих ролей для ${input}. Пожалуйста, будьте более конкретны.`;
       else response = await addStaffRole(data.settings, matched[0]);
     }
 
@@ -279,7 +285,8 @@ module.exports = {
       const input = args[1];
       let matched = message.guild.findMatchingRoles(input);
       if (matched.length == 0) response = `Не найдено подходящих ролей для ${input}`;
-      else if (matched.length > 1) response = `Найдено много подходящих ролей для ${input}. Пожалуйста, будьте более конкретны.`;
+      else if (matched.length > 1)
+        response = `Найдено много подходящих ролей для ${input}. Пожалуйста, будьте более конкретны.`;
       else response = await removeStaffRole(data.settings, matched[0]);
     }
 

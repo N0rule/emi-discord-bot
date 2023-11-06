@@ -156,7 +156,8 @@ module.exports = {
 
     // log ticket
     else if (input === "log") {
-      if (args.length < 2) return message.safeReply("Пожалуйста, предоставьте канал, на который должны быть отправлены логи билетов");
+      if (args.length < 2)
+        return message.safeReply("Пожалуйста, предоставьте канал, на который должны быть отправлены логи билетов");
       const target = message.guild.findMatchingChannels(args[1]);
       if (target.length === 0) return message.safeReply("Не удалось найти ни одного подходящего канала");
       response = await setupLogChannel(target[0], data.settings);
@@ -185,7 +186,8 @@ module.exports = {
 
     // Add user to ticket
     else if (input === "add") {
-      if (args.length < 2) return message.safeReply("Пожалуйста, предоставьте пользователя или роль, чтобы добавить к билету");
+      if (args.length < 2)
+        return message.safeReply("Пожалуйста, предоставьте пользователя или роль, чтобы добавить к билету");
       let inputId;
       if (message.mentions.users.size > 0) inputId = message.mentions.users.first().id;
       else if (message.mentions.roles.size > 0) inputId = message.mentions.roles.first().id;

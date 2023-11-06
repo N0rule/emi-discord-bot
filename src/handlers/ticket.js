@@ -290,7 +290,9 @@ async function handleTicketClose(interaction) {
   await interaction.deferReply({ ephemeral: true });
   const status = await closeTicket(interaction.channel, interaction.user);
   if (status === "MISSING_PERMISSIONS") {
-    return interaction.followUp("Не могу закрыть билет, пропущенные разрешения. Свяжитесь с администратором сервера для помощи!");
+    return interaction.followUp(
+      "Не могу закрыть билет, пропущенные разрешения. Свяжитесь с администратором сервера для помощи!"
+    );
   } else if (status == "ERROR") {
     return interaction.followUp("Не удалось закрыть билет, произошла ошибка!");
   }
