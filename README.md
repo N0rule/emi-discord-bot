@@ -2,7 +2,7 @@
   <br>
   <a href="https://n0rule.github.io/"><img src="https://i.imgur.com/jFxBKWt.png" height="400" alt="Syndicate Bot V2"></a>
   <br>
-  Syndicate Bot V2
+  Emi Bot V2
   <br>
 </h1>
 
