@@ -37,32 +37,30 @@ module.exports = {
 
 async function getRandomEmbed(choice) {
   const subReddits = ["animememes", "Animemes"];
-  let rand = choice ? choice : subReddits[getRandomInt(subReddits.length)];
+  let rand = choice ? choice : subReddits[getRandomInt(subReddits.length - 1)];
 
-  const response = await getJson(`https://www.reddit.com/r/${rand}/random/.json`);
-  if (!response.success) {
+  const response = await getJson(`https://meme-api.com/gimme/${rand}`);
+  if (!response.success || !response.data) {
     return new EmbedBuilder().setColor(EMBED_COLORS.ERROR).setDescription("Ошибка получения мема. Попробуй снова!");
   }
 
   const json = response.data;
-  if (!Array.isArray(json) || json.length === 0) {
+  if (!json.postLink || !json.url || !json.title || !json.ups) {
     return new EmbedBuilder().setColor(EMBED_COLORS.ERROR).setDescription(`Не найдено не одного мема :() ${choice}`);
   }
 
-  try {
-    let permalink = json[0].data.children[0].data.permalink;
-    let memeUrl = `https://reddit.com${permalink}`;
-    let memeImage = json[0].data.children[0].data.url;
-    let memeTitle = json[0].data.children[0].data.title;
-    let memeUpvotes = json[0].data.children[0].data.ups;
-    let memeNumComments = json[0].data.children[0].data.num_comments;
-
-    return new EmbedBuilder()
-      .setAuthor({ name: memeTitle, url: memeUrl })
-      .setImage(memeImage)
-      .setColor("Random")
-      .setFooter({ text: `👍 ${memeUpvotes} | 💬 ${memeNumComments}` });
-  } catch (error) {
-    return new EmbedBuilder().setColor(EMBED_COLORS.ERROR).setDescription("Ошибка получения мема. Попробуй снова!");
+  if (json.nsfw === true) {
+    return new EmbedBuilder().setColor(EMBED_COLORS.ERROR).setDescription("Этот мем содержит содержание NSFW");
   }
+  
+  const memeUrl = json.postLink;
+  const memeImage = json.url;
+  const memeTitle = json.title;
+  const memeUpvotes = json.ups;
+
+  return new EmbedBuilder()
+    .setAuthor({ name: memeTitle, url: memeUrl })
+    .setImage(memeImage)
+    .setColor("Random")
+    .setFooter({ text: `👍 ${memeUpvotes}` });
 }
