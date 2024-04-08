@@ -6,7 +6,7 @@ const { EMBED_COLORS } = require("@root/config.js");
  */
 module.exports = {
   name: "rfqueue",
-  description: "удаляет песню из очереди(last для последней)",
+  description: "удаляет песню из очереди (last для последней)",
   category: "MUSIC",
   cooldown: 3,
   validations: musicValidations,
@@ -21,7 +21,7 @@ module.exports = {
     options: [
       {
         name: "id",
-        description: "Введите позицию трека в очереди(last для последней)",
+        description: "Введите позицию трека в очереди (last для последней)",
         type: ApplicationCommandOptionType.String,
         required: true,
       },
@@ -33,7 +33,9 @@ module.exports = {
     if (!player) return message.safeReply("🚫 Сейчас музыка не играет.");
 
     let index;
-    if (args[0] === "last") {
+    if (args.length === 0) {
+      index = player.queue.tracks.length - 1; // Default to the last track if no arguments provided
+    } else if (args[0] === "last") {
       index = player.queue.tracks.length - 1;
     } else {
       index = parseInt(args[0]) - 1;
