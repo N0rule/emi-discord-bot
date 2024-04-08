@@ -38,5 +38,5 @@ function skip({ client, guildId }) {
   if (!player.queue.current) return "⏯️ сейчас не играет не один трек";
 
   const { title } = player.queue.current;
-  return player.queue.next() ? `⏯️ ${title} была пропущена` : "⏯️ Нет треков для пропуска.";
+  return player.queue.next() ? `⏯️ ${title} была пропущена.` : "⏯️ Нет треков для пропуска.";
 }

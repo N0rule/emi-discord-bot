@@ -32,7 +32,7 @@ module.exports = {
  */
 function resumePlayer({ client, guildId }) {
   const player = client.musicManager.getPlayer(guildId);
-  if (!player.paused) return "Музыка уже продолжена";
+  if (!player.paused) return "Музыка уже продолжена.";
   player.resume();
-  return "▶️ Продолжено прослушивание музыки";
+  return "▶️ Продолжено прослушивание музыки.";
 }
