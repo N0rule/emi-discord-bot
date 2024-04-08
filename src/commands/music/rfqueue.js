@@ -14,7 +14,7 @@ module.exports = {
     enabled: true,
     aliases: ["rfq", "rq"],
     usage: "<song-number>",
-    minArgsCount: 1,
+    minArgsCount: 0,
   },
   slashCommand: {
     enabled: true,
