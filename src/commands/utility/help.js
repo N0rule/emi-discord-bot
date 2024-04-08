@@ -219,7 +219,7 @@ function getSlashCategoryEmbeds(client, category) {
     let toAdd = commands.splice(0, commands.length > CMDS_PER_PAGE ? CMDS_PER_PAGE : commands.length);
 
     toAdd = toAdd.map((cmd) => {
-      const subCmds = cmd.slashCommand.options?.filter((opt) => opt.type === "SUB_COMMAND");
+      const subCmds = cmd.slashCommand.options?.filter((opt) => opt.type === ApplicationCommandOptionType.Subcommand);
       const subCmdsString = subCmds?.map((s) => s.name).join(", ");
 
       return `\`/${cmd.name}\`\n ❯ **Описание**: ${cmd.description}\n ${

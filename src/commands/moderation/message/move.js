@@ -20,7 +20,7 @@ module.exports = {
     const target = await message.guild.resolveMember(args[0], true);
     if (!target) return message.safeReply(`Нет подходяшего пользователя под: ${args[0]}`);
 
-    const channels = message.guild.findMatchingChannels(args[1]);
+    const channels = message.guild.findMatchingVoiceChannels(args[1]);
     if (!channels.length) return message.safeReply("Подходящие каналы не найдены");
     const targetChannel = channels.pop();
     if (!targetChannel.type === ChannelType.GuildVoice && !targetChannel.type === ChannelType.GuildStageVoice) {

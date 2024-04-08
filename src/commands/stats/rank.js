@@ -58,6 +58,7 @@ async function getRank({ guild }, member, settings) {
   });
 
   const xpNeeded = memberStats.level * memberStats.level * 100;
+  const rank = pos !== -1 ? pos : 0;
 
   const embed = new EmbedBuilder()
     .setThumbnail(member.user.displayAvatarURL())
@@ -66,6 +67,7 @@ async function getRank({ guild }, member, settings) {
       stripIndents`
       ❯ **Место в Топе:** ${pos}
       ❯ **Текущий Уровень:** ${memberStats.level}
+      ❯ **Ранг:** ${rank}
       ❯ **Кол-во Опыта:** ${memberStats.xp}
       ❯ **До следующего уровня:** ${xpNeeded}
     `
