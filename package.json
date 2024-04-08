@@ -49,8 +49,6 @@
     "mongoose": "^8.1.1",
     "nekos.life": "^3.0.0",
     "node-fetch": "^2.7.0",
-    "node-osu": "^2.2.1",
-    "openai": "^3.2.1",
     "os": "^0.1.2",
     "pino": "^8.18.0",
     "pino-pretty": "^10.3.1",
