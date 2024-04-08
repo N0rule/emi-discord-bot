@@ -69,9 +69,14 @@ module.exports = (client) => {
         inline: true,
       },
       {
-        name: "Node Js Версия",
+        name: "Node.js Версия",
         value: process.versions.node,
-        inline: false,
+        inline: true,
+      },
+      {
+        name: "Версия Бота",
+        value: require("@root/package.json").version,
+        inline: true,
       },
       {
         name: "Аптайм",
