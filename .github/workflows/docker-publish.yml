@@ -6,7 +6,7 @@ on:
 
 env:
   REGISTRY: docker.io
-  IMAGE_NAME: saitejamadha/discord-js-bot
+  IMAGE_NAME: N0rule/emi-discord-bot
 
 jobs:
   push_to_registry:
