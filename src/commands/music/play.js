@@ -1,13 +1,7 @@
 const { EmbedBuilder, ApplicationCommandOptionType } = require("discord.js");
-const prettyMs = require("pretty-ms");
+const { formatTime } = require("@helpers/Utils");
+require("@lavaclient/plugin-queue/register")
 const { EMBED_COLORS, MUSIC } = require("@root/config");
-const { SpotifyItemType } = require("@lavaclient/spotify");
-
-const search_prefix = {
-  YT: "ytsearch",
-  YTM: "ytmsearch",
-  SC: "scsearch",
-};
 
 /**
  * @type {import("@structures/Command")}
@@ -56,10 +50,10 @@ module.exports = {
 async function play({ member, guild, channel }, query) {
   if (!member.voice.channel) return "🚫 Для начала нужно находится в голосовом канале";
 
-  let player = guild.client.musicManager.getPlayer(guild.id);
+  let player = guild.client.musicManager.players.resolve(guild.id);
   if (player && !guild.members.me.voice.channel) {
-    player.disconnect();
-    await guild.client.musicManager.destroyPlayer(guild.id);
+    player.voice.disconnect();
+    await guild.client.musicManager.players.destroy(guild.id);
   }
 
   if (player && member.voice.channel !== guild.members.me.voice.channel) {
@@ -69,73 +63,46 @@ async function play({ member, guild, channel }, query) {
   let embed = new EmbedBuilder().setColor(EMBED_COLORS.BOT_EMBED);
   let tracks;
   let description = "";
+  let thumbnail;
+
 
   try {
-    if (guild.client.musicManager.spotify.isSpotifyUrl(query)) {
-      if (!process.env.SPOTIFY_CLIENT_ID || !process.env.SPOTIFY_CLIENT_SECRET) {
-        return "🚫 Spotify песни не работают. Обратитесь к Администратору";
-      }
+    const res = await guild.client.musicManager.api.loadTracks(
+      /^https?:\/\//.test(query) ? query : `${MUSIC.DEFAULT_SOURCE}:${query}`
+    );
 
-      const item = await guild.client.musicManager.spotify.load(query);
-      switch (item?.type) {
-        case SpotifyItemType.Track: {
-          const track = await item.resolveYoutubeTrack();
-          tracks = [track];
-          description = `[${track.info.title}](${track.info.uri})`;
-          break;
-        }
+    let track; // Declare track variable outside the switch statement
 
-        case SpotifyItemType.Artist:
-          tracks = await item.resolveYoutubeTracks();
-          description = `Артист: [**${item.name}**](${query})`;
-          break;
+    switch (res.loadType) {
+      case "error":
+        guild.client.logger.error("Search Exception", res.data);
+        return "🚫 Произошла ошибка при поиске";
 
-        case SpotifyItemType.Album:
-          tracks = await item.resolveYoutubeTracks();
-          description = `Альбом: [**${item.name}**](${query})`;
-          break;
+      case "empty":
+        return `Нет результатов подходящих под: ${query}`;
 
-        case SpotifyItemType.Playlist:
-          tracks = await item.resolveYoutubeTracks();
-          description = `Плейлист: [**${item.name}**](${query})`;
-          break;
+      case "playlist":
+        tracks = res.data.tracks;
+        description = res.data.info.name;
+        thumbnail = res.data.pluginInfo.artworkUrl;
+        break;
 
-        default:
-          return "🚫 Произошла ошибка при поиске песни";
-      }
+      case "track":
+        track = res.data;
+        tracks = [track];
+        break;
 
-      if (!tracks) guild.client.logger.debug({ query, item });
-    } else {
-      const res = await guild.client.musicManager.rest.loadTracks(
-        /^https?:\/\//.test(query) ? query : `${search_prefix[MUSIC.DEFAULT_SOURCE]}:${query}`
-      );
-      switch (res.loadType) {
-        case "LOAD_FAILED":
-          guild.client.logger.error("Search Exception", res.exception);
-          return "🚫 Произошла ошибка при поиске";
+      case "search":
+        track = res.data[0];
+        tracks = [track];
+        break;
 
-        case "NO_MATCHES":
-          return `Нет результатов подходящих под: ${query}`;
-
-        case "PLAYLIST_LOADED":
-          tracks = res.tracks;
-          description = res.playlistInfo.name;
-          break;
-
-        case "TRACK_LOADED":
-        case "SEARCH_RESULT": {
-          const [track] = res.tracks;
-          tracks = [track];
-          break;
-        }
-
-        default:
-          guild.client.logger.debug("Unknown loadType", res.loadType);
-          return "🚫 Произошла ошибка при поиске песни";
-      }
-
-      if (!tracks) guild.client.logger.debug({ query, res });
+      default:
+        guild.client.logger.debug("Unknown loadType", res);
+        return "🚫 Произошла ошибка при поиске песни";
     }
+
+    if (!tracks) guild.client.logger.debug({ query, res });
   } catch (error) {
     guild.client.logger.error("Search Exception", typeof error === "object" ? JSON.stringify(error) : error);
     return "🚫 Произошла ошибка при поиске песни";
@@ -146,19 +113,20 @@ async function play({ member, guild, channel }, query) {
   if (tracks.length === 1) {
     const track = tracks[0];
     if (!player?.playing && !player?.paused && !player?.queue.tracks.length) {
-      embed.setAuthor({ name: "Трек добавлен в очередь" });
+      
     } else {
       const fields = [];
       embed
         .setAuthor({ name: "Трек добавлен в очередь" })
         .setDescription(`[${track.info.title}](${track.info.uri})`)
+        .setThumbnail(track.info.artworkUrl)
         .setFooter({ text: `Запрошено Пользователем: ${member.user.username}` });
 
-      fields.push({
-        name: "Длительность песни",
-        value: "`" + prettyMs(track.info.length, { colonNotation: true }) + "`",
-        inline: true,
-      });
+fields.push({
+  name: "Длительность песни",
+  value: track.info.length > 6.048e8 ? `\`[🔴 Трансляция]\`` : "`" + formatTime(track.info.length) + "`",
+  inline: true,
+});
 
       if (player?.queue?.tracks?.length > 0) {
         fields.push({
@@ -172,6 +140,7 @@ async function play({ member, guild, channel }, query) {
   } else {
     embed
       .setAuthor({ name: "Плейлист добавлен в очередь" })
+      .setThumbnail(thumbnail)
       .setDescription(description)
       .addFields(
         {
@@ -183,9 +152,8 @@ async function play({ member, guild, channel }, query) {
           name: "Длительность Плейлиста",
           value:
             "`" +
-            prettyMs(
+            formatTime(
               tracks.map((t) => t.info.length).reduce((a, b) => a + b, 0),
-              { colonNotation: true }
             ) +
             "`",
           inline: true,
@@ -196,14 +164,15 @@ async function play({ member, guild, channel }, query) {
 
   // create a player and/or join the member's vc
   if (!player?.connected) {
-    player = guild.client.musicManager.createPlayer(guild.id);
+    player = guild.client.musicManager.players.create(guild.id);
     player.queue.data.channel = channel;
-    player.connect(member.voice.channel.id, { deafened: true });
+    player.voice.connect(member.voice.channel.id, { deafened: true });
+    player.setVolume(MUSIC.DEFAULT_VOLUME);
   }
 
   // do queue things
   const started = player.playing || player.paused;
-  player.queue.add(tracks, { requester: member.user.username, next: false });
+  player.queue.add(tracks, { requester: member.user.displayName, next: false });
   if (!started) {
     await player.queue.start();
   }

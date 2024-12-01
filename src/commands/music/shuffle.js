@@ -31,7 +31,7 @@ module.exports = {
  * @param {import("discord.js").CommandInteraction|import("discord.js").Message} arg0
  */
 function shuffle({ client, guildId }) {
-  const player = client.musicManager.getPlayer(guildId);
+  const player = client.musicManager.players.resolve(guildId);
   player.queue.shuffle();
   return "🎶 Очередь была перемешана";
 }

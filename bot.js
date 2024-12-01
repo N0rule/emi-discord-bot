@@ -44,4 +44,7 @@ process.on("unhandledRejection", (err) => client.logger.error(`Unhandled excepti
 
   // start the client
   await client.login(process.env.BOT_TOKEN);
+  
+  // initialize vrchat auth 
+  
 })();

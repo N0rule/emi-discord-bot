@@ -31,7 +31,7 @@ module.exports = {
  * @param {import("discord.js").CommandInteraction|import("discord.js").Message} arg0
  */
 function pause({ client, guildId }) {
-  const player = client.musicManager.getPlayer(guildId);
+  const player = client.musicManager.players.resolve(guildId);
   if (player.paused) return "Музыка уже остановлена.";
 
   player.pause(true);

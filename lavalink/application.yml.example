@@ -13,16 +13,50 @@ plugins:
     # Clients are queried in the order they are given (so the first client is queried first and so on...)
     clients:
       - MUSIC
-      - ANDROID_TESTSUITE
+      - ANDROID_MUSIC
       - WEB
+      - WEBEMBEDDED 
       - TVHTML5EMBEDDED
+  # The below section of the config allows setting specific options for each client, such as the requests they will handle.
+    # If an option, or client, is unspecified, then the default option value/client values will be used instead.
+    # If a client is configured, but is not registered above, the options for that client will be ignored.
+    # WARNING!: THE BELOW CONFIG IS FOR ILLUSTRATION PURPOSES. DO NOT COPY OR USE THIS WITHOUT
+    # WARNING!: UNDERSTANDING WHAT IT DOES. MISCONFIGURATION WILL HINDER YOUTUBE-SOURCE'S ABILITY TO WORK PROPERLY.
+
+    # Write the names of clients as they are specified under the heading "Available Clients".
+    clientOptions:
+      MUSIC:
+        playback: false
+        playlistLoading: false
+        searching: true
+        videoLoading: false
+      ANDROID_MUSIC:
+        playback: false
+        playlistLoading: false
+        searching: false
+        videoLoading: true
+      WEB:
+        playback: false
+        playlistLoading: true
+        searching: true
+        videoLoading: false
+      WEBEMBEDDED:
+        playback: false
+        playlistLoading: false
+        searching: false
+        videoLoading: false
+      TVHTML5EMBEDDED:
+        playback: true
+        playlistLoading: false
+        searching: false
+        videoLoading: true
     oauth:
       # setting "enabled: true" is the bare minimum to get OAuth working.
       enabled: true
       # if you have a refresh token, you may set it below (make sure to uncomment the line to apply it).
       # setting a valid refresh token will skip the OAuth flow entirely. See above note on how to retrieve
       # your refreshToken.
-      # refreshToken: ""
+      refreshToken: ""
       # Set this if you don't want the OAuth flow to be triggered, if you intend to supply a refresh token later.
       # Initialization is skipped automatically if a valid refresh token is supplied. Leave this commented if you're
       # completing the OAuth flow for the first time/do not have a refresh token.
@@ -30,7 +64,7 @@ plugins:
 lavalink:
   plugins:
     # Replace VERSION with the current version as shown by the Releases tab or a long commit hash for snapshots.
-    - dependency: "dev.lavalink.youtube:youtube-plugin:1.7.2"
+    - dependency: "dev.lavalink.youtube:youtube-plugin:1.9.0"
       repository: "https://maven.lavalink.dev/releases" # use https://maven.lavalink.dev/snapshots if you want to use a snapshot version.
 #      snapshot: false # optional, defaults to false, used to tell Lavalink to use the snapshot repository instead of the release repository
 #  pluginsDir: "./plugins" # optional, defaults to "./plugins"

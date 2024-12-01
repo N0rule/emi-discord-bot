@@ -29,8 +29,13 @@ module.exports = {
   },
 
   async messageRun(message, args) {
-    const player = message.client.musicManager.getPlayer(message.guild.id);
+    const player = message.client.musicManager.players.resolve(message.guild.id);
     if (!player) return message.safeReply("🚫 Сейчас музыка не играет.");
+
+    if (player.queue.tracks.length === 0) {
+      return message.safeReply("❌ В очереди нет треков для удаления.");
+    }
+
 
     let index;
     if (args.length === 0) {
@@ -49,14 +54,19 @@ module.exports = {
 
     const embed = new EmbedBuilder()
       .setColor(EMBED_COLORS.SUCCESS)
-      .setDescription(`✅ **${removedTrack.title}** был удален из очереди.`);
+      .setDescription(`✅ **${removedTrack.info.title}** был удален из очереди.`);
 
     await message.safeReply({ embeds: [embed] });
   },
 
   async interactionRun(interaction) {
-    const player = interaction.client.musicManager.getPlayer(interaction.guild.id);
+    const player = interaction.client.musicManager.players.resolve(interaction.guild.id);
     if (!player) return interaction.followUp("🚫 Сейчас музыка не играет.");
+
+    if (player.queue.tracks.length === 0) {
+      return interaction.followUp("❌ В очереди нет треков для удаления.");
+    }
+
 
     const input = interaction.options.getString("id");
     let index;
@@ -74,7 +84,7 @@ module.exports = {
 
     const embed = new EmbedBuilder()
       .setColor(EMBED_COLORS.SUCCESS)
-      .setDescription(`✅ **${removedTrack.title}** был удален из очереди.`);
+      .setDescription(`✅ **${removedTrack.info.title}** был удален из очереди.`);
 
     await interaction.followUp({ embeds: [embed] });
   },

@@ -1,7 +1,6 @@
 const { EMBED_COLORS } = require("@root/config");
 const { EmbedBuilder } = require("discord.js");
-const prettyMs = require("pretty-ms");
-const { splitBar } = require("string-progressbar");
+const { formatTime } = require("@helpers/Utils");
 
 /**
  * @type {import("@structures/Command")}
@@ -20,7 +19,7 @@ module.exports = {
     enabled: true,
   },
 
-  async messageRun(message, args) {
+  async messageRun(message) {
     const response = nowPlaying(message);
     await message.safeReply(response);
   },
@@ -34,36 +33,58 @@ module.exports = {
 /**
  * @param {import("discord.js").CommandInteraction|import("discord.js").Message} arg0
  */
-function nowPlaying({ client, guildId }) {
-  const player = client.musicManager.getPlayer(guildId);
+function nowPlaying({ client, guildId, member }) {
+  const player = client.musicManager.players.resolve(guildId);
   if (!player || !player.queue.current) return "🚫 Ничего не играет!";
 
   const track = player.queue.current;
-  const end = track.length > 6.048e8 ? "🔴 LIVE" : new Date(track.length).toISOString().slice(11, 19);
+  const totalLength = track.info.length;
+  
+  // Check if track is longer than 7 days (live stream)
+  if (totalLength > 6.048e8) {
+    const embed = new EmbedBuilder()
+      .setColor(EMBED_COLORS.BOT_EMBED)
+      .setAuthor({ name: "Сейчас играет" })
+      .setDescription(`[${track.info.title}](${track.info.uri})`)
+      .addFields(
+        {
+          name: "Длительность Песни",
+          value:  `\`[🔴 Трансляция]\``,
+          inline: true,
+        },
+        {
+          name: "Запрошено Пользователем:",
+          value: track.requesterId ? track.requesterId : member.user.displayName,
+          inline: true,
+        }
+      );
+
+    return { embeds: [embed] };
+  }
+
+  // Regular track handling
+  const position = player.position;
+  const progress = Math.round((position / totalLength) * 15);
+  const progressBar = `${formatTime(position)} [${"▬".repeat(progress)}🔘${"▬".repeat(15 - progress)}] ${formatTime(totalLength)}`;
 
   const embed = new EmbedBuilder()
     .setColor(EMBED_COLORS.BOT_EMBED)
     .setAuthor({ name: "Сейчас играет" })
-    .setDescription(`[${track.title}](${track.uri})`)
+    .setDescription(`[${track.info.title}](${track.info.uri})`)
     .addFields(
       {
         name: "Длительность Песни",
-        value: "`" + prettyMs(track.length, { colonNotation: true }) + "`",
+        value: `\`${formatTime(track.info.length)}\``,
         inline: true,
       },
       {
         name: "Запрошено Пользователем:",
-        value: track.requester || "Неизвестно",
+        value: track.requesterId ? track.requesterId : member.user.displayName,
         inline: true,
       },
       {
         name: "\u200b",
-        value:
-          new Date(player.position).toISOString().slice(11, 19) +
-          " [" +
-          splitBar(track.length > 6.048e8 ? player.position : track.length, player.position, 15)[0] +
-          "] " +
-          end,
+        value: progressBar,
         inline: false,
       }
     );

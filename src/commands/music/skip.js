@@ -18,12 +18,12 @@ module.exports = {
   },
 
   async messageRun(message, args) {
-    const response = skip(message);
+    const response = await skip(message);
     await message.safeReply(response);
   },
 
   async interactionRun(interaction) {
-    const response = skip(interaction);
+    const response = await skip(interaction);
     await interaction.followUp(response);
   },
 };
@@ -31,12 +31,20 @@ module.exports = {
 /**
  * @param {import("discord.js").CommandInteraction|import("discord.js").Message} arg0
  */
-function skip({ client, guildId }) {
-  const player = client.musicManager.getPlayer(guildId);
+async function skip({ client, guildId }) {
+  const player = client.musicManager.players.resolve(guildId);
 
-  // check if current song is playing
-  if (!player.queue.current) return "⏯️ сейчас не играет не один трек";
+  if (!player || !player.queue.current) {
+    return "⏯️ сейчас не играет не один трек";
+  }
+  const title = player.queue.current.info.title;
 
-  const { title } = player.queue.current;
-  return player.queue.next() ? `⏯️ ${title} была пропущена.` : "⏯️ Нет треков для пропуска.";
+  // Check if there is a next song in the queue
+  if (player.queue.tracks.length === 0) {
+    return "⏯️ Нет треков для пропуска.";
+  }
+
+  // Skip to the next song
+  player.queue.next();
+  return `⏯️ ${title} была пропущена.`;
 }

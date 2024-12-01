@@ -19,7 +19,7 @@ module.exports = {
     options: [
       {
         name: "amount",
-        description: "укажите громкость [от 0 до 100]",
+        description: "укажите громкость [от 1 до 100]",
         type: ApplicationCommandOptionType.Integer,
         required: false,
       },
@@ -27,14 +27,14 @@ module.exports = {
   },
 
   async messageRun(message, args) {
-    const amount = args[0];
-    const response = await volume(message, amount);
+    const amount = parseInt(args[0]);
+    const response = await getVolume(message, amount);
     await message.safeReply(response);
   },
 
   async interactionRun(interaction) {
-    const amount = interaction.options.getInteger("amount");
-    const response = await volume(interaction, amount);
+    const amount = parseInt(interaction.options.getInteger("amount"));
+    const response = await getVolume(interaction, amount);
     await interaction.followUp(response);
   },
 };
@@ -42,12 +42,15 @@ module.exports = {
 /**
  * @param {import("discord.js").CommandInteraction|import("discord.js").Message} arg0
  */
-async function volume({ client, guildId }, volume) {
-  const player = client.musicManager.getPlayer(guildId);
+async function getVolume({ client, guildId }, amount) {
+  const player = client.musicManager.players.resolve(guildId);
 
-  if (!volume) return `> Громкость музыки: \`${player.volume}\`.`;
-  if (volume < 1 || volume > 100) return "Вы должны выбрать громкость между 1 и 100.";
+  if (!amount) return `🎶 Громкость музыки:  \`${player.volume}\`.`;
 
-  await player.setVolume(volume);
-  return `🎶 Громкость музыки установлена на \`${volume}\`.`;
+  if (isNaN(amount) || amount < 0 || amount > 100) {
+    return "Вы должны выбрать громкость между 1 и 100.";
+  }
+  
+  await player.setVolume(amount);
+  return `🎶 Громкость музыки установлена на \`${amount}\`.`;
 }

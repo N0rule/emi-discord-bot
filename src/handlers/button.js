@@ -1,4 +1,4 @@
-const { LoopType } = require("@lavaclient/queue");
+const { LoopType } = require("@lavaclient/plugin-queue");
 
 /**
  * @param {import('@src/structures').BotClient} client
@@ -6,7 +6,7 @@ const { LoopType } = require("@lavaclient/queue");
  */
 async function pauseButton(client, interaction) {
   await interaction.deferUpdate();
-  const player = client.musicManager.getPlayer(interaction.guildId);
+  const player = client.musicManager.players.resolve(interaction.guildId);
 
   if (!interaction.member.voice.channel) {
     return interaction.channel.send("🚫 Музыка сейчас не играет!");
@@ -34,7 +34,7 @@ async function pauseButton(client, interaction) {
  */
 async function skipButton(client, interaction) {
   await interaction.deferUpdate();
-  const player = client.musicManager.getPlayer(interaction.guildId);
+  const player = client.musicManager.players.resolve(interaction.guildId);
 
   if (!interaction.member.voice.channel) {
     return interaction.channel.send("🚫 Музыка сейчас не играет!");
@@ -56,7 +56,7 @@ async function skipButton(client, interaction) {
  */
 async function stopButton(client, interaction) {
   await interaction.deferUpdate();
-  const player = client.musicManager.getPlayer(interaction.guildId);
+  const player = client.musicManager.players.resolve(interaction.guildId);
 
   if (!interaction.member.voice.channel) {
     return interaction.channel.send("🚫 Музыка сейчас не играет!");
@@ -68,9 +68,9 @@ async function stopButton(client, interaction) {
     return interaction.channel.send("🚫 Ты не в том же голосовом канале.");
   };
 
-  if (player.playing) {
-    player.disconnect();
-    await client.musicManager.destroyPlayer(interaction.guildId);
+  if (player) {
+    player.voice.disconnect();
+    await client.musicManager.players.destroy(interaction.guildId);
     return interaction.channel.send("🎶 Музыка была остановлена и очередь была очищена");
   };
 };
@@ -81,7 +81,7 @@ async function stopButton(client, interaction) {
  */
 async function loopButton(client, interaction) {
   await interaction.deferUpdate();
-  const player = client.musicManager.getPlayer(interaction.guildId);
+  const player = client.musicManager.players.resolve(interaction.guildId);
 
   if (!interaction.member.voice.channel) {
     return interaction.channel.send("🚫 Музыка сейчас не играет!");
@@ -116,7 +116,7 @@ async function loopButton(client, interaction) {
  */
 async function shuffleButton(client, interaction) {
   await interaction.deferUpdate();
-  const player = client.musicManager.getPlayer(interaction.guildId);
+  const player = client.musicManager.players.resolve(interaction.guildId);
 
   if (!interaction.member.voice.channel) {
     return interaction.channel.send("🚫 Музыка сейчас не играет!");

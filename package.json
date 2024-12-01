@@ -6,7 +6,7 @@
   "author": "N0rule",
   "license": "ISC",
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   },
   "scripts": {
     "dev": "nodemon .",
@@ -24,8 +24,6 @@
     "url": "https://github.com/N0rule/emi-discord-bot/issues"
   },
   "dependencies": {
-    "@lavaclient/queue": "^2.1.1",
-    "@lavaclient/spotify": "^3.1.0",
     "@vitalets/google-translate-api": "^9.2.0",
     "ascii-table": "0.0.9",
     "btoa": "^1.2.1",
@@ -43,7 +41,8 @@
     "express-session": "^1.18.0",
     "fixedsize-map": "^1.0.1",
     "iso-639-1": "^3.1.0",
-    "lavaclient": "^4.1.1",
+    "lavaclient": "^5.0.0-rc.3",
+    "@lavaclient/plugin-queue": "^0.0.1",
     "module-alias": "^2.2.3",
     "moment": "^2.30.1",
     "mongoose": "^8.1.1",

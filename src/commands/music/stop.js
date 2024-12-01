@@ -32,8 +32,8 @@ module.exports = {
  * @param {import("discord.js").CommandInteraction|import("discord.js").Message} arg0
  */
 async function stop({ client, guildId }) {
-  const player = client.musicManager.getPlayer(guildId);
-  player.disconnect();
-  await client.musicManager.destroyPlayer(guildId);
+  const player = client.musicManager.players.resolve(guildId);
+  player.voice.disconnect();
+  await client.musicManager.players.destroy(guildId);
   return "🎶 Музыка была остановлена и очередь была очищена";
 }

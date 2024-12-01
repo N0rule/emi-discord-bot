@@ -133,4 +133,28 @@ module.exports = class Utils {
     readCommands(dir);
     return filePaths;
   }
+
+  /**
+   * Formats milliseconds into days, hours, minutes, and seconds
+   * @param {number} ms - Milliseconds
+   * @returns {string} - Formatted time string
+   */
+  static formatTime(ms) {
+    const minuteMs = 60 * 1000;
+    const hourMs = 60 * minuteMs;
+    const dayMs = 24 * hourMs;
+    if (ms < minuteMs) {
+      return `${ms / 1000}c`;
+    } else if (ms < hourMs) {
+      return `${Math.floor(ms / minuteMs)}м ${Math.floor(
+        (ms % minuteMs) / 1000
+      )}с`;
+    } else if (ms < dayMs) {
+      return `${Math.floor(ms / hourMs)}ч ${Math.floor(
+        (ms % hourMs) / minuteMs
+      )}м`;
+    } else {
+      return `${Math.floor(ms / dayMs)}д ${Math.floor((ms % dayMs) / hourMs)}ч`;
+    }
+  }
 };
