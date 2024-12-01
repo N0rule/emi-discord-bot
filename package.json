@@ -13,7 +13,8 @@
     "start": "node .",
     "format": "prettier --write src",
     "docker:package": "tar -cf discord-js-bot.tar dashboard logs src bot.js config.js dockerfile package.json package-lock.json",
-    "docker:build": "docker build -t saitejamadha/discord-js-bot:5.5.0 ."
+    "docker:build": "docker build -t saitejamadha/discord-js-bot:5.5.0 .",
+      "postinstall": "node scripts/lavaclientPluginQueueFix.js"
   },
   "homepage": "https://github.com/N0rule/Emi-discord-bot#readme",
   "repository": {
