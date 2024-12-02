@@ -64,11 +64,9 @@ module.exports = class Validator {
     if (
       !process.env.VRC_LOGIN ||
       !process.env.VRC_PASSWORD ||
-      !process.env.VRC_APIKEY ||
-      !process.env.VRC_AUTHCOOKIE ||
-      !process.env.USER_AGENT
+      !process.env.VRCHAT_2FA_SECRET
     )
-      warn("env: Vrchat credentials are missing. Vrchat command won't work");
+      warn("env: VRCHAT credentials are missing. Vrchat command won't work");
   }
 
   /**

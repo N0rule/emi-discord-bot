@@ -11,10 +11,12 @@
   "scripts": {
     "dev": "nodemon .",
     "start": "node .",
+    "dev:win": "chcp 65001 && nodemon .",
+    "start:win": "chcp 65001 && node .",
     "format": "prettier --write src",
     "docker:package": "tar -cf discord-js-bot.tar dashboard logs src bot.js config.js dockerfile package.json package-lock.json",
     "docker:build": "docker build -t saitejamadha/discord-js-bot:5.5.0 .",
-      "postinstall": "node scripts/lavaclientPluginQueueFix.js"
+    "postinstall": "node scripts/lavaclientPluginQueueFix.js"
   },
   "homepage": "https://github.com/N0rule/Emi-discord-bot#readme",
   "repository": {
@@ -25,6 +27,7 @@
     "url": "https://github.com/N0rule/emi-discord-bot/issues"
   },
   "dependencies": {
+    "@lavaclient/plugin-queue": "^0.0.1",
     "@vitalets/google-translate-api": "^9.2.0",
     "ascii-table": "0.0.9",
     "btoa": "^1.2.1",
@@ -43,7 +46,6 @@
     "fixedsize-map": "^1.0.1",
     "iso-639-1": "^3.1.0",
     "lavaclient": "^5.0.0-rc.3",
-    "@lavaclient/plugin-queue": "^0.0.1",
     "module-alias": "^2.2.3",
     "moment": "^2.30.1",
     "mongoose": "^8.1.1",
@@ -60,7 +62,7 @@
     "table": "^6.8.1",
     "timestamp-to-date": "^1.1.0",
     "twemoji-parser": "^14.0.0",
-    "vrchat": "^1.11.1"
+    "vrc-ts": "^1.0.3"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.8",
