@@ -1,7 +1,7 @@
 const { ApplicationCommandOptionType, EmbedBuilder } = require("discord.js");
 const { EMBED_COLORS } = require("@root/config.js");
 const { log, warn, error } = require("@helpers/Logger");
-const { RequestError, VRChatAPI } = require('vrc-ts');
+const { RequestError, VRChatAPI,isVRCPlusSubcriber,getVRCRankTags} = require('vrc-ts');
 
 const api = new VRChatAPI(process.env.VRC_LOGIN, process.env.VRC_PASSWORD);
 
@@ -29,6 +29,7 @@ module.exports = {
   },
   async messageRun(message, args) {
     const username = args[0];
+    message.channel.sendTyping();
     const response = await getUserInfo(username, message.author);
     await message.safeReply(response);
   },
@@ -39,17 +40,19 @@ module.exports = {
     await interaction.followUp(response);
   },
 }
+
 setTimeout(() => {
   if (module.exports.command.enabled || module.exports.slashCommand.enabled) {
     authenticateUser();
-   }
-  }, 5000);
+  }
+}, 5000);
 
-
- async function authenticateUser() {
+async function authenticateUser() {
   try {
+    log(`-----------------------------VRChat API LOGIN-----------------------------`);
     await api.login();
     log(`Logged in successfully as ${api.currentUser?.displayName}!`);
+    log(`-----------------------------VRChat API END-------------------------------`);
   } catch (error) {
     if (error instanceof RequestError) {
       error(`Failed to login: ${error.message}`);
@@ -61,12 +64,13 @@ setTimeout(() => {
 
 async function getUserInfo(username, author) {
   try {
+    
     const searchResults = await api.userApi.searchAllUsers({ search: username, n: 1, offset: 0 });
 
     if (!searchResults || searchResults.length === 0) {
       return { content: "🚫 Пользователь не найден." };
     }
-
+    
     const userInfo = searchResults[0];
 
     // Wait to avoid rate-limiting before requesting more detailed info by ID
@@ -74,8 +78,6 @@ async function getUserInfo(username, author) {
 
     // Get detailed user information
     const detailedUserInfo = await api.userApi.getUserById({ userId: userInfo.id });
-
-    // const isSubscriber = await api.userApi.isVRCPlusSubcriber({ user: detailedUserInfo });
 
     // Fetch represented group
     let representedGroup;
@@ -100,6 +102,12 @@ async function getUserInfo(username, author) {
       embed.addFields({ name: "ID:", value: detailedUserInfo.id, inline: true });
     }
 
+    embed.addFields({
+      name: "Ранг:",
+      value: `${getVRCRankTags(detailedUserInfo).rankName}${getVRCRankTags(detailedUserInfo).isTroll ? " (Troll)" : ""}`,
+      inline: false
+    });
+
     // Profile Information
     if (detailedUserInfo.bio && detailedUserInfo.bio.trim()) {
       embed.addFields({ name: "БИО:", value: detailedUserInfo.bio, inline: false });
@@ -118,23 +126,22 @@ async function getUserInfo(username, author) {
       embed.addFields({ 
         name: "Представляемая группа:", 
         value: representedGroup.name, 
-        inline: false 
+        inline: true 
       });
     } else {
       embed.addFields({ 
         name: "Представляемая группа:", 
         value: "Не указана", 
-        inline: false 
+        inline: true 
       });
     }
 
-    // // VRCHAT+ Subscription
-    // embed.addFields({
-    //   name: "VRCHAT+ Подписка:",
-    //   value: isSubscriber ? "Да" : "Нет",
-    //   inline: true
-    // });
-
+    // Add VRC+ Status
+    embed.addFields({
+      name: "VRChat+:",
+      value: isVRCPlusSubcriber(detailedUserInfo) ? "Да" : "Нет",
+      inline: true
+    });
     // Status Information
     if (detailedUserInfo.status) {
       embed.addFields({ name: "Статус:", value: detailedUserInfo.status, inline: true });
