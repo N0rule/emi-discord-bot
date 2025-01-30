@@ -3,7 +3,7 @@ const { EMBED_COLORS } = require("@root/config.js");
 const { log, warn, error } = require("@helpers/Logger");
 const { RequestError, VRChatAPI,isVRCPlusSubcriber,getVRCRankTags} = require('vrc-ts');
 
-const api = new VRChatAPI(process.env.VRC_LOGIN, process.env.VRC_PASSWORD);
+const api = new VRChatAPI({ useCookies: true, cookiePath: './src/commands/utility/vrchatCookies.json', userAgent: 'EmibotVRC/1.0.1' });
 
 module.exports = {
   name: "vrchat",
@@ -15,6 +15,7 @@ module.exports = {
     enabled: true,
     usage: "<username>",
     minArgsCount: 1,
+    aliases: ["vrc"],
   },
   slashCommand: {
     enabled: true,
@@ -59,13 +60,14 @@ async function authenticateUser() {
     } else {
       error(`An unexpected error occurred: ${error}`);
     }
+    log(`-----------------------------VRChat API END-------------------------------`);
   }
 }
 
 async function getUserInfo(username, author) {
   try {
     
-    const searchResults = await api.userApi.searchAllUsers({ search: username, n: 1, offset: 0 });
+    const searchResults = await api.userApi.searchAllUsers({ search: username, n: 1, offset: 0, fuzzy: true });
 
     if (!searchResults || searchResults.length === 0) {
       return { content: "🚫 Пользователь не найден." };
@@ -84,7 +86,7 @@ async function getUserInfo(username, author) {
     try {
       representedGroup = await api.userApi.getUserRepresentedGroup({ userId: detailedUserInfo.id });
     } catch (err) {
-      console.error("Error fetching represented group:", err);
+      error("Error fetching represented group:", err);
       representedGroup = null;
     }
 
@@ -128,6 +130,7 @@ async function getUserInfo(username, author) {
         value: representedGroup.name, 
         inline: true 
       });
+      embed.setThumbnail(representedGroup.iconUrl);
     } else {
       embed.addFields({ 
         name: "Представляемая группа:", 
@@ -206,17 +209,17 @@ async function getUserInfo(username, author) {
         inline: false 
       });
     }
+// Set profile image
+if (detailedUserInfo.profilePicOverride) {
+  embed.setImage(detailedUserInfo.profilePicOverride);
 
-    // Set profile image
-    const profileImage = detailedUserInfo.currentAvatarImageUrl;
-    if (profileImage) {
-      embed.setImage(profileImage);
-    }
+  if (detailedUserInfo.userIcon && detailedUserInfo.userIcon.startsWith("http")) {
+    embed.setThumbnail(detailedUserInfo.userIcon);
+  }
+} else if (detailedUserInfo.currentAvatarImageUrl) {
+  embed.setImage(detailedUserInfo.currentAvatarImageUrl);
+}
 
-    // Set thumbnail
-    if (detailedUserInfo.profilePicOverrideThumbnail) {
-      embed.setThumbnail(detailedUserInfo.profilePicOverrideThumbnail);
-    }
 
     embed.setFooter({
       text: `Запрошено пользователем ${author.username}`,

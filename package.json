@@ -62,7 +62,7 @@
     "table": "^6.8.1",
     "timestamp-to-date": "^1.1.0",
     "twemoji-parser": "^14.0.0",
-    "vrc-ts": "^1.0.3"
+    "vrc-ts": "^1.0.13"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.8",

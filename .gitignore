@@ -7,4 +7,4 @@ node_modules/
 lavalink/logs/
 lavalink/application.yml
 config.js
-
+src/commands/utility/vrchatCookies.json
