@@ -65,7 +65,6 @@ async function play({ member, guild, channel }, query) {
   let description = "";
   let thumbnail;
 
-
   try {
     const res = await guild.client.musicManager.api.loadTracks(
       /^https?:\/\//.test(query) ? query : `${MUSIC.DEFAULT_SOURCE}:${query}`
@@ -110,11 +109,12 @@ async function play({ member, guild, channel }, query) {
 
   if (!tracks) return "🚫 Произошла ошибка при поиске песни";
 
+  // Check if this is the first song being played
+  const isFirstSong = !player?.playing && !player?.paused && !player?.queue.tracks.length;
+
   if (tracks.length === 1) {
     const track = tracks[0];
-    if (!player?.playing && !player?.paused && !player?.queue.tracks.length) {
-      
-    } else {
+    if (!isFirstSong) {
       const fields = [];
       embed
         .setAuthor({ name: "Трек добавлен в очередь" })
@@ -122,11 +122,11 @@ async function play({ member, guild, channel }, query) {
         .setThumbnail(track.info.artworkUrl)
         .setFooter({ text: `Запрошено Пользователем: ${member.user.username}` });
 
-fields.push({
-  name: "Длительность песни",
-  value: track.info.length > 6.048e8 ? `\`[🔴 Трансляция]\`` : "`" + formatTime(track.info.length) + "`",
-  inline: true,
-});
+      fields.push({
+        name: "Длительность песни",
+        value: track.info.length > 6.048e8 ? `\`[🔴 Трансляция]\`` : "`" + formatTime(track.info.length) + "`",
+        inline: true,
+      });
 
       if (player?.queue?.tracks?.length > 0) {
         fields.push({
@@ -177,5 +177,6 @@ fields.push({
     await player.queue.start();
   }
 
-  return { embeds: [embed] };
+  // Return embed only for non-first songs or playlists
+  return isFirstSong ? null : { embeds: [embed] };
 }

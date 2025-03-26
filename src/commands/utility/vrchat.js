@@ -141,7 +141,7 @@ async function getUserInfo(username, author) {
 
     // Add VRC+ Status
     embed.addFields({
-      name: "VRChat+:",
+      name: "✨VRChat+:",
       value: isVRCPlusSubcriber(detailedUserInfo) ? "Да" : "Нет",
       inline: true
     });
